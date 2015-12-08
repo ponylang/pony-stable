@@ -48,7 +48,9 @@ actor Main
         if iter.has_next() then ponypath.push(':') end
       end
       
-      Shell.from_array(["env", "PONYPATH="+ponypath].append(rest))
+      Shell.from_array(
+        ["env", "PONYPATH="+ponypath].append(rest), env~exitcode()
+      )
     end
   
   fun command(s: String, rest: Array[String] box) =>
