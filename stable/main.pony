@@ -33,18 +33,14 @@ actor Main
     end
   
   fun command("fetch", _) =>
-    try let bundle = _load_bundle()
-      for dep in bundle.deps() do
-        dep.fetch()
-      end
-    end
+    try _load_bundle().fetch() end
   
   fun command("env", rest: Array[String] box) =>
     try let bundle = _load_bundle()
       var ponypath = recover trn String end
-      let iter = bundle.deps()
-      for dep in iter do
-        ponypath.append(dep.path())
+      let iter = bundle.paths().values()
+      for path in iter do
+        ponypath.append(path)
         if iter.has_next() then ponypath.push(':') end
       end
       

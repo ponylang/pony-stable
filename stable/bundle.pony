@@ -31,3 +31,23 @@ class box Bundle
       fun ref next(): BundleDep^? =>
         BundleDepFactory(bundle, inner.next() as JsonObject)
     end
+  
+  fun fetch() =>
+    for dep in deps() do
+      try dep.fetch() end
+    end
+    for dep in deps() do
+      // TODO: detect and prevent infinite recursion here.
+      try Bundle(FilePath(path, dep.path()), log).fetch() end
+    end
+  
+  fun paths(): Array[String] val =>
+    let out = recover trn Array[String] end
+    for dep in deps() do
+      out.push(dep.path())
+    end
+    for dep in deps() do
+      // TODO: detect and prevent infinite recursion here.
+      try out.append(Bundle(FilePath(path, dep.path()), log).paths()) end
+    end
+    out
