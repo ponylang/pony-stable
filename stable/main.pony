@@ -28,7 +28,7 @@ actor Main
     ""] end)
   
   fun _load_bundle(): Bundle? =>
-    try Bundle(FilePath(env.root, "."), log)
+    try Bundle(FilePath(env.root as AmbientAuth, "."), log)
     else log("Failed to load bundle in current working directory."); error
     end
   
