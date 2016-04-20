@@ -20,18 +20,19 @@ class BundleDepGitHub
   let repo: String
   let subdir: String
   new create(b: Bundle, i: JsonObject)? =>
-    bundle = b; info = i
-    repo = try info.data("repo") as String
-           else bundle.log("No 'repo' key in dep: " + info.string()); error
-           end
+    bundle = b
+    info   = i
+    repo   = try info.data("repo") as String
+             else bundle.log("No 'repo' key in dep: " + info.string()); error
+             end
     subdir = try info.data("subdir") as String
              else ""
              end
-
+  
   fun root_path(): String => ".deps/" + repo
   fun packages_path(): String => root_path() + "/" + subdir
   fun url(): String => "https://github.com/" + repo
-
+  
   fun ref fetch()? =>
     try Shell("test -d "+root_path())
       Shell("git -C "+root_path()+" pull")

@@ -6,10 +6,10 @@ class box Bundle
   let log: Log
   let path: FilePath
   let json: JsonDoc = JsonDoc
-
+  
   new create(path': FilePath, log': Log = LogNone)? =>
     path = path'; log = log'
-
+    
     let file = OpenFile(path.join("bundle.json")) as File
     let content: String = file.read_string(file.size())
     try json.parse(content) else
@@ -18,12 +18,12 @@ class box Bundle
                             + " : " + err_message)
       error
     end
-
+  
   fun deps(): Iterator[BundleDep] =>
     let deps_array = try (json.data as JsonObject).data("deps") as JsonArray
                      else JsonArray
                      end
-
+    
     object is Iterator[BundleDep]
       let bundle: Bundle = this
       let inner: Iterator[JsonType] = deps_array.data.values()
@@ -31,7 +31,7 @@ class box Bundle
       fun ref next(): BundleDep^? =>
         BundleDepFactory(bundle, inner.next() as JsonObject)
     end
-
+  
   fun fetch() =>
     for dep in deps() do
       try dep.fetch() end
@@ -40,7 +40,7 @@ class box Bundle
       // TODO: detect and prevent infinite recursion here.
       try Bundle(FilePath(path, dep.root_path()), log).fetch() end
     end
-
+  
   fun paths(): Array[String] val =>
     let out = recover trn Array[String] end
     for dep in deps() do
