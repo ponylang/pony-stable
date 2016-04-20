@@ -20,16 +20,17 @@ class box Bundle
     end
 
   fun deps(): Iterator[BundleDep] =>
-    let deps_array = try (json.data as JsonObject).data("deps") as JsonArray
-                     else JsonArray
-                     end
+    let deps_array =
+      try (json.data as JsonObject box).data("deps") as JsonArray box
+      else JsonArray
+      end
 
     object is Iterator[BundleDep]
       let bundle: Bundle = this
-      let inner: Iterator[JsonType] = deps_array.data.values()
+      let inner: Iterator[JsonType box] = deps_array.data.values()
       fun ref has_next(): Bool    => inner.has_next()
       fun ref next(): BundleDep^? =>
-        BundleDepFactory(bundle, inner.next() as JsonObject)
+        BundleDepFactory(bundle, inner.next() as JsonObject box)
     end
 
   fun fetch() =>

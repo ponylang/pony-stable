@@ -8,7 +8,7 @@ interface BundleDep
   fun ref fetch()?
 
 primitive BundleDepFactory
-  fun apply(bundle: Bundle, dep: JsonObject): BundleDep? =>
+  fun apply(bundle: Bundle, dep: JsonObject box): BundleDep? =>
     match dep.data("type")
     | "github" => BundleDepGitHub(bundle, dep)
     else error
@@ -16,10 +16,10 @@ primitive BundleDepFactory
 
 class BundleDepGitHub
   let bundle: Bundle
-  let info: JsonObject
+  let info: JsonObject box
   let repo: String
   let subdir: String
-  new create(b: Bundle, i: JsonObject)? =>
+  new create(b: Bundle, i: JsonObject box)? =>
     bundle = b; info = i
     repo = try info.data("repo") as String
            else bundle.log("No 'repo' key in dep: " + info.string()); error
@@ -39,3 +39,4 @@ class BundleDepGitHub
       Shell("mkdir -p "+root_path())
       Shell("git clone "+url()+" "+root_path())
     end
+
