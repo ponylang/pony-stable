@@ -39,7 +39,7 @@ class BundleDepGitHub
 
   fun ref fetch()? =>
     try Shell("test -d "+root_path())
-      Shell("git -C "+root_path()+" pull")
+      Shell("git -C "+root_path()+" pull "+url())
     else
       Shell("mkdir -p "+root_path())
       Shell("git clone "+url()+" "+root_path())
