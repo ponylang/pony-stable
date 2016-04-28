@@ -22,9 +22,19 @@ sudo make install
 ```bash
 mkdir myproject && cd myproject
 
+For a GitHub repo:
+
 echo '{
   "deps": [
     { "type": "github", "repo": "jemc/pony-inspect" }
+  ]
+}' > bundle.json
+
+For a local git repo:
+
+echo '{
+  "deps": [
+    { "type": "local-git", "package-name": "inspect", "local-path": "../pony-inspect" }
   ]
 }' > bundle.json
 

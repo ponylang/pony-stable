@@ -62,11 +62,11 @@ class BundleDepLocalGit
   new create(b: Bundle, i: JsonObject box)? =>
     bundle       = b
     info         = i
-    package_name = try info.data("package_name") as String
-                   else bundle.log("No 'package_name' key in dep: " + info.string()); error
+    package_name = try info.data("package-name") as String
+                   else bundle.log("No 'package-name' key in dep: " + info.string()); error
                    end
-    local_path   = try info.data("local_path") as String
-                   else bundle.log("No 'local_path' key in dep: " + info.string()); error
+    local_path   = try info.data("local-path") as String
+                   else bundle.log("No 'local-path' key in dep: " + info.string()); error
                    end
     git_tag =      try info.data("tag") as String
                    else None
@@ -93,11 +93,11 @@ class BundleDepLocal
   new create(b: Bundle, i: JsonObject box)? =>
     bundle       = b
     info         = i
-    package_name = try info.data("package_name") as String
-                   else bundle.log("No 'package_name' key in dep: " + info.string()); error
+    package_name = try info.data("package-name") as String
+                   else bundle.log("No 'package-name' key in dep: " + info.string()); error
                    end
-    local_path   = try info.data("local_path") as String
-                   else bundle.log("No 'local_path' key in dep: " + info.string()); error
+    local_path   = try info.data("local-path") as String
+                   else bundle.log("No 'local-path' key in dep: " + info.string()); error
                    end
 
   fun root_path(): String => ".deps/"+package_name
