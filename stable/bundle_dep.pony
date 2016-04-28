@@ -133,7 +133,8 @@ primitive _SubdirNameGenerator
   fun _is_alphanum(c: U8): Bool =>
     let alphanums = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".array()
     var res = false
-    for char in alphanums.values() do
-      if c == char then res = true end
+    try
+      alphanums.find(c)
+      res = true
     end
     res
