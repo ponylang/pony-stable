@@ -78,8 +78,7 @@ class BundleDepLocalGit
   fun packages_path(): String => root_path()
 
   fun ref fetch()? =>
-    // TODO: Stop from doing the one shallow copy of .
-    Shell("rsync -avr --progress "+local_path+" "+root_path()+" --exclude .")
+    Shell("git clone "+local_path+" "+root_path())
     _checkout_tag()
 
   fun _checkout_tag() ? =>
