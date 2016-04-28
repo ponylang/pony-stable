@@ -11,6 +11,7 @@ primitive BundleDepFactory
   fun apply(bundle: Bundle, dep: JsonObject box): BundleDep? =>
     match dep.data("type")
     | "github" => BundleDepGitHub(bundle, dep)
+    | "local-git" => BundleDepLocalGit(bundle, dep)
     | "local" => BundleDepLocal(bundle, dep)
     else error
     end
@@ -52,6 +53,38 @@ class BundleDepGitHub
       Shell("cd " + root_path() + " && git checkout " + (git_tag as String))
     end
 
+class BundleDepLocalGit
+  let bundle: Bundle
+  let info: JsonObject box
+  let package_name: String
+  let local_path: String
+  let git_tag: (String | None)
+  new create(b: Bundle, i: JsonObject box)? =>
+    bundle       = b
+    info         = i
+    package_name = try info.data("package_name") as String
+                   else bundle.log("No 'package_name' key in dep: " + info.string()); error
+                   end
+    local_path   = try info.data("local_path") as String
+                   else bundle.log("No 'local_path' key in dep: " + info.string()); error
+                   end
+    git_tag =      try info.data("tag") as String
+                   else None
+                   end
+
+  fun root_path(): String => ".deps/"+package_name
+  fun packages_path(): String => local_path
+
+  fun ref fetch()? =>
+    // TODO: Stop from doing the one shallow copy of .
+    Shell("rsync -avr --progress "+packages_path()+" "+root_path()+" --exclude .")
+    _checkout_tag()
+
+  fun _checkout_tag() ? =>
+    if git_tag isnt None then
+      Shell("cd " + root_path() + " && git checkout " + (git_tag as String))
+    end
+
 class BundleDepLocal
   let bundle: Bundle
   let info: JsonObject box
@@ -71,6 +104,5 @@ class BundleDepLocal
   fun packages_path(): String => local_path
 
   fun ref fetch()? =>
-//    Shell("rm -rf "+root_path())
-//    Shell("mkdir -p "+root_path())
+    // TODO: Stop from doing the one shallow copy of .
     Shell("rsync -avr --progress "+packages_path()+" "+root_path()+" --exclude .")
