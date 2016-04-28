@@ -11,6 +11,7 @@ primitive BundleDepFactory
   fun apply(bundle: Bundle, dep: JsonObject box): BundleDep? =>
     match dep.data("type")
     | "github" => BundleDepGitHub(bundle, dep)
+    | "local" => BundleDepLocal(bundle, dep)
     else error
     end
 
@@ -50,3 +51,26 @@ class BundleDepGitHub
     if git_tag isnt None then
       Shell("cd " + root_path() + " && git checkout " + (git_tag as String))
     end
+
+class BundleDepLocal
+  let bundle: Bundle
+  let info: JsonObject box
+  let package_name: String
+  let local_path: String
+  new create(b: Bundle, i: JsonObject box)? =>
+    bundle       = b
+    info         = i
+    package_name = try info.data("package_name") as String
+                   else bundle.log("No 'package_name' key in dep: " + info.string()); error
+                   end
+    local_path   = try info.data("local_path") as String
+                   else bundle.log("No 'local_path' key in dep: " + info.string()); error
+                   end
+
+  fun root_path(): String => ".deps/"+package_name
+  fun packages_path(): String => local_path
+
+  fun ref fetch()? =>
+//    Shell("rm -rf "+root_path())
+//    Shell("mkdir -p "+root_path())
+    Shell("rsync -avr --progress "+packages_path()+" "+root_path()+" --exclude .")
