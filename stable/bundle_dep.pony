@@ -62,15 +62,17 @@ class BundleDepLocalGit
   new create(b: Bundle, i: JsonObject box)? =>
     bundle       = b
     info         = i
-    package_name = try info.data("package-name") as String
-                   else bundle.log("No 'package-name' key in dep: " + info.string()); error
-                   end
     local_path   = try info.data("local-path") as String
                    else bundle.log("No 'local-path' key in dep: " + info.string()); error
                    end
-    git_tag =      try info.data("tag") as String
+    package_name = try _SubdirNameGenerator(local_path)
+                   else bundle.log("Something went wrong generating dir name "); error
+                   end
+    bundle.log(package_name)
+    git_tag      = try info.data("tag") as String
                    else None
                    end
+    bundle.log(package_name)
 
   fun root_path(): String => ".deps/"+package_name
   fun packages_path(): String => local_path
@@ -93,11 +95,11 @@ class BundleDepLocal
   new create(b: Bundle, i: JsonObject box)? =>
     bundle       = b
     info         = i
-    package_name = try info.data("package-name") as String
-                   else bundle.log("No 'package-name' key in dep: " + info.string()); error
-                   end
     local_path   = try info.data("local-path") as String
                    else bundle.log("No 'local-path' key in dep: " + info.string()); error
+                   end
+    package_name = try _SubdirNameGenerator(local_path)
+                   else bundle.log("Something went wrong generating dir name "); error
                    end
 
   fun root_path(): String => ".deps/"+package_name
@@ -106,3 +108,32 @@ class BundleDepLocal
   fun ref fetch()? =>
     // TODO: Stop from doing the one shallow copy of .
     Shell("rsync -avr --progress "+packages_path()+" "+root_path()+" --exclude .")
+
+primitive _SubdirNameGenerator
+  fun apply(path: String): String val ? =>
+    let dash_code: U8 = 45
+    let path_name_arr = recover val
+      var acc: Array[U8] = Array[U8]
+      for char in path.array().values() do
+        if _is_alphanum(char) then
+          acc.push(char)
+        else
+          if acc.size() == 0 then
+            acc.push(dash_code)
+          elseif acc(acc.size() - 1) != dash_code then
+            acc.push(dash_code)
+          end
+        end
+      end
+      acc.append(path.hash().string())
+      consume acc
+    end
+    String.from_array(consume path_name_arr)
+
+  fun _is_alphanum(c: U8): Bool =>
+    let alphanums = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".array()
+    var res = false
+    for char in alphanums.values() do
+      if c == char then res = true end
+    end
+    res
