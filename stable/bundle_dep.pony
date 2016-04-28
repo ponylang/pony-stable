@@ -75,11 +75,11 @@ class BundleDepLocalGit
     bundle.log(package_name)
 
   fun root_path(): String => ".deps/"+package_name
-  fun packages_path(): String => local_path
+  fun packages_path(): String => root_path()
 
   fun ref fetch()? =>
     // TODO: Stop from doing the one shallow copy of .
-    Shell("rsync -avr --progress "+packages_path()+" "+root_path()+" --exclude .")
+    Shell("rsync -avr --progress "+local_path+" "+root_path()+" --exclude .")
     _checkout_tag()
 
   fun _checkout_tag() ? =>
@@ -103,11 +103,11 @@ class BundleDepLocal
                    end
 
   fun root_path(): String => ".deps/"+package_name
-  fun packages_path(): String => local_path
+  fun packages_path(): String => root_path()
 
   fun ref fetch()? =>
     // TODO: Stop from doing the one shallow copy of .
-    Shell("rsync -avr --progress "+packages_path()+" "+root_path()+" --exclude .")
+    Shell("rsync -avr --progress "+local_path+" "+root_path()+" --exclude .")
 
 primitive _SubdirNameGenerator
   fun apply(path: String): String val ? =>
