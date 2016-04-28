@@ -19,12 +19,54 @@ sudo make install
 
 ## Make a project with dependencies.
 
+### GitHub
+
 ```bash
 mkdir myproject && cd myproject
 
 echo '{
   "deps": [
     { "type": "github", "repo": "jemc/pony-inspect" }
+  ]
+}' > bundle.json
+
+echo '
+use "inspect"
+actor Main
+  new create(env: Env) =>
+    env.out.print(Inspect("Hello, World!"))
+' > main.pony
+```
+
+### Local git project
+
+```bash
+mkdir myproject && cd myproject
+
+echo '{
+  "deps": [
+    { "type": "local-git", "local-path": "../pony-inspect", "tag": "1.0.2"}
+  ]
+}' > bundle.json
+
+echo '
+use "inspect"
+actor Main
+  new create(env: Env) =>
+    env.out.print(Inspect("Hello, World!"))
+' > main.pony
+```
+
+The git tag is optional.
+
+### Local (non-git) project
+
+```bash
+mkdir myproject && cd myproject
+
+echo '{
+  "deps": [
+    { "type": "local-git", "local-path": "../pony-inspect"}
   ]
 }' > bundle.json
 
