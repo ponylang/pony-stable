@@ -105,6 +105,7 @@ class BundleDepLocal
   fun packages_path(): String => root_path()
 
   fun ref fetch()? =>
+    Shell("mkdir -p "+root_path())
     // TODO: Stop from doing the one shallow copy of .
     Shell("rsync -avr --progress "+local_path+" "+root_path()+" --exclude .")
 
