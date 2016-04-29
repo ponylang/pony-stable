@@ -66,7 +66,7 @@ mkdir myproject && cd myproject
 
 echo '{
   "deps": [
-    { "type": "local-git", "local-path": "../pony-inspect"}
+    { "type": "local", "local-path": "../pony-inspect"}
   ]
 }' > bundle.json
 
