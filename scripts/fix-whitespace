@@ -1,0 +1,36 @@
+#!/usr/bin/bash
+
+fix-file() {
+  waiting_empty_lines=()
+  while IFS= read -r line || [[ -n $line ]]; do
+    # Distinguish whitespace-only lines from other lines.
+    if [[ -z $(echo $line) ]]; then
+      # Capture the whitespace-only line as an empty line in the array.
+      waiting_empty_lines+=("")
+    else
+      # Record leading whitespace (indent) of this non-empty line.
+      indent="$(echo -e "$line" | grep -oh -P -e '^[[:space:]]*')"
+      
+      # Output equally indented lines for all previous held empty lines.
+      for l in "${waiting_empty_lines[@]}"; do
+        echo -e "$indent"
+      done
+      waiting_empty_lines=()
+      
+      # Output the non-empty line itself.
+      printf '%s\n' "$line"
+    fi
+  done
+}
+
+# Fix every file that was passed as an argument.
+for file in "${@}"; do
+  echo "Fixing whitespace in $file..."
+  printf '%s\n' "`fix-file < "$file"`" > "$file"
+done
+
+# Output the USAGE statment if no files were passed as arguments.
+if [[ -z "$@" ]]; then
+  echo "USAGE: scripts/whitespace FILE1 [FILE2] [FILE3]..."
+  exit 1
+fi
