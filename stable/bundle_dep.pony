@@ -34,11 +34,11 @@ class BundleDepGitHub
     git_tag = try info.data("tag") as String
               else None
               end
-  
+
   fun root_path(): String => ".deps/" + repo
   fun packages_path(): String => root_path() + "/" + subdir
   fun url(): String => "https://github.com/" + repo
-  
+
   fun ref fetch()? =>
     try Shell("test -d "+root_path())
       Shell("git -C "+root_path()+" pull "+url())
@@ -47,7 +47,7 @@ class BundleDepGitHub
       Shell("git clone "+url()+" "+root_path())
     end
     _checkout_tag()
-  
+
   fun _checkout_tag() ? =>
     if git_tag isnt None then
       Shell("cd " + root_path() + " && git checkout " + (git_tag as String))
@@ -73,14 +73,14 @@ class BundleDepLocalGit
                    else None
                    end
     bundle.log(package_name)
-  
+
   fun root_path(): String => ".deps/"+package_name
   fun packages_path(): String => root_path()
-  
+
   fun ref fetch()? =>
     Shell("git clone "+local_path+" "+root_path())
     _checkout_tag()
-  
+
   fun _checkout_tag() ? =>
     if git_tag isnt None then
       Shell("cd " + root_path() + " && git checkout " + (git_tag as String))
@@ -89,7 +89,6 @@ class BundleDepLocalGit
 class BundleDepLocal
   let bundle: Bundle
   let info: JsonObject box
-  let package_name: String
   let local_path: String
   new create(b: Bundle, i: JsonObject box)? =>
     bundle       = b
@@ -97,17 +96,11 @@ class BundleDepLocal
     local_path   = try info.data("local-path") as String
                    else bundle.log("No 'local-path' key in dep: " + info.string()); error
                    end
-    package_name = try _SubdirNameGenerator(local_path)
-                   else bundle.log("Something went wrong generating dir name "); error
-                   end
-  
-  fun root_path(): String => ".deps/"+package_name
+
+  fun root_path(): String => local_path
   fun packages_path(): String => root_path()
-  
-  fun ref fetch()? =>
-    Shell("mkdir -p "+root_path())
-    // TODO: Stop from doing the one shallow copy of .
-    Shell("rsync -avr --progress "+local_path+" "+root_path()+" --exclude .")
+
+  fun ref fetch() => None
 
 primitive _SubdirNameGenerator
   fun apply(path: String): String val ? =>
@@ -129,7 +122,7 @@ primitive _SubdirNameGenerator
       consume acc
     end
     String.from_array(consume path_name_arr)
-  
+
   fun _is_alphanum(c: U8): Bool =>
     let alphanums = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".array()
     var res = false
