@@ -18,6 +18,9 @@ install: bin/stable
 	mkdir -p $(prefix)/bin
 	cp $^ $(prefix)/bin
 
+clean:
+	rm -rf bin
+
 all: bin/stable
 
 .PHONY: all install
