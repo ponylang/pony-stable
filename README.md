@@ -24,11 +24,7 @@ sudo make install
 ```bash
 mkdir myproject && cd myproject
 
-echo '{
-  "deps": [
-    { "type": "github", "repo": "jemc/pony-inspect" }
-  ]
-}' > bundle.json
+stable install github jemc/pony-inspect
 
 echo '
 use "inspect"
@@ -43,11 +39,7 @@ actor Main
 ```bash
 mkdir myproject && cd myproject
 
-echo '{
-  "deps": [
-    { "type": "local-git", "local-path": "../pony-inspect", "tag": "1.0.2"}
-  ]
-}' > bundle.json
+stable install local-git ../pony-inspect 1.0.2
 
 echo '
 use "inspect"
@@ -64,11 +56,7 @@ The git tag is optional.
 ```bash
 mkdir myproject && cd myproject
 
-echo '{
-  "deps": [
-    { "type": "local", "local-path": "../pony-inspect"}
-  ]
-}' > bundle.json
+stable install local-path ../pony-inspect
 
 echo '
 use "inspect"

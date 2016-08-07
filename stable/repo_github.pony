@@ -1,16 +1,24 @@
 use "json"
 
 primitive GithubProjectRepo
-  fun tag createBundle(bundle: Bundle, dep: JsonObject box): BundleDep? =>
+  fun tag createDep(bundle: Bundle box, dep: JsonObject box): BundleDep? =>
     _BundleDepGitHub(bundle, dep)
+  fun tag install(args: Array[String] box): JsonObject ref? =>
+    let json: JsonObject ref = JsonObject.create()
+    json.data("type") = "github"
+    json.data("repo") = args(0)
+    if args.size() > 1 then
+      json.data("tag") = args(1)
+    end
+    json
 
 class _BundleDepGitHub
-  let bundle: Bundle
+  let bundle: Bundle box
   let info: JsonObject box
   let repo: String
   let subdir: String
   let git_tag: (String | None)
-  new create(b: Bundle, i: JsonObject box)? =>
+  new create(b: Bundle box, i: JsonObject box)? =>
     bundle = b
     info   = i
     repo   = try info.data("repo") as String

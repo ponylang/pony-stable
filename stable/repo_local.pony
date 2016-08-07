@@ -1,14 +1,19 @@
 use "json"
 
 primitive LocalProjectRepo
-  fun tag createBundle(bundle: Bundle, dep: JsonObject box): BundleDep? =>
+  fun tag createDep(bundle: Bundle box, dep: JsonObject box): BundleDep? =>
     _BundleDepLocal(bundle, dep)
+  fun tag install(args: Array[String] box): JsonObject ref? =>
+    let json: JsonObject ref = JsonObject.create()
+    json.data("type") = "local"
+    json.data("local-path") = args(0)
+    json
 
 class _BundleDepLocal
-  let bundle: Bundle
+  let bundle: Bundle box
   let info: JsonObject box
   let local_path: String
-  new create(b: Bundle, i: JsonObject box)? =>
+  new create(b: Bundle box, i: JsonObject box)? =>
     bundle       = b
     info         = i
     local_path   = try info.data("local-path") as String
