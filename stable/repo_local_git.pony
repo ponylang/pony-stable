@@ -1,17 +1,26 @@
 use "json"
-use "collections"
+use "options"
 
 primitive LocalGitProjectRepo
+
   fun tag createDep(bundle: Bundle box, dep: JsonObject box): BundleDep? =>
     _BundleDepLocalGit(bundle, dep)
+
   fun tag install(args: Array[String] box): JsonObject ref? =>
     let json: JsonObject ref = JsonObject.create()
     json.data("type") = "local-git"
     json.data("local-path") = args(0)
-    if args.size() > 1 then
-      json.data("tag") = args(1)
+
+    let options = Options.from_array(args.slice(1))
+    options.add("tag", "t", StringArgument)
+    for option in options do
+      match option
+      | (let name: String, let value: String) => json.data(name) = value
+      end
     end
+
     json
+
 
 class _BundleDepLocalGit
   let bundle: Bundle box

@@ -39,7 +39,7 @@ actor Main
 ```bash
 mkdir myproject && cd myproject
 
-stable install local-git ../pony-inspect 1.0.2
+stable install local-git ../pony-inspect --tag=1.0.2
 
 echo '
 use "inspect"
