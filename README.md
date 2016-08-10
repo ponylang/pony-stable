@@ -24,7 +24,7 @@ sudo make install
 ```bash
 mkdir myproject && cd myproject
 
-stable install github jemc/pony-inspect
+stable add github jemc/pony-inspect
 
 echo '
 use "inspect"
@@ -39,7 +39,7 @@ actor Main
 ```bash
 mkdir myproject && cd myproject
 
-stable install local-git ../pony-inspect --tag=1.0.2
+stable add local-git ../pony-inspect --tag=1.0.2
 
 echo '
 use "inspect"
@@ -56,7 +56,7 @@ The git tag is optional.
 ```bash
 mkdir myproject && cd myproject
 
-stable install local-path ../pony-inspect
+stable add local-path ../pony-inspect
 
 echo '
 use "inspect"

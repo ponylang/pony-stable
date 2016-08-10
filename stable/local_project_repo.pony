@@ -1,11 +1,11 @@
 use "json"
 
 primitive LocalProjectRepo
-
-  fun tag createDep(bundle: Bundle box, dep: JsonObject box): BundleDep? =>
+  
+  fun tag create_dep(bundle: Bundle box, dep: JsonObject box): BundleDep? =>
     _BundleDepLocal(bundle, dep)
-
-  fun tag install(args: Array[String] box): JsonObject ref? =>
+  
+  fun tag add(args: Array[String] box): JsonObject ref? =>
     let json: JsonObject ref = JsonObject.create()
     json.data("type") = "local"
     json.data("local-path") = args(0)
@@ -22,8 +22,8 @@ class _BundleDepLocal
     local_path   = try info.data("local-path") as String
                    else bundle.log("No 'local-path' key in dep: " + info.string()); error
                    end
-
+  
   fun root_path(): String => local_path
   fun packages_path(): String => root_path()
-
+  
   fun ref fetch() => None

@@ -6,15 +6,15 @@ class Bundle
   let log: Log
   let path: FilePath
   let json: JsonDoc = JsonDoc
-
-  new create(path': FilePath, log': Log = LogNone, createOnMissing: Bool = false)? =>
+  
+  new create(path': FilePath, log': Log = LogNone, create_on_missing: Bool = false)? =>
     path = path'; log = log'
-
-    let bundlePath = path.join("bundle.json")
-
-    if not bundlePath.exists() then
-      if createOnMissing then
-        let f = CreateFile(bundlePath) as File
+    
+    let bundle_path = path.join("bundle.json")
+    
+    if not bundle_path.exists() then
+      if create_on_missing then
+        let f = CreateFile(bundle_path) as File
         f.write("{\"deps\":[]}")
         f.dispose()
         try json.parse("{\"deps\":[]}") end
@@ -22,7 +22,7 @@ class Bundle
         error
       end
     else
-      let file = OpenFile(bundlePath) as File
+      let file = OpenFile(bundle_path) as File
       let content: String = file.read_string(file.size())
       try json.parse(content) else
         (let err_line, let err_message) = json.parse_report()
@@ -42,8 +42,8 @@ class Bundle
       let inner: Iterator[JsonType box] = deps_array.data.values()
       fun ref has_next(): Bool    => inner.has_next()
       fun ref next(): BundleDep^? =>
-        let nextJson = inner.next() as JsonObject box
-        ProjectRepoFactory(nextJson.data("type") as String).createDep(bundle, nextJson)
+        let next_json = inner.next() as JsonObject box
+        ProjectRepoFactory(next_json.data("type") as String).create_dep(bundle, next_json)
     end
   
   fun fetch() =>
@@ -65,11 +65,11 @@ class Bundle
       try out.append(Bundle(FilePath(path, dep.packages_path()), log).paths()) end
     end
     out
-
-  fun ref addDep(depJson: JsonObject ref) ? =>
+  
+  fun ref add_dep(dep_json: JsonObject ref) ? =>
     let deps_array = try (json.data as JsonObject).data("deps") as JsonArray
                      else JsonArray
                      end
-    deps_array.data.push(consume depJson)
+    deps_array.data.push(consume dep_json)
     let file = CreateFile(path.join("bundle.json")) as File
     file.write(json.string())

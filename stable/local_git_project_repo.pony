@@ -2,15 +2,15 @@ use "json"
 use "options"
 
 primitive LocalGitProjectRepo
-
-  fun tag createDep(bundle: Bundle box, dep: JsonObject box): BundleDep? =>
+  
+  fun tag create_dep(bundle: Bundle box, dep: JsonObject box): BundleDep? =>
     _BundleDepLocalGit(bundle, dep)
-
-  fun tag install(args: Array[String] box): JsonObject ref? =>
+  
+  fun tag add(args: Array[String] box): JsonObject ref? =>
     let json: JsonObject ref = JsonObject.create()
     json.data("type") = "local-git"
     json.data("local-path") = args(0)
-
+    
     let options = Options.from_array(args.slice(1))
     options.add("tag", "t", StringArgument)
     for option in options do
@@ -18,7 +18,7 @@ primitive LocalGitProjectRepo
       | (let name: String, let value: String) => json.data(name) = value
       end
     end
-
+    
     json
 
 
@@ -42,14 +42,14 @@ class _BundleDepLocalGit
                    else None
                    end
     bundle.log(package_name)
-
+  
   fun root_path(): String => ".deps/"+package_name
   fun packages_path(): String => root_path()
-
+  
   fun ref fetch()? =>
     Shell("git clone "+local_path+" "+root_path())
     _checkout_tag()
-
+  
   fun _checkout_tag() ? =>
     if git_tag isnt None then
       Shell("cd " + root_path() + " && git checkout " + (git_tag as String))

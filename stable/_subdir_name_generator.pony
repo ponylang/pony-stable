@@ -19,7 +19,7 @@ primitive _SubdirNameGenerator
       consume acc
     end
     String.from_array(consume path_name_arr)
-
+  
   fun _is_alphanum(c: U8): Bool =>
     let alphanums = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".array()
     var res = false

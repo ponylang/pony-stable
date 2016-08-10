@@ -20,17 +20,17 @@ actor Main
       "    Invoke in a working directory containing a bundle.json.",
       "",
       "Commands:",
-      "    help    - Print this message",
-      "    fetch   - Fetch/update the deps for this bundle",
-      "    env     - Execute the following shell command inside an environment",
-      "              with PONYPATH set to include deps directories. For example,",
-      "              `stable env ponyc myproject`",
-      "    install - Install a new dependency. For exemple,",
-      "              `stable install github jemc/pony-inspect",
+      "    help  - Print this message",
+      "    fetch - Fetch/update the deps for this bundle",
+      "    env   - Execute the following shell command inside an environment",
+      "            with PONYPATH set to include deps directories. For example,",
+      "            `stable env ponyc myproject`",
+      "    add   - Add a new dependency. For exemple,",
+      "            `stable add github jemc/pony-inspect",
     ""] end)
-
-  fun _load_bundle(createOnMissing: Bool = false): Bundle? =>
-    try Bundle(FilePath(env.root as AmbientAuth, "."), log, createOnMissing)
+  
+  fun _load_bundle(create_on_missing: Bool = false): Bundle? =>
+    try Bundle(FilePath(env.root as AmbientAuth, "."), log, create_on_missing)
     else log("No bundle in current working directory."); error
     end
   
@@ -55,14 +55,14 @@ actor Main
         ["env", "PONYPATH="+ponypath].append(rest), env~exitcode()
       )
     end
-
-  fun command("install", rest: Array[String] box) =>
+  
+  fun command("add", rest: Array[String] box) =>
     try
       let bundle = _load_bundle(true)
-      let addedJson = ProjectRepoFactory(rest(0)).install(rest.slice(1))
-      bundle.addDep(addedJson)
+      let added_json = ProjectRepoFactory(rest(0)).add(rest.slice(1))
+      bundle.add_dep(added_json)
       bundle.fetch()
     end
-
+  
   fun command(s: String, rest: Array[String] box) =>
     _print_usage()

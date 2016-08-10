@@ -8,8 +8,8 @@ interface BundleDep
   fun ref fetch()?
 
 interface tag ProjectRepo
-  fun tag createDep(bundle: Bundle box, dep: JsonObject box): BundleDep?
-  fun tag install(args: Array[String] box): JsonObject ref?
+  fun tag create_dep(bundle: Bundle box, dep: JsonObject box): BundleDep?
+  fun tag add(args: Array[String] box): JsonObject ref?
 
 primitive ProjectRepoFactory
   fun apply(repoType: String box): ProjectRepo? =>
