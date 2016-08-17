@@ -11,7 +11,7 @@ primitive GithubProjectRepo
     json.data("type") = "github"
     json.data("repo") = args(0)
     
-    let options = Options.from_array(args.slice(1))
+    let options = Options(args.slice(1))
     options.add("tag", "t", StringArgument)
     options.add("subdir", "d", StringArgument)
     for option in options do

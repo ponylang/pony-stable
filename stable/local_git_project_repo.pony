@@ -11,7 +11,7 @@ primitive LocalGitProjectRepo
     json.data("type") = "local-git"
     json.data("local-path") = args(0)
     
-    let options = Options.from_array(args.slice(1))
+    let options = Options(args.slice(1))
     options.add("tag", "t", StringArgument)
     for option in options do
       match option
