@@ -32,18 +32,16 @@ class Bundle
       end
     end
   
-  fun deps(): Iterator[BundleDep] =>
+  fun deps(): Iterator[DepAny] =>
     let deps_array = try (json.data as JsonObject box).data("deps") as JsonArray box
                      else JsonArray
                      end
     
-    object is Iterator[BundleDep]
+    object is Iterator[DepAny]
       let bundle: Bundle box = this
       let inner: Iterator[JsonType box] = deps_array.data.values()
-      fun ref has_next(): Bool    => inner.has_next()
-      fun ref next(): BundleDep^? =>
-        let next_json = inner.next() as JsonObject box
-        ProjectRepoFactory(next_json.data("type") as String).create_dep(bundle, next_json)
+      fun ref has_next(): Bool => inner.has_next()
+      fun ref next(): DepAny^? => Dep(bundle, inner.next() as JsonObject box)
     end
   
   fun fetch() =>
