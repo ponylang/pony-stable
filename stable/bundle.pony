@@ -15,7 +15,7 @@ class Bundle
     if not bundle_path.exists() then
       if create_on_missing then
         let f = CreateFile(bundle_path) as File
-        f.write("{\"deps\":[]}")
+        f.write("{\"deps\":[]}\n")
         f.dispose()
         try json.parse("{\"deps\":[]}") end
       else
@@ -70,4 +70,4 @@ class Bundle
                      end
     deps_array.data.push(consume dep_json)
     let file = CreateFile(path.join("bundle.json")) as File
-    file.write(json.string())
+    file.write(json.string("  ", true))
