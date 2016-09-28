@@ -1,5 +1,6 @@
 
 use "json"
+use "files"
 
 interface DepAny
   fun root_path(): String
@@ -34,8 +35,8 @@ class DepGitHub
               else None
               end
   
-  fun root_path(): String => ".deps/" + repo
-  fun packages_path(): String => root_path() + "/" + subdir
+  fun root_path(): String => Path.join(bundle.path.path, Path.join(".deps", repo))
+  fun packages_path(): String => Path.join(root_path(), subdir)
   fun url(): String => "https://github.com/" + repo
   
   fun ref fetch()? =>
@@ -73,7 +74,7 @@ class DepLocalGit
                    end
     bundle.log(package_name)
   
-  fun root_path(): String => ".deps/"+package_name
+  fun root_path(): String => Path.join(bundle.path.path, Path.join(".deps", package_name))
   fun packages_path(): String => root_path()
   
   fun ref fetch()? =>
