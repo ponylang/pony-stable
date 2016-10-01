@@ -30,8 +30,20 @@ actor Main
     ""] end)
   
   fun _load_bundle(create_on_missing: Bool = false): Bundle? =>
-    try Bundle(FilePath(env.root as AmbientAuth, "."), log, create_on_missing)
-    else log("No bundle in current working directory."); error
+    let cwd = Path.cwd()
+    var path = cwd
+    while path.size() > 0 do
+      try
+        return Bundle(FilePath(env.root as AmbientAuth, path), log, false)
+      else
+        path = Path.split(path)._1
+      end
+    end
+    if create_on_missing then
+      Bundle(FilePath(env.root as AmbientAuth, cwd), log, true)
+    else
+      log("No bundle.json in current working directory or ancestors.")
+      error
     end
   
   fun command("fetch", _) =>
