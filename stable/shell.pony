@@ -27,4 +27,4 @@ primitive Shell
     apply(consume command, exit_code_fn)
   
   fun tag escape_arg(arg: String): String =>
-    "'" + arg.clone().replace("'", "'\\''") + "'"
+    "'" + arg.clone().>replace("'", "'\\''") + "'"
