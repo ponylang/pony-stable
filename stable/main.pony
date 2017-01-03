@@ -64,7 +64,7 @@ actor Main
     end
     try
       Shell.from_array(
-        ["env", "PONYPATH="+ponypath].append(rest), env~exitcode()
+        ["env", "PONYPATH="+ponypath].>append(rest), env~exitcode()
       )
     end
   
