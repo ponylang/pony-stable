@@ -13,20 +13,20 @@ actor Main
   
   fun _print_usage() =>
     env.out.printv(recover [
-      "Usage: stable COMMAND [...]",
-      "",
-      "    A simple dependency manager for the Pony language.",
-      "",
-      "    Invoke in a working directory containing a bundle.json.",
-      "",
-      "Commands:",
-      "    help  - Print this message",
-      "    fetch - Fetch/update the deps for this bundle",
-      "    env   - Execute the following shell command inside an environment",
-      "            with PONYPATH set to include deps directories. For example,",
-      "            `stable env ponyc myproject`",
-      "    add   - Add a new dependency. For exemple,",
-      "            `stable add github jemc/pony-inspect",
+      "Usage: stable COMMAND [...]"
+      ""
+      "    A simple dependency manager for the Pony language."
+      ""
+      "    Invoke in a working directory containing a bundle.json."
+      ""
+      "Commands:"
+      "    help  - Print this message"
+      "    fetch - Fetch/update the deps for this bundle"
+      "    env   - Execute the following shell command inside an environment"
+      "            with PONYPATH set to include deps directories. For example,"
+      "            `stable env ponyc myproject`"
+      "    add   - Add a new dependency. For exemple,"
+      "            `stable add github jemc/pony-inspect"
     ""] end)
   
   fun _load_bundle(create_on_missing: Bool = false): Bundle? =>
@@ -64,7 +64,7 @@ actor Main
     end
     try
       Shell.from_array(
-        ["env", "PONYPATH="+ponypath].>append(rest), env~exitcode()
+        ["env"; "PONYPATH="+ponypath].>append(rest), env~exitcode()
       )
     end
   
