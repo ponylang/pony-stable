@@ -6,12 +6,12 @@ class Bundle
   let log: Log
   let path: FilePath
   let json: JsonDoc = JsonDoc
-  
+
   new create(path': FilePath, log': Log = LogNone, create_on_missing: Bool = false)? =>
     path = path'; log = log'
-    
+
     let bundle_path = path.join("bundle.json")
-    
+
     if not bundle_path.exists() then
       if create_on_missing then
         let f = CreateFile(bundle_path) as File
@@ -31,19 +31,19 @@ class Bundle
         error
       end
     end
-  
+
   fun deps(): Iterator[DepAny] =>
     let deps_array = try (json.data as JsonObject box).data("deps") as JsonArray box
                      else JsonArray
                      end
-    
+
     object is Iterator[DepAny]
       let bundle: Bundle box = this
       let inner: Iterator[JsonType box] = deps_array.data.values()
       fun ref has_next(): Bool => inner.has_next()
       fun ref next(): DepAny^? => Dep(bundle, inner.next() as JsonObject box)
     end
-  
+
   fun fetch() =>
     for dep in deps() do
       try dep.fetch() end
@@ -52,7 +52,7 @@ class Bundle
       // TODO: detect and prevent infinite recursion here.
       try Bundle(FilePath(path, dep.root_path()), log).fetch() end
     end
-  
+
   fun paths(): Array[String] val =>
     let out = recover trn Array[String] end
     for dep in deps() do
@@ -63,7 +63,7 @@ class Bundle
       try out.append(Bundle(FilePath(path, dep.packages_path()), log).paths()) end
     end
     out
-  
+
   fun ref add_dep(dep_json: JsonObject ref) ? =>
     let deps_array = try (json.data as JsonObject).data("deps") as JsonArray
                      else JsonArray

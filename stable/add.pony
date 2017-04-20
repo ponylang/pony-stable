@@ -15,13 +15,13 @@ primitive Add
     let info: JsonObject ref = JsonObject.create()
     info.data("type") = kind.clone()
     prim(rest, info)
-    
+
     info
 
 primitive AddGithub
   fun apply(args: Array[String] box, info: JsonObject ref)? =>
     info.data("repo") = args(0)
-    
+
     let opts = options.Options(args.slice(1))
     opts.add("tag", "t", options.StringArgument)
     opts.add("subdir", "d", options.StringArgument)
@@ -34,7 +34,7 @@ primitive AddGithub
 primitive AddLocalGit
   fun apply(args: Array[String] box, info: JsonObject ref)? =>
     info.data("local-path") = args(0)
-    
+
     let opts = options.Options(args.slice(1))
     opts.add("tag", "t", options.StringArgument)
     for opt in opts do

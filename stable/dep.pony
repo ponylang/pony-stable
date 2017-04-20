@@ -34,11 +34,11 @@ class DepGitHub
     git_tag = try info.data("tag") as String
               else None
               end
-  
+
   fun root_path(): String => Path.join(bundle.path.path, Path.join(".deps", repo))
   fun packages_path(): String => Path.join(root_path(), subdir)
   fun url(): String => "https://github.com/" + repo
-  
+
   fun ref fetch()? =>
     try Shell("test -d "+root_path())
       Shell("git -C "+root_path()+" pull "+url())
@@ -47,7 +47,7 @@ class DepGitHub
       Shell("git clone "+url()+" "+root_path())
     end
     _checkout_tag()
-  
+
   fun _checkout_tag() ? =>
     if git_tag isnt None then
       Shell("cd " + root_path() + " && git checkout " + (git_tag as String))
@@ -73,14 +73,14 @@ class DepLocalGit
                    else None
                    end
     bundle.log(package_name)
-  
+
   fun root_path(): String => Path.join(bundle.path.path, Path.join(".deps", package_name))
   fun packages_path(): String => root_path()
-  
+
   fun ref fetch()? =>
     Shell("git clone "+local_path+" "+root_path())
     _checkout_tag()
-  
+
   fun _checkout_tag() ? =>
     if git_tag isnt None then
       Shell("cd " + root_path() + " && git checkout " + (git_tag as String))
@@ -96,8 +96,8 @@ class DepLocal
     local_path   = try info.data("local-path") as String
                    else bundle.log("No 'local-path' key in dep: " + info.string()); error
                    end
-  
+
   fun root_path(): String => local_path
   fun packages_path(): String => root_path()
-  
+
   fun ref fetch() => None
