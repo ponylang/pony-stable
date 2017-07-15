@@ -56,7 +56,7 @@ The git tag is optional.
 ```bash
 mkdir myproject && cd myproject
 
-stable add local-path ../pony-inspect
+stable add local ../pony-inspect
 
 echo '
 use "inspect"
