@@ -10,7 +10,7 @@ primitive _SubdirNameGenerator
         else
           if acc.size() == 0 then
             acc.push(dash_code)
-          elseif acc(acc.size() - 1) != dash_code then
+          elseif acc(acc.size() - 1)? != dash_code then
             acc.push(dash_code)
           end
         end
@@ -24,7 +24,7 @@ primitive _SubdirNameGenerator
     let alphanums = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".array()
     var res = false
     try
-      alphanums.find(c)
+      alphanums.find(c)?
       res = true
     end
     res

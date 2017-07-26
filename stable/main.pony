@@ -9,7 +9,7 @@ actor Main
     env = env'
     log = LogSimple(env.err)
 
-    command(try env.args(1) else "" end, env.args.slice(2))
+    command(try env.args(1)? else "" end, env.args.slice(2))
 
   fun _print_usage() =>
     env.out.printv(recover [
@@ -34,23 +34,23 @@ actor Main
     var path = cwd
     while path.size() > 0 do
       try
-        return Bundle(FilePath(env.root as AmbientAuth, path), log, false)
+        return Bundle(FilePath(env.root as AmbientAuth, path)?, log, false)?
       else
         path = Path.split(path)._1
       end
     end
     if create_on_missing then
-      Bundle(FilePath(env.root as AmbientAuth, cwd), log, true)
+      Bundle(FilePath(env.root as AmbientAuth, cwd)?, log, true)?
     else
       log("No bundle.json in current working directory or ancestors.")
       error
     end
 
   fun command("fetch", _) =>
-    try _load_bundle().fetch() end
+    try _load_bundle()?.fetch() end
 
   fun command("env", rest: Array[String] box) =>
-    let ponypath = try let bundle = _load_bundle()
+    let ponypath = try let bundle = _load_bundle()?
       var ponypath' = recover trn String end
       let iter = bundle.paths().values()
       for path in iter do
@@ -65,14 +65,14 @@ actor Main
     try
       Shell.from_array(
         ["env"; "PONYPATH="+ponypath].>append(rest), env~exitcode()
-      )
+      )?
     end
 
   fun command("add", rest: Array[String] box) =>
     try
-      let bundle = _load_bundle(true)
-      let added_json = Add(rest)
-      bundle.add_dep(added_json)
+      let bundle = _load_bundle(true)?
+      let added_json = Add(rest)?
+      bundle.add_dep(added_json)?
       bundle.fetch()
     end
 

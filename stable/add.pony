@@ -4,7 +4,7 @@ use options = "options"
 
 primitive Add
   fun apply(args: Array[String] box): JsonObject ref? =>
-    let kind = args(0)
+    let kind = args(0)?
     let rest = args.slice(1)
     let prim = match kind
                | "github"    => AddGithub
@@ -14,13 +14,13 @@ primitive Add
                end
     let info: JsonObject ref = JsonObject.create()
     info.data("type") = kind.clone()
-    prim(rest, info)
+    prim(rest, info)?
 
     info
 
 primitive AddGithub
   fun apply(args: Array[String] box, info: JsonObject ref)? =>
-    info.data("repo") = args(0)
+    info.data("repo") = args(0)?
 
     let opts = options.Options(args.slice(1))
     opts.add("tag", "t", options.StringArgument)
@@ -33,7 +33,7 @@ primitive AddGithub
 
 primitive AddLocalGit
   fun apply(args: Array[String] box, info: JsonObject ref)? =>
-    info.data("local-path") = args(0)
+    info.data("local-path") = args(0)?
 
     let opts = options.Options(args.slice(1))
     opts.add("tag", "t", options.StringArgument)
@@ -45,4 +45,4 @@ primitive AddLocalGit
 
 primitive AddLocal
   fun apply(args: Array[String] box, info: JsonObject ref)? =>
-    info.data("local-path") = args(0)
+    info.data("local-path") = args(0)?

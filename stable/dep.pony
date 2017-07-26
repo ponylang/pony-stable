@@ -9,10 +9,10 @@ interface DepAny
 
 primitive Dep
   fun apply(bundle: Bundle box, info: JsonObject box): DepAny? =>
-    match info.data("type")
-    | "github"    => DepGitHub(bundle, info)
-    | "local-git" => DepLocalGit(bundle, info)
-    | "local"     => DepLocal(bundle, info)
+    match info.data("type")?
+    | "github"    => DepGitHub(bundle, info)?
+    | "local-git" => DepLocalGit(bundle, info)?
+    | "local"     => DepLocal(bundle, info)?
     else error
     end
 
@@ -25,13 +25,13 @@ class DepGitHub
   new create(b: Bundle box, i: JsonObject box)? =>
     bundle = b
     info   = i
-    repo   = try info.data("repo") as String
+    repo   = try info.data("repo")? as String
              else bundle.log("No 'repo' key in dep: " + info.string()); error
              end
-    subdir = try info.data("subdir") as String
+    subdir = try info.data("subdir")? as String
              else ""
              end
-    git_tag = try info.data("tag") as String
+    git_tag = try info.data("tag")? as String
               else None
               end
 
@@ -40,17 +40,17 @@ class DepGitHub
   fun url(): String => "https://github.com/" + repo
 
   fun ref fetch()? =>
-    try Shell("test -d "+root_path())
-      Shell("git -C "+root_path()+" pull "+url())
+    try Shell("test -d "+root_path())?
+      Shell("git -C "+root_path()+" pull "+url())?
     else
-      Shell("mkdir -p "+root_path())
-      Shell("git clone "+url()+" "+root_path())
+      Shell("mkdir -p "+root_path())?
+      Shell("git clone "+url()+" "+root_path())?
     end
-    _checkout_tag()
+    _checkout_tag()?
 
   fun _checkout_tag() ? =>
     if git_tag isnt None then
-      Shell("cd " + root_path() + " && git checkout " + (git_tag as String))
+      Shell("cd " + root_path() + " && git checkout " + (git_tag as String))?
     end
 
 class DepLocalGit
@@ -62,14 +62,14 @@ class DepLocalGit
   new create(b: Bundle box, i: JsonObject box)? =>
     bundle       = b
     info         = i
-    local_path   = try info.data("local-path") as String
+    local_path   = try info.data("local-path")? as String
                    else bundle.log("No 'local-path' key in dep: " + info.string()); error
                    end
-    package_name = try _SubdirNameGenerator(local_path)
+    package_name = try _SubdirNameGenerator(local_path)?
                    else bundle.log("Something went wrong generating dir name "); error
                    end
     bundle.log(package_name)
-    git_tag      = try info.data("tag") as String
+    git_tag      = try info.data("tag")? as String
                    else None
                    end
     bundle.log(package_name)
@@ -78,12 +78,12 @@ class DepLocalGit
   fun packages_path(): String => root_path()
 
   fun ref fetch()? =>
-    Shell("git clone "+local_path+" "+root_path())
-    _checkout_tag()
+    Shell("git clone "+local_path+" "+root_path())?
+    _checkout_tag()?
 
   fun _checkout_tag() ? =>
     if git_tag isnt None then
-      Shell("cd " + root_path() + " && git checkout " + (git_tag as String))
+      Shell("cd " + root_path() + " && git checkout " + (git_tag as String))?
     end
 
 class DepLocal
@@ -93,7 +93,7 @@ class DepLocal
   new create(b: Bundle box, i: JsonObject box)? =>
     bundle       = b
     info         = i
-    local_path   = try info.data("local-path") as String
+    local_path   = try info.data("local-path")? as String
                    else bundle.log("No 'local-path' key in dep: " + info.string()); error
                    end
 
