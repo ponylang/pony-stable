@@ -2,6 +2,9 @@
 if "%1"=="--help" goto help
 if "%1"=="clean" goto clean
 
+where ponyc > nul
+if errorlevel 1 goto noponyc
+
 :build
 set DEBUG=
 if "%1"=="--debug" set DEBUG="--debug"
@@ -17,5 +20,10 @@ goto done
 
 :help
 echo usage: make.bat [clean ^| --debug]
+goto done
+
+:noponyc
+echo You need "ponyc.exe" (from https://github.com/ponylang/ponyc) in your PATH.
+goto done
 
 :done
