@@ -73,7 +73,7 @@ actor Main
           cmd.append(arg)
         end
         cmd.append("\"")
-        Shell(consume cmd)?
+        Shell(consume cmd, env~exitcode())?
       else
         Shell.from_array(
           ["env"; "PONYPATH="+ponypath].>append(rest), env~exitcode()
