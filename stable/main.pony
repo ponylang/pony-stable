@@ -65,9 +65,9 @@ actor Main
     try
       ifdef windows then
         var cmd: String trn = recover String end
-        cmd.append("cmd /C \"set \"\"PONYPATH=")
+        cmd.append("cmd /C \"set \"PONYPATH=")
         cmd.append(ponypath)
-        cmd.append("\"\" &&")
+        cmd.append("\" &&")
         for arg in rest.values() do
           cmd.append(" ")
           cmd.append(arg)
