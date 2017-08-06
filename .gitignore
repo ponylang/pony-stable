@@ -1,2 +1,3 @@
 .deps
 bin/stable
+bin/stable.*

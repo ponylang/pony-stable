@@ -10,12 +10,26 @@ Put them in a stable and make your life easier.
 
 ## Get stable.
 
+You will need `ponyc` in your PATH.
+
+### For Unix:
+
 ```bash
-git clone https://github.com/jemc/pony-stable
+git clone https://github.com/ponylang/pony-stable
 cd pony-stable
 make
 sudo make install
 ```
+
+### For Windows:
+
+```batchfile
+git clone https://github.com/ponylang/pony-stable
+cd pony-stable
+make.bat
+```
+
+You will then need to add `pony-stable\bin` to your `PATH`.
 
 ## Make a project with dependencies.
 

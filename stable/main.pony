@@ -63,9 +63,22 @@ actor Main
       ""
     end
     try
-      Shell.from_array(
-        ["env"; "PONYPATH="+ponypath].>append(rest), env~exitcode()
-      )?
+      ifdef windows then
+        var cmd: String trn = recover String end
+        cmd.append("cmd /C \"set \"PONYPATH=")
+        cmd.append(ponypath)
+        cmd.append("\" &&")
+        for arg in rest.values() do
+          cmd.append(" ")
+          cmd.append(arg)
+        end
+        cmd.append("\"")
+        Shell(consume cmd, env~exitcode())?
+      else
+        Shell.from_array(
+          ["env"; "PONYPATH="+ponypath].>append(rest), env~exitcode()
+        )?
+      end
     end
 
   fun command("add", rest: Array[String] box) =>

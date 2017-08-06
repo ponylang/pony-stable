@@ -40,10 +40,11 @@ class DepGitHub
   fun url(): String => "https://github.com/" + repo
 
   fun ref fetch()? =>
-    try Shell("test -d "+root_path())?
+    let fpath = FilePath(bundle.path, root_path())?
+    if fpath.exists() then
       Shell("git -C "+root_path()+" pull "+url())?
     else
-      Shell("mkdir -p "+root_path())?
+      fpath.mkdir()
       Shell("git clone "+url()+" "+root_path())?
     end
     _checkout_tag()?
@@ -78,7 +79,13 @@ class DepLocalGit
   fun packages_path(): String => root_path()
 
   fun ref fetch()? =>
-    Shell("git clone "+local_path+" "+root_path())?
+    let fpath = FilePath(bundle.path, root_path())?
+    if fpath.exists() then
+      Shell("git -C "+root_path()+" pull "+local_path)?
+    else
+      fpath.mkdir()
+      Shell("git clone "+local_path+" "+root_path())?
+    end
     _checkout_tag()?
 
   fun _checkout_tag() ? =>
