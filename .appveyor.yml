@@ -1,0 +1,70 @@
+version: "{build}"
+
+image: Visual Studio 2015
+
+branches:
+  only:
+    - master
+    - release
+
+configuration:
+  - release
+
+skip_tags: true
+skip_commits:
+  files:
+    - .gitattributes
+    - .gitignore
+    - .gitmodules
+    - .travis.yml
+    - .travis_install.bash
+    - .travis_script.bash
+    - Dockerfile
+    - LICENSE
+    - Makefile
+    - release.bash
+    - '**/*.md'
+    - '**/*.txt'
+
+clone_folder: C:\projects\pony-stable
+
+install:
+  - ps: |
+      $ErrorActionPreference = "Stop"
+      cd C:\projects\pony-stable
+
+      $package_commit = git rev-parse --short --verify "HEAD^{commit}"
+      $package_version = (Get-Content "VERSION")
+      $package_iteration = "$package_iteration${env:appveyor_build_number}.$package_commit"
+      Update-AppveyorBuild -Version "pony-stable-$package_version-$package_iteration"
+
+      $req = [System.Net.WebRequest]::Create("https://bintray.com/pony-language/ponyc-win/ponyc/_latestVersion")
+      $req.AllowAutoRedirect = $false
+      $req.Proxy = $null
+      $req.Timeout = 500000
+      $req.UserAgent = [Microsoft.PowerShell.Commands.PSUserAgent]::FireFox
+      $res = $req.GetResponse()
+      if ($res.StatusCode -eq "Found")
+      {
+        $latest_url = $res.GetResponseHeader("Location")
+        $latest_ver = $latest_url.Substring($latest_url.LastIndexOf("/") + 1)
+        $download_url = "https://bintray.com/pony-language/ponyc-win/download_file?file_path=" + $latest_ver + "-win64.zip"
+        Invoke-WebRequest -Uri $download_url -OutFile ponyc.zip
+        Expand-Archive "ponyc.zip" -DestinationPath "."
+        Rename-Item ($latest_ver + "-win64") "ponyc"
+      }
+      else
+      {
+        Write-Error "Unable to determine latest Pony version from BinTray redirect!"
+        exit 1
+      }
+
+build_script:
+  - cd C:\projects\pony-stable
+  - set PATH=C:\projects\pony-stable\ponyc\ponyc\bin;%PATH%
+  - make.bat
+  - 7z a -tzip "C:\projects\pony-stable\pony-stable-%appveyor_build_version%-win64.zip" bin
+
+artifacts:
+  - path: 'pony-stable*.zip'
+
