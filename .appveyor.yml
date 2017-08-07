@@ -62,9 +62,8 @@ install:
 build_script:
   - cd C:\projects\pony-stable
   - set PATH=C:\projects\pony-stable\ponyc\ponyc\bin;%PATH%
-  - make.bat
-  - 7z a -tzip "C:\projects\pony-stable\pony-stable-%appveyor_build_version%-win64.zip" bin
+  - make.bat --debug
+  - 7z a -tzip "C:\projects\pony-stable\%appveyor_build_version%-win64.zip" bin
 
 artifacts:
   - path: 'pony-stable*.zip'
-
