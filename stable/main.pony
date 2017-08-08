@@ -1,4 +1,3 @@
-
 use "files"
 
 actor Main
@@ -12,24 +11,27 @@ actor Main
     command(try env.args(1)? else "" end, env.args.slice(2))
 
   fun _print_usage() =>
-    env.out.printv(recover [
-      "Usage: stable COMMAND [...]"
-      ""
-      "    A simple dependency manager for the Pony language."
-      ""
-      "    Invoke in a working directory containing a bundle.json."
-      ""
-      "Commands:"
-      "    help  - Print this message"
-      "    fetch - Fetch/update the deps for this bundle"
-      "    env   - Execute the following shell command inside an environment"
-      "            with PONYPATH set to include deps directories. For example,"
-      "            `stable env ponyc myproject`"
-      "    add   - Add a new dependency. For exemple,"
-      "            `stable add github jemc/pony-inspect"
-    ""] end)
+    env.out.printv(
+      recover
+        [ "Usage: stable COMMAND [...]"
+          ""
+          "    A simple dependency manager for the Pony language."
+          ""
+          "    Invoke in a working directory containing a bundle.json."
+          ""
+          "Commands:"
+          "    help  - Print this message"
+          "    fetch - Fetch/update the deps for this bundle"
+          "    env   - Execute the following shell command inside an environment"
+          "            with PONYPATH set to include deps directories. For example,"
+          "            `stable env ponyc myproject`"
+          "    add   - Add a new dependency. For exemple,"
+          "            `stable add github jemc/pony-inspect"
+          ""
+        ]
+      end)
 
-  fun _load_bundle(create_on_missing: Bool = false): Bundle? =>
+  fun _load_bundle(create_on_missing: Bool = false): Bundle ? =>
     let cwd = Path.cwd()
     var path = cwd
     while path.size() > 0 do
@@ -50,18 +52,20 @@ actor Main
     try _load_bundle()?.fetch() end
 
   fun command("env", rest: Array[String] box) =>
-    let ponypath = try let bundle = _load_bundle()?
-      var ponypath' = recover trn String end
-      let iter = bundle.paths().values()
-      for path in iter do
-        ponypath'.append(path)
-        if iter.has_next() then ponypath'.push(':') end
-      end
+    let ponypath =
+      try
+        let bundle = _load_bundle()?
+        let ponypath' = recover trn String end
+        let iter = bundle.paths().values()
+        for path in iter do
+          ponypath'.append(path)
+          if iter.has_next() then ponypath'.push(':') end
+        end
 
-      ponypath'
-    else
-      ""
-    end
+        ponypath'
+      else
+        ""
+      end
     try
       ifdef windows then
         var cmd: String trn = recover String end
@@ -76,8 +80,7 @@ actor Main
         Shell(consume cmd, env~exitcode())?
       else
         Shell.from_array(
-          ["env"; "PONYPATH="+ponypath].>append(rest), env~exitcode()
-        )?
+          ["env"; "PONYPATH=" + ponypath] .> append(rest), env~exitcode())?
       end
     end
 

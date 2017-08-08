@@ -6,8 +6,9 @@ primitive LogNone is Log
 
 actor LogSimple is Log
   let out: OutStream
-  new create(out': OutStream) => out = out'
 
-  fun tag apply(s: String) => _apply(s)
+  new create(out': OutStream) =>
+    out = out'
 
-  be _apply(s: String) => out.print(s)
+  be apply(s: String) =>
+    out.print(s)
