@@ -1,4 +1,3 @@
-
 use "files"
 use "json"
 
@@ -7,8 +6,13 @@ class Bundle
   let path: FilePath
   let json: JsonDoc = JsonDoc
 
-  new create(path': FilePath, log': Log = LogNone, create_on_missing: Bool = false)? =>
-    path = path'; log = log'
+  new create(
+    path': FilePath,
+    log': Log = LogNone,
+    create_on_missing: Bool = false) ?
+  =>
+    path = path'
+    log = log'
 
     let bundle_path = path.join("bundle.json")?
 
@@ -27,21 +31,26 @@ class Bundle
       try json.parse(content)? else
         (let err_line, let err_message) = json.parse_report()
         log("JSON error at: " + file.path.path + ":" + err_line.string()
-                              + " : " + err_message)
+          + " : " + err_message)
         error
       end
     end
 
   fun deps(): Iterator[DepAny] =>
-    let deps_array = try (json.data as JsonObject box).data("deps")? as JsonArray box
-                     else JsonArray
-                     end
+    let deps_array =
+      try (json.data as JsonObject box).data("deps")? as JsonArray box
+      else JsonArray
+      end
 
     object is Iterator[DepAny]
       let bundle: Bundle box = this
       let inner: Iterator[JsonType box] = deps_array.data.values()
-      fun ref has_next(): Bool => inner.has_next()
-      fun ref next(): DepAny^? => Dep(bundle, inner.next()? as JsonObject box)?
+
+      fun ref has_next(): Bool =>
+        inner.has_next()
+
+      fun ref next(): DepAny^ ? =>
+        Dep(bundle, inner.next()? as JsonObject box)?
     end
 
   fun fetch() =>
@@ -60,14 +69,17 @@ class Bundle
     end
     for dep in deps() do
       // TODO: detect and prevent infinite recursion here.
-      try out.append(Bundle(FilePath(path, dep.packages_path())?, log)?.paths()) end
+      try
+        out.append(Bundle(FilePath(path, dep.packages_path())?, log)?.paths())
+      end
     end
     out
 
-  fun ref add_dep(dep_json: JsonObject ref) ? =>
-    let deps_array = try (json.data as JsonObject).data("deps")? as JsonArray
-                     else JsonArray
-                     end
-    deps_array.data.push(consume dep_json)
+  fun ref add_dep(dep_json: JsonObject) ? =>
+    let deps_array =
+      try (json.data as JsonObject).data("deps")? as JsonArray
+      else JsonArray
+      end
+    deps_array.data.push(dep_json)
     let file = CreateFile(path.join("bundle.json")?) as File
     file.write(json.string("  ", true))
