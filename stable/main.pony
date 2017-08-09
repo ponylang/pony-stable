@@ -57,9 +57,10 @@ actor Main
         let bundle = _load_bundle()?
         let ponypath' = recover trn String end
         let iter = bundle.paths().values()
+        let sep = Path.list_sep()(0)?
         for path in iter do
           ponypath'.append(path)
-          if iter.has_next() then ponypath'.push(':') end
+          if iter.has_next() then ponypath'.push(sep) end
         end
 
         ponypath'
