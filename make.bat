@@ -1,25 +1,36 @@
 @echo off
+
 if "%1"=="--help" goto help
+
+set CONFIG=release
+set DEBUG=
+if "%1"=="config" (
+  if "%2"=="debug" (
+    set CONFIG=debug
+    set DEBUG=--debug
+  )
+)
+set BUILDDIR=build\%CONFIG%
+
 if "%1"=="clean" goto clean
 
 where ponyc > nul
 if errorlevel 1 goto noponyc
 
 :build
-set DEBUG=
-if "%1"=="--debug" set DEBUG="--debug"
-if not exist bin mkdir bin
-echo Compiling stable...
-ponyc stable -o bin %DEBUG%
+if not exist "%BUILDDIR%" mkdir "%BUILDDIR%""
+echo Compiling: ponyc stable -o %BUILDDIR% %DEBUG%
+ponyc stable -o %BUILDDIR% %DEBUG%
 goto done
 
 :clean
-echo Removing ./bin...
-rmdir /s /q bin
+if not exist build goto done
+echo Removing build
+rmdir /s /q build
 goto done
 
 :help
-echo usage: make.bat [clean ^| --debug]
+echo usage: make.bat [clean] [config=release|debug]
 goto done
 
 :noponyc
