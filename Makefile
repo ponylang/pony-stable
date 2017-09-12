@@ -1,27 +1,38 @@
-
 prefix ?= /usr/local
 destdir ?= ${prefix}
-debug ?= no
+config ?= release
 
-ifeq ($(debug),no)
+BUILD_DIR ?= build/$(config)
+SRC_DIR ?= stable
+binary := $(BUILD_DIR)/stable
+
+ifdef config
+  ifeq (,$(filter $(config),debug release))
+    $(error Unknown configuration "$(config)")
+  endif
+endif
+
+ifeq ($(config),release)
 	PONYC = ponyc
 else
 	PONYC = ponyc --debug
 endif
 
-SOURCE_FILES := $(shell find . -name \*.pony)
+SOURCE_FILES := $(shell find $(SRC_DIR) -name \*.pony)
 
-bin/stable: ${SOURCE_FILES}
-	mkdir -p bin
-	${PONYC} stable -o bin
+$(binary): $(SOURCE_FILES) | $(BUILD_DIR)
+	${PONYC} $(SRC_DIR) -o ${BUILD_DIR}
 
-install: bin/stable
+install: $(binary)
 	mkdir -p $(prefix)/bin
 	cp $^ $(prefix)/bin
 
 clean:
-	rm -rf bin
+	rm -rf $(BUILD_DIR)
 
-all: bin/stable
+all: $(binary)
 
-.PHONY: all install
+$(BUILD_DIR):
+	mkdir -p $(BUILD_DIR)
+
+.PHONY: all clean install
