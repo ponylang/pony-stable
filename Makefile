@@ -1,5 +1,6 @@
 
 prefix ?= /usr/local
+destdir ?= ${prefix}
 debug ?= no
 
 ifeq ($(debug),no)
