@@ -67,3 +67,19 @@ build_script:
 
 artifacts:
   - path: 'pony-stable*.zip'
+
+deploy:
+  # On branch `release`, deploy (and publish) artifacts
+  # to the ponyc-win projects on Bintray.
+  - provider: BinTray
+    username: pony-buildbot-2
+    api_key:
+        secure: 4KgdDQLp2kX816XH27d5xdJBPlKGhYXN6ttdHTSt5qe1MVIF+/VResUstg0zuJ6m
+    subject: pony-language
+    repo: pony-stable-win
+    package: ponyc
+    version: $(appveyor_build_version)
+    on:
+        branch: release
+        configuration: release
+    publish: true
