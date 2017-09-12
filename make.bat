@@ -1,6 +1,13 @@
 @echo off
 
 if "%1"=="--help" goto help
+if "%1"=="help" goto help
+
+set GOTOCLEAN=false
+if "%1"=="clean" (
+  set GOTOCLEAN=true
+  shift
+)
 
 set CONFIG=release
 set DEBUG=
@@ -10,9 +17,9 @@ if "%1"=="config" (
     set DEBUG=--debug
   )
 )
-set BUILDDIR=build\%CONFIG%
 
-if "%1"=="clean" goto clean
+set BUILDDIR=build\%CONFIG%
+if "%GOTOCLEAN%"=="true" goto clean
 
 where ponyc > nul
 if errorlevel 1 goto noponyc
@@ -24,9 +31,9 @@ ponyc stable -o %BUILDDIR% %DEBUG%
 goto done
 
 :clean
-if not exist build goto done
-echo Removing build
-rmdir /s /q build
+if not exist "%BUILDDIR%" goto done
+echo Removing "%BUILDDIR%"
+rmdir /s /q "%BUILDDIR%"
 goto done
 
 :help
