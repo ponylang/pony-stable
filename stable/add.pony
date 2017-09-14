@@ -2,7 +2,7 @@ use "json"
 use options = "options"
 
 primitive Add
-  fun apply(args: Array[String] box): JsonObject ? =>
+  fun apply(args: Array[String] box, log: Log): JsonObject ? =>
     let kind = args(0)?
     let rest = args.slice(1)
     let prim =
@@ -10,7 +10,9 @@ primitive Add
       | "github" => AddGithub
       | "local-git" => AddLocalGit
       | "local" => AddLocal
-      else error
+      else
+        log("Couldn't find command '" + kind + "'. Available commands are github, local-git, and local")
+        error
       end
     let info: JsonObject ref = JsonObject
     info.data("type") = kind.clone()

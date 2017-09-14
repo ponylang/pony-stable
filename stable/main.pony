@@ -88,7 +88,7 @@ actor Main
   fun command("add", rest: Array[String] box) =>
     try
       let bundle = _load_bundle(true)?
-      let added_json = Add(rest)?
+      let added_json = Add(rest, log)?
       bundle.add_dep(added_json)?
       bundle.fetch()
     end
