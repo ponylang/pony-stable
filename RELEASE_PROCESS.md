@@ -1,4 +1,4 @@
-# How to cut a pony-stable elease
+# How to cut a pony-stable release
 
 This document is aimed at members of the Pony team who might be cutting a release of pony-stable. It serves as a checklist that can take you through doing a release step-by-step.
 
