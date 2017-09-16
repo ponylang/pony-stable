@@ -11,7 +11,8 @@ primitive Add
       | "local-git" => AddLocalGit
       | "local" => AddLocal
       else
-        log("Couldn't find command '" + kind + "'. Available commands are github, local-git, and local")
+        log("Couldn't find type '" + kind + "'.")
+        log("Available types are github, local-git, and local.")
         error
       end
     let info: JsonObject ref = JsonObject
