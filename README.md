@@ -8,11 +8,54 @@ Put them in a stable and make your life easier.
 
 <a href="https://openclipart.org/detail/11509/rpg-map-symbols-stables"><img src="https://openclipart.org/download/11509/nicubunu-RPG-map-symbols-Stables.svg" width="400px" /></a>
 
-## Get stable.
+## Installation
+
+### Apt-get
+
+```bash
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys "D401AB61 DBE1D0A2"
+echo "deb https://dl.bintray.com/pony-language/pony-stable-debian /" | sudo tee -a /etc/apt/sources.list
+sudo apt-get update
+sudo apt-get -V install pony-stable
+```
+
+### macOS
+
+```bash
+brew install pony-stable
+```
+
+### RPM
+
+DNF:
+
+```bash
+wget https://bintray.com/pony-language/pony-stable-rpm/rpm -O bintray-pony-language-pony-stable-rpm.repo
+sudo mv bintray-pony-language-pony-stable-rpm.repo /etc/yum.repos.d/
+sudo dnf --refresh install pony-stable
+```
+
+Yum:
+
+```bash
+wget https://bintray.com/pony-language/pony-stable-rpm/rpm -O bintray-pony-language-pony-stable-rpm.repo
+sudo mv bintray-pony-language-pony-stable-rpm.repo /etc/yum.repos.d/
+sudo yum install pony-stable
+```
+
+Zypper:
+
+```bash
+wget https://bintray.com/pony-language/pony-stable-rpm/rpm -O bintray-pony-language-pony-stable-rpm.repo
+sudo mv bintray-pony-language-pony-stable-rpm.repo /etc/zypp/repos.d/
+sudo zypper install pony-stable
+```
+
+### From Source
 
 You will need `ponyc` in your PATH.
 
-### For Unix:
+#### From Source (Unix):
 
 ```bash
 git clone https://github.com/ponylang/pony-stable
@@ -21,7 +64,7 @@ make
 sudo make install
 ```
 
-### For Windows:
+#### From Source (Windows):
 
 ```batchfile
 git clone https://github.com/ponylang/pony-stable
