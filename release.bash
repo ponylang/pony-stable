@@ -75,8 +75,8 @@ git merge "release-$version" -m "Release $version"
 git tag "$version"
 
 # push to release branch
-#git push origin release
-#git push origin "$version"
+git push origin release
+git push origin "$version"
 
 # update CHANGELOG for new entries
 git checkout master
@@ -91,4 +91,4 @@ git add CHANGELOG.md
 git commit -m "Add unreleased section to CHANGELOG post $version release prep
 
 [skip ci]"
-#git push origin master
+git push origin master
