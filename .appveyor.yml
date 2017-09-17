@@ -82,7 +82,7 @@ deploy:
         secure: 4KgdDQLp2kX816XH27d5xdJBPlKGhYXN6ttdHTSt5qe1MVIF+/VResUstg0zuJ6m
     subject: pony-language
     repo: pony-stable-win
-    package: ponyc
+    package: pony-stable
     version: $(appveyor_build_version)
     on:
         branch: release
