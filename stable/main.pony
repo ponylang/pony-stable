@@ -20,13 +20,14 @@ actor Main
           "    Invoke in a working directory containing a bundle.json."
           ""
           "Commands:"
-          "    help  - Print this message"
-          "    fetch - Fetch/update the deps for this bundle"
-          "    env   - Execute the following shell command inside an environment"
-          "            with PONYPATH set to include deps directories. For example,"
-          "            `stable env ponyc myproject`"
-          "    add   - Add a new dependency. For exemple,"
-          "            `stable add github jemc/pony-inspect"
+          "    help    - Print this message"
+          "    version - Print version information"
+          "    fetch   - Fetch/update the deps for this bundle"
+          "    env     - Execute the following shell command inside an environment"
+          "              with PONYPATH set to include deps directories. For example,"
+          "              `stable env ponyc myproject`"
+          "    add     - Add a new dependency. For exemple,"
+          "              `stable add github jemc/pony-inspect"
           ""
         ]
       end)
@@ -92,6 +93,9 @@ actor Main
       bundle.add_dep(added_json)?
       bundle.fetch()
     end
+
+  fun command("version", rest: Array[String] box) =>
+    env.out.print(Version())
 
   fun command(s: String, rest: Array[String] box) =>
     _print_usage()
