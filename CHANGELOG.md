@@ -9,6 +9,7 @@ All notable changes to the Pony compiler and standard library will be documented
 
 ### Added
 
+- Add `version` command line option ([PR #44](https://github.com/ponylang/pony-stable/pull/44))
 
 ### Changed
 
