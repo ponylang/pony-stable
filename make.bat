@@ -27,6 +27,16 @@ if errorlevel 1 goto noponyc
 :build
 if not exist "%BUILDDIR%" mkdir "%BUILDDIR%""
 echo Compiling: ponyc stable -o %BUILDDIR% %DEBUG%
+set /p VERSION=<VERSION
+if exist ".git" for /f %%i in ('git rev-parse --short HEAD') do set "VERSION=%VERSION%-%%i [%CONFIG%]"
+if not exist ".git" set "VERSION=%VERSION% [%CONFIG%]"
+setlocal enableextensions disabledelayedexpansion
+for /f "delims=" %%i in ('type stable\version.pony.in ^& break ^> stable\version.pony') do (
+  set "line=%%i"
+  setlocal enabledelayedexpansion
+  >>stable\version.pony echo(!line:%%%%VERSION%%%%=%VERSION%!
+  endlocal
+)
 ponyc stable -o %BUILDDIR% %DEBUG%
 goto done
 
