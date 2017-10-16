@@ -6,6 +6,7 @@ All notable changes to the Pony compiler and standard library will be documented
 
 ### Fixed
 
+- Fix possible illegal instruction core dump when using prebuilt ponyc binaries ([PR #45](https://github.com/ponylang/pony-stable/pull/45))
 
 ### Added
 
