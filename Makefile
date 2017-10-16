@@ -1,6 +1,7 @@
 prefix ?= /usr/local
 destdir ?= ${prefix}
 config ?= release
+arch ?=
 
 BUILD_DIR ?= build/$(config)
 SRC_DIR ?= stable
@@ -18,6 +19,10 @@ else
 	PONYC = ponyc --debug
 endif
 
+ifneq ($(arch),)
+  arch_arg := --cpu $(arch)
+endif
+
 ifneq ($(wildcard .git),)
   tag := $(shell cat VERSION)-$(shell git rev-parse --short HEAD)
 else
@@ -33,7 +38,7 @@ GEN_FILES = $(patsubst %.pony.in, %.pony, $(GEN_FILES_IN))
 	sed s/%%VERSION%%/$(VERSION)/ $< > $@
 
 $(binary): $(GEN_FILES) $(SOURCE_FILES) | $(BUILD_DIR)
-	${PONYC} $(SRC_DIR) -o ${BUILD_DIR}
+	${PONYC} $(arch_arg) $(SRC_DIR) -o ${BUILD_DIR}
 
 install: $(binary)
 	mkdir -p $(prefix)/bin
