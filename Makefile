@@ -1,6 +1,7 @@
 prefix ?= /usr/local
 destdir ?= ${prefix}
 config ?= release
+arch ?=
 
 BUILD_DIR ?= build/$(config)
 SRC_DIR ?= stable
@@ -18,10 +19,26 @@ else
 	PONYC = ponyc --debug
 endif
 
-SOURCE_FILES := $(shell find $(SRC_DIR) -name \*.pony)
+ifneq ($(arch),)
+  arch_arg := --cpu $(arch)
+endif
 
-$(binary): $(SOURCE_FILES) | $(BUILD_DIR)
-	${PONYC} $(SRC_DIR) -o ${BUILD_DIR}
+ifneq ($(wildcard .git),)
+  tag := $(shell cat VERSION)-$(shell git rev-parse --short HEAD)
+else
+  tag := $(shell cat VERSION)
+endif
+
+SOURCE_FILES := $(shell find $(SRC_DIR) -name \*.pony)
+VERSION := "$(tag) [$(config)]"
+GEN_FILES_IN := $(shell find $(SRC_DIR) -name \*.pony.in)
+GEN_FILES = $(patsubst %.pony.in, %.pony, $(GEN_FILES_IN))
+
+%.pony: %.pony.in
+	sed s/%%VERSION%%/$(VERSION)/ $< > $@
+
+$(binary): $(GEN_FILES) $(SOURCE_FILES) | $(BUILD_DIR)
+	${PONYC} $(arch_arg) $(SRC_DIR) -o ${BUILD_DIR}
 
 install: $(binary)
 	mkdir -p $(prefix)/bin
@@ -36,12 +53,6 @@ all: $(binary)
 
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
-
-ifneq ($(wildcard .git),)
-  tag := $(shell cat VERSION)-$(shell git rev-parse --short HEAD)
-else
-  tag := $(shell cat VERSION)
-endif
 
 # package_name, _version, and _iteration can be overridden by Travis or AppVeyor
 package_base_version ?= $(tag)
