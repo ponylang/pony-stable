@@ -63,11 +63,10 @@ all: test $(binary)
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
 
-# package_name, _version, and _iteration can be overridden by Travis or AppVeyor
+# package_name and _version can be overridden by Travis or AppVeyor
 package_base_version ?= $(tag)
-package_iteration ?= "1"
 package_name ?= "pony-stable"
-package_version = $(package_base_version)-$(package_iteration)
+package_version = $(package_base_version)
 archive = $(package_name)-$(package_version).tar
 package = build/$(package_name)-$(package_version)
 
@@ -85,8 +84,8 @@ deploy: all
 	$(SILENT)cp $(BUILD_DIR)/stable $(package)/usr/lib/pony-stable/$(package_version)/bin
 
 	$(SILENT)ln -f -s /usr/lib/pony-stable/$(package_version)/bin/stable $(package)/usr/bin/stable
-	$(SILENT)fpm -s dir -t deb -C $(package) -p build/bin --name $(package_name) --version $(package_base_version) --iteration "$(package_iteration)" --description "Pony dependency manager" --provides "pony-stable"
-	$(SILENT)fpm -s dir -t rpm -C $(package) -p build/bin --name $(package_name) --version $(package_base_version) --iteration "$(package_iteration)" --description "Pony dependency manager" --provides "pony-stable"
+	$(SILENT)fpm -s dir -t deb -C $(package) -p build/bin --name $(package_name) --version $(package_base_version) --description "Pony dependency manager" --provides "pony-stable"
+	$(SILENT)fpm -s dir -t rpm -C $(package) -p build/bin --name $(package_name) --version $(package_base_version) --description "Pony dependency manager" --provides "pony-stable"
 	$(SILENT)git archive HEAD > build/bin/$(archive)
 	$(SILENT)bzip2 build/bin/$(archive)
 	$(SILENT)rm -rf $(package) build/bin/$(archive)
