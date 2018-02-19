@@ -49,10 +49,10 @@ actor Main
       error
     end
 
-  fun command("fetch", _) =>
+  fun command_fetch() =>
     try _load_bundle()?.fetch() end
 
-  fun command("env", rest: Array[String] box) =>
+  fun command_env(rest: Array[String] box) =>
     let ponypath =
       try
         let bundle = _load_bundle()?
@@ -86,7 +86,7 @@ actor Main
       end
     end
 
-  fun command("add", rest: Array[String] box) =>
+  fun command_add(rest: Array[String] box) =>
     try
       let bundle = _load_bundle(true)?
       let added_json = Add(rest, log)?
@@ -94,8 +94,19 @@ actor Main
       bundle.fetch()
     end
 
-  fun command("version", rest: Array[String] box) =>
+  fun command_version(rest: Array[String] box) =>
     env.out.print(Version())
 
   fun command(s: String, rest: Array[String] box) =>
-    _print_usage()
+    match s
+    | "fetch" =>
+      command_fetch()
+    | "env" =>
+      command_env(rest)
+    | "add" =>
+      command_add(rest)
+    | "version" =>
+      command_version(rest)
+    else
+      _print_usage()
+    end
