@@ -51,6 +51,12 @@ sudo mv bintray-pony-language-pony-stable-rpm.repo /etc/zypp/repos.d/
 sudo zypper install pony-stable
 ```
 
+### Arch-Linux (AUR)
+
+```bash
+pacaur -S pony-stable-git
+```
+
 ### From Source
 
 You will need `ponyc` in your PATH.
