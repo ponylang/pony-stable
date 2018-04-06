@@ -1,7 +1,7 @@
 use @system[I32](command: Pointer[U8] tag)
 
-interface _ExitCodeFn
-  fun ref apply(code: I32)
+interface val _ExitCodeFn
+  fun apply(code: I32)
 
 // TODO: Remove Shell hack in favor of cap-based implementations of actions.
 primitive Shell
