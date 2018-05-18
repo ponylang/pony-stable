@@ -51,7 +51,7 @@ class DepGitHub
   fun ref fetch() ? =>
     let fpath = FilePath(bundle.path, root_path())?
     if fpath.exists() then
-      Shell("git -C " + root_path() + " pull " + url())?
+      Shell("git -C " + root_path() + " fetch")?
     else
       fpath.mkdir()
       Shell("git clone " + url() + " " + root_path())?
@@ -107,7 +107,7 @@ class DepLocal
   let bundle: Bundle box
   let info: JsonObject box
   let local_path: String
-  
+
   new create(b: Bundle box, i: JsonObject box) ? =>
     bundle = b
     info = i
@@ -131,5 +131,5 @@ primitive _CheckoutTag
   fun apply(root_path: String, git_tag: (String | None)) ? =>
     match git_tag
     | let str: String =>
-      Shell("cd " + root_path + " && git checkout " + str)? 
+      Shell("cd " + root_path + " && git checkout " + str)?
     end

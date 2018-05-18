@@ -6,6 +6,7 @@ All notable changes to the Pony compiler and standard library will be documented
 
 ### Fixed
 
+- Fixed issue with the way the `.deps` directory is updated to avoid problems with non-master versions
 
 ### Added
 
@@ -32,4 +33,3 @@ All notable changes to the Pony compiler and standard library will be documented
 ### Added
 
 - Display an error message when add subcommand cannot be found ([PR #39](https://github.com/ponylang/pony-stable/pull/39))
-
