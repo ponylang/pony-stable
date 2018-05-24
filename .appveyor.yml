@@ -4,11 +4,9 @@ image: Visual Studio 2015
 
 branches:
   only:
-    - master
     - release
 
 configuration:
-  - debug
   - release
 
 skip_tags: true
