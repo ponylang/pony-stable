@@ -1,0 +1,36 @@
+version: 2
+jobs:
+  vs-ponyc-release:
+    docker:
+      - image: ponylang/ponyc:release
+    steps:
+      - checkout
+      - run: make test
+  vs-ponyc-master:
+    docker:
+      - image: ponylang/ponyc:latest
+    steps:
+      - checkout
+      - run: make test
+  verify-changelog:
+    docker:
+      - image: ponylang/changelog-tool:release
+    steps:
+      - checkout
+      - run: changelog-tool verify CHANGELOG.md
+
+workflows:
+  version: 2
+  commit:
+    jobs:
+      - verify-changelog
+      - vs-ponyc-release
+  nightly:
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only: master
+    jobs:
+      - vs-ponyc-master

@@ -30,6 +30,7 @@ deploy:
   - provider: bintray
     user: pony-buildbot-2
     file: /home/travis/build/ponylang/pony-stable/bintray_debian.json
+    skip_cleanup: true
     on:
       branch: release
     key:
@@ -38,6 +39,7 @@ deploy:
   - provider: bintray
     user: pony-buildbot-2
     file: /home/travis/build/ponylang/pony-stable/bintray_rpm.json
+    skip_cleanup: true
     on:
       branch: release
     key:

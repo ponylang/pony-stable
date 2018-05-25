@@ -4,11 +4,9 @@ image: Visual Studio 2015
 
 branches:
   only:
-    - master
     - release
 
 configuration:
-  - debug
   - release
 
 skip_tags: true
@@ -53,6 +51,7 @@ install:
       {
         $latest_url = $res.GetResponseHeader("Location")
         $latest_ver = $latest_url.Substring($latest_url.LastIndexOf("/") + 1)
+        $latest_ver = $latest_ver.Substring(0, $latest_ver.LastIndexOf("-"))
         $download_url = "https://bintray.com/pony-language/ponyc-win/download_file?file_path=" + $latest_ver + "-win64.zip"
         Invoke-WebRequest -Uri $download_url -OutFile ponyc.zip
         Expand-Archive "ponyc.zip" -DestinationPath "."
