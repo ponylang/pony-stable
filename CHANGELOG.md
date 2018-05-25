@@ -6,6 +6,7 @@ All notable changes to the Pony compiler and standard library will be documented
 
 ### Fixed
 
+- Update usage of Env.exitcode to be compatible with ponyc 0.22.x ([PR #56](https://github.com/ponylang/pony-stable/pull/56))
 - Fixed issue with the way the `.deps` directory is updated to avoid problems with non-master versions
 
 ### Added
