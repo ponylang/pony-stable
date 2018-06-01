@@ -1,0 +1,16 @@
+Source: pony-stable
+Maintainer: Pony Core Team <buildbot@pony.groups.io>
+Build-Depends: debhelper (>= 9.0.0), ponyc
+Priority: optional
+Standards-Version: 3.9.7
+Section: devel
+
+Package: pony-stable
+Priority: optional
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: pony language dependency manager
+  Dependency manager for the pony programming language.
+  https://github.com/ponylang/pony-stable
+  Pony is an open-source, actor-model, capabilities-secure, high performance programming language
+  http://www.ponylang.org

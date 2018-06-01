@@ -41,8 +41,8 @@ $(binary): $(GEN_FILES) $(SOURCE_FILES) | $(BUILD_DIR)
 	${PONYC} $(arch_arg) $(SRC_DIR) -o ${BUILD_DIR}
 
 install: $(binary)
-	mkdir -p $(prefix)/bin
-	cp $^ $(prefix)/bin
+	mkdir -p $(DESTDIR)$(prefix)/bin
+	cp $^ $(DESTDIR)$(prefix)/bin
 
 test: $(binary)
 
