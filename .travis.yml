@@ -10,6 +10,14 @@ branches:
 
 sudo: required
 
+# NOTE: This holds fedora COPR API related variables. Unfortunately, the values expire every 180 days.
+# As a result, we have to remember to visit https://copr.fedorainfracloud.org/api/ and generate a new token
+# and then run the following to update variables and replace the "secure" value.
+# travis encrypt COPR_LOGIN=VALUE COPR_TOKEN=VALUE --org -r ponylang/pony-stable
+env:
+  global:
+    secure: "tJ3Q2y22jftE5nsEJJUx/XzvdsoSM8v2Lsw/4EtpTDGhX751n5NlUwlnCkJaoStfivksBh83WEvIypU3a/BKzror3KV1WpcSdHHJiJ8/eQxHBD9+Gx59yHSTxwDr6XdHA6pCmbtX4KxJiFUKYtvPnync9ZDHmH7e3ocmmmyqVnEM0I+N8M4cRD7Fv0Gsj2DQEWBOj8fRK/EIUoAi/+roay20K251rkD9EycclQmUfh76n7AQwlHXkk86z1pdNvI91JcY8wWx/U7KPeKpVX+HE98CBX6UdYkwMYYMzZj+KtMpXzekuSgRmt7FvQrtc1zo9DkPBjHx0IViMkfGXrJVgBODP4T7XlZxGoIMSx2FReaAh/VBuQrguu4rNYz9NzTejwd730vySKz0ZOv6pvRJr8lNIbmFF82oEDVWRvwFr5Z5Wl/a2pFCVdjnTIXZKhJD3yysWnbVsIMlFW1zTMpT2L7B+bfG0+EsCsSYXCpA3jL+2oJafR9DRMhDV1kIr+hFH0TF58Pe2wadPcLn6lnCIfvctbPknmuYe0nk+B8hcVHSqmkAhZmIUK4I8u7b/cWeOBHnWjwP1CFdVz2eXgf1A4tZP1VOt3VLohpOCzFk64CT7dwah0acuuOWUnGVzkQTpy25khM0fr+v6jL8xkUHgoBvt7g5KG5ifdie1HHxcWw="
+
 matrix:
   include:
     - os: linux

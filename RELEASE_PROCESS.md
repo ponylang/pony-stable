@@ -78,9 +78,7 @@ During the time since you push to the release branch, Travis CI and Appveyor hav
 
 The pattern for releases is similar as what we previously saw. In the case of RPM and Deb, the versions look something like:
 
-`0.3.1-1885.8a8ee28`
-
-where the `1885` is the Travis build number and the `8a8ee28` is the abbreviated SHA for the commit we built from.
+`0.3.1`
 
 For windows, the versions look something like:
 
@@ -127,6 +125,14 @@ If this is an "emergency release" that is designed to get a high priority bug fi
 Once Travis, Appveyor and Homebrew are all finished, send an email to the [pony user](https://pony.groups.io/g/user) mailing list letting everyone know that the release is out and include a link the release blog post.
 
 If this is an "emergency release" that is designed to get a high priority bug fix out, be sure to note that everyone is advised to update ASAP. If the high priority bug only affects certain platforms, adjust the "update ASAP" note accordingly.
+
+### Add to "Last Week in Pony"
+
+Last Week in Pony is our weekly newsletter. Add information about the release, including a link to the release notes, to the [current Last Week in Pony](https://github.com/ponylang/ponylang.github.io/issues?q=is%3Aissue+is%3Aopen+label%3Alast-week-in-pony).
+
+### Post release notes to /r/ponylang
+
+Release notes should be posted to [/r/ponylang](https://www.reddit.com/r/ponylang/).
 
 ### Close the GitHub issue
 
