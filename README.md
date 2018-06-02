@@ -10,7 +10,23 @@ Put them in a stable and make your life easier.
 
 ## Installation
 
-### Apt-get
+### Ubuntu Linux using a DEB package (via Launchpad PPA)
+
+For Ubuntu Linux (Trusty, Xenial, Artful, Bionic, Cosmic), the `release` builds are packaged and available on Launchpad PPA ([ponylang/ponylang](https://launchpad.net/~ponylang/+archive/ubuntu/ponylang)).
+
+To install builds via Apt:
+
+```bash
+add-apt-repository ppa:ponylang/ponylang
+apt-get update
+apt-get install pony-stable
+```
+
+### Debian Linux using a DEB package (via Bintray)
+
+For Debian Linux, the `release` builds are packaged and available on Bintray ([pony-language/ponyc-debian](https://bintray.com/pony-language/ponyc-debian)).
+
+To install builds via Apt (and install Bintray's public key):
 
 ```bash
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys "D401AB61 DBE1D0A2"
@@ -25,30 +41,42 @@ sudo apt-get -V install pony-stable
 brew install pony-stable
 ```
 
-### RPM
+### Linux using an RPM package (via COPR)
 
-DNF:
+For Red Hat, CentOS, Oracle Linux, Fedora Linux, or OpenSuSE, the `release` builds are packaged and available on COPR ([ponylang/ponylang](https://copr.fedorainfracloud.org/coprs/ponylang/ponylang/)).
+
+#### Using `yum` for Red Hat, CentOS, Oracle Linux and other RHEL compatible systems:
 
 ```bash
-wget https://bintray.com/pony-language/pony-stable-rpm/rpm -O bintray-pony-language-pony-stable-rpm.repo
-sudo mv bintray-pony-language-pony-stable-rpm.repo /etc/yum.repos.d/
-sudo dnf --refresh install pony-stable
+yum copr enable ponylang/ponylang epel-7
+yum install pony-stable
 ```
 
-Yum:
+See https://bugzilla.redhat.com/show_bug.cgi?id=1581675 for why `epel-7` is required on the command line.
+
+#### Using `DNF` for Fedora Linux:
 
 ```bash
-wget https://bintray.com/pony-language/pony-stable-rpm/rpm -O bintray-pony-language-pony-stable-rpm.repo
-sudo mv bintray-pony-language-pony-stable-rpm.repo /etc/yum.repos.d/
-sudo yum install pony-stable
+dnf copr enable ponylang/ponylang
+dnf install pony-stable
 ```
 
-Zypper:
+#### Using Zypper for OpenSuSE Leap 15:
 
 ```bash
-wget https://bintray.com/pony-language/pony-stable-rpm/rpm -O bintray-pony-language-pony-stable-rpm.repo
-sudo mv bintray-pony-language-pony-stable-rpm.repo /etc/zypp/repos.d/
-sudo zypper install pony-stable
+zypper addrepo --refresh --repo https://copr.fedorainfracloud.org/coprs/ponylang/ponylang/repo/opensuse-leap-15.0/ponylang-ponylang-opensuse-leap-15.0.repo
+wget https://copr-be.cloud.fedoraproject.org/results/ponylang/ponylang/pubkey.gpg
+rpm --import pubkey.gpg
+zypper install pony-stable
+```
+
+#### Using Zypper for OpenSuSE Tumbleweed:
+
+```bash
+zypper addrepo --refresh --repo https://copr.fedorainfracloud.org/coprs/ponylang/ponylang/repo/opensuse-tumbleweed/ponylang-ponylang-opensuse-tumbleweed.repo
+wget https://copr-be.cloud.fedoraproject.org/results/ponylang/ponylang/pubkey.gpg
+rpm --import pubkey.gpg
+zypper install pony-stable
 ```
 
 ### Arch-Linux (AUR)

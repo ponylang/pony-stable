@@ -8,6 +8,8 @@ In order to do a release, you absolutely must have:
 
 * Commit access to the `pony-stable` repo
 * The latest release of the [changelog tool](https://github.com/ponylang/changelog-tool/releases) installed
+* Access to the ponylang twitter account
+* An account on reddit for posting release notes
 
 While not strictly required, you life will be made much easier if you:
 
@@ -72,11 +74,10 @@ Leave a comment on the GitHub issue for this release letting everyone know that 
 
 During the time since you push to the release branch, Travis CI and Appveyor have been busy building release artifacts. This can take up to a couple hours depending on how busy they are. Periodically check bintray to see if the releases are there yet.
 
-* [RPM](https://bintray.com/pony-language/pony-stable-rpm/pony-stable)
 * [Debian](https://bintray.com/pony-language/pony-stable-debian/pony-stable)
 * [Windows](https://bintray.com/pony-language/pony-stable-win/pony-stable)
 
-The pattern for releases is similar as what we previously saw. In the case of RPM and Deb, the versions look something like:
+The pattern for releases is similar as what we previously saw. In the case of Deb, the version looks something like:
 
 `0.3.1`
 
@@ -85,6 +86,21 @@ For windows, the versions look something like:
 `pony-stable-release-0.3.1-1526.8a8ee28`
 
 where the `1526` is the AppVeyor build number and the `8a8ee28` is the abbreviated SHA for the commit we built from.
+
+### Wait on COPR/PPA
+
+The Travis CI build for the release branch kicks off packaging builds on Fedora COPR and Ubuntu Launchpad PPA. These packaging builds can take some time but are usually quick. Periodically check to see if the releases are finished and published on these site:
+
+* [Fedora COPR](https://copr.fedorainfracloud.org/coprs/ponylang/ponylang/builds/)
+* [Ubuntu Launchpad PPA](https://launchpad.net/~ponylang/+archive/ubuntu/ponylang/+packages)
+
+The pattern for packaging release builds is similar as what we previously saw. In the case of Fedora COPR, the version looks something like:
+
+`0.3.1-1.fc27`
+
+The pattern for packaging release builds is similar as what we previously saw. In the case of Ubuntu Launchpad PPA, the versions looks something like:
+
+`pony-stable - 0.3.1-0ppa1~<UBUNTU DISTRIBUTION NAME>`
 
 ### Wait on Homebrew
 
@@ -114,6 +130,10 @@ Additionally, any breaking changes that require end users to change their code s
 
 To distinguish this pony-stable release from a ponyc release, be sure to title the post: "Pony-stable 0.3.1 Released".
 
+### Merge the release blog post PR for the ponylang website
+
+Once all the release steps have been confirmed as successful, merge the PR you created earlier for ponylang.github.io for the blog post announcing the release. Confirm it is successfully published to the [blog](https://www.ponylang.org/blog/).
+
 ### Inform #ponylang
 
 Once Travis, Appveyor and Homebrew are all finished, drop a note in the #ponylang IRC channel (on freenode) letting everyone know that the release is out and include a link the release blog post.
@@ -133,6 +153,10 @@ Last Week in Pony is our weekly newsletter. Add information about the release, i
 ### Post release notes to /r/ponylang
 
 Release notes should be posted to [/r/ponylang](https://www.reddit.com/r/ponylang/).
+
+### Post release to ponylang twitter
+
+The release should be announced on the [ponylang twitter](https://www.twitter.com/ponylang).
 
 ### Close the GitHub issue
 
