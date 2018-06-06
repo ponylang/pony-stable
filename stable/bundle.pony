@@ -34,6 +34,12 @@ class Bundle
           + " : " + err_message)
         error
       end
+
+      // ensure there's a "deps" array, dependencies aren't checked yet
+      try (json.data as JsonObject box).data("deps")? as JsonArray box else
+        log("JSON error at: " + file.path.path + ": missing \"deps\" array")
+        error
+      end
     end
 
   fun deps(): Iterator[DepAny] =>
