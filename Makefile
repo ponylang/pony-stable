@@ -6,6 +6,7 @@ arch ?=
 BUILD_DIR ?= build/$(config)
 SRC_DIR ?= stable
 binary := $(BUILD_DIR)/stable
+tests_binary := $(BUILD_DIR)/test
 
 ifdef config
   ifeq (,$(filter $(config),debug release))
@@ -44,7 +45,11 @@ install: $(binary)
 	mkdir -p $(DESTDIR)$(prefix)/bin
 	cp $^ $(DESTDIR)$(prefix)/bin
 
-test: $(binary)
+$(tests_binary): $(GEN_FILES) $(SOURCE_FILES) | $(BUILD_DIR)
+	${PONYC} $(arch_arg) --debug  -o ${BUILD_DIR} $(SRC_DIR)/test
+
+test: $(tests_binary)
+	$^
 
 clean:
 	rm -rf $(BUILD_DIR)
