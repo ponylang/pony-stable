@@ -90,4 +90,4 @@ endef
 
 $(eval $(call EXPAND_DEPLOY))
 
-.PHONY: all clean deploy install
+.PHONY: all clean deploy install test
