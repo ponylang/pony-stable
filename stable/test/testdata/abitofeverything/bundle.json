@@ -1,0 +1,5 @@
+{"deps":[
+  {"repo":"foo/bar","type":"github"},
+  {"local-path":"../foo","type":"local-git"},
+  {"local-path":"../bar","type":"local"}
+]}
