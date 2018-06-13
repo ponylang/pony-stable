@@ -34,7 +34,7 @@ actor Main
 
   fun _load_bundle(create_on_missing: Bool = false): Bundle ? =>
     let cwd = Path.cwd()
-    match BundleLocator(env, cwd)
+    match _BundleLocator(env, cwd)
     | None =>
         log("No bundle.json in current working directory or ancestors.")
         error
