@@ -15,7 +15,7 @@ class TestUsage is UnitTest
         "version\\s+- Print version information"
         "fetch\\s+- Fetch/update the deps for this bundle"
         "env\\s+- Execute the following shell command inside an environment"
-        "add\\s+- Add a new dependency. For exemple,"
+        "add\\s+- Add a new dependency. For example,"
       ],
       None, // stderr
       0)
