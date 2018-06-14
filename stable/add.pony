@@ -7,12 +7,13 @@ primitive Add
     let rest = args.slice(1)
     let prim =
       match kind
-      | "github" => AddGithub
+      | "github" => AddGitHosted
+      | "gitlab" => AddGitHosted
       | "local-git" => AddLocalGit
       | "local" => AddLocal
       else
         log("Couldn't find type '" + kind + "'.")
-        log("Available types are github, local-git, and local.")
+        log("Available types are github, gitlab, local-git, and local.")
         error
       end
     let info: JsonObject ref = JsonObject
@@ -21,7 +22,7 @@ primitive Add
 
     info
 
-primitive AddGithub
+primitive AddGitHosted
   fun apply(args: Array[String] box, info: JsonObject) ? =>
     info.data("repo") = args(0)?
 
