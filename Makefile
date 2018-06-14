@@ -48,8 +48,11 @@ install: $(binary)
 $(tests_binary): $(GEN_FILES) $(SOURCE_FILES) | $(BUILD_DIR)
 	${PONYC} $(arch_arg) --debug  -o ${BUILD_DIR} $(SRC_DIR)/test
 
+integration: $(binary) $(tests_binary)
+	$(tests_binary) --only=integration
+
 test: $(tests_binary)
-	$^
+	$^ --exclude=integration
 
 clean:
 	rm -rf $(BUILD_DIR)
@@ -90,4 +93,4 @@ endef
 
 $(eval $(call EXPAND_DEPLOY))
 
-.PHONY: all clean deploy install test
+.PHONY: all clean deploy install test integration
