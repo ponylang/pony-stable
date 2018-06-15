@@ -26,7 +26,10 @@ class _ExpectClient is ProcessNotify
   let _out: Array[String] val
   let _err: Array[String] val
   let _code: I32
-  var _status: Bool
+
+  var _status: Bool = true
+  var _stdout: String = ""
+  var _stderr: String = ""
 
   new iso create(
     h: TestHelper,
@@ -46,15 +49,12 @@ class _ExpectClient is ProcessNotify
       | let a: Array[String] val => a
       end
     _code = code'
-    _status = true
 
   fun ref stdout(process: ProcessMonitor ref, data: Array[U8] iso) =>
-    let out = String.from_array(consume data)
-    _match_expectations("stdout", _out, out)
+    _stdout = _stdout.add(String.from_array(consume data))
 
   fun ref stderr(process: ProcessMonitor ref, data: Array[U8] iso) =>
-    let out = String.from_array(consume data)
-    _match_expectations("stderr", _err, out)
+    _stderr = _stderr.add(String.from_array(consume data))
 
   fun ref failed(process: ProcessMonitor ref, err: ProcessError) =>
     _h.fail("ProcessError")
@@ -63,6 +63,8 @@ class _ExpectClient is ProcessNotify
   fun ref dispose(process: ProcessMonitor ref, child_exit_code: I32) =>
     let code: I32 = consume child_exit_code
     _status = _status and _h.assert_eq[I32](_code, code)
+    _match_expectations("stdout", _out, _stdout)
+    _match_expectations("stderr", _err, _stderr)
     _h.complete(_status)
 
   fun ref _match_expectations(
