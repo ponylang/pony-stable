@@ -54,7 +54,7 @@ class _ExpectClient is ProcessNotify
         let r = Regex(exp)?
         _status = _status and _h.assert_no_error({ ()? => r(out)? }, "match RE "+exp)
       else
-        _h.fail("stdout matching failed")
+        _h.fail("stdout regexp failed to compile")
         _status = false
       end
     end
@@ -67,7 +67,7 @@ class _ExpectClient is ProcessNotify
         let r = Regex(exp)?
         _status = _status and _h.assert_no_error({ ()? => r(out)? }, "match RE "+exp)
       else
-        _h.fail("stderr matching failed")
+        _h.fail("stderr regexp failed to compile")
         _status = false
       end
     end
