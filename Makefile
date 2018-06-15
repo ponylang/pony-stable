@@ -30,7 +30,8 @@ else
   tag := $(shell cat VERSION)
 endif
 
-SOURCE_FILES := $(shell find $(SRC_DIR) -name \*.pony)
+SOURCE_FILES := $(shell find $(SRC_DIR) -path $(SRC_DIR)/test -prune -o -name \*.pony)
+TEST_FILES := $(shell find $(SRC_DIR)/test -name \*.pony)
 VERSION := "$(tag) [$(config)]"
 GEN_FILES_IN := $(shell find $(SRC_DIR) -name \*.pony.in)
 GEN_FILES = $(patsubst %.pony.in, %.pony, $(GEN_FILES_IN))
@@ -45,8 +46,8 @@ install: $(binary)
 	mkdir -p $(DESTDIR)$(prefix)/bin
 	cp $^ $(DESTDIR)$(prefix)/bin
 
-$(tests_binary): $(GEN_FILES) $(SOURCE_FILES) | $(BUILD_DIR)
-	${PONYC} $(arch_arg) --debug  -o ${BUILD_DIR} $(SRC_DIR)/test
+$(tests_binary): $(GEN_FILES) $(SOURCE_FILES) $(TEST_FILES) | $(BUILD_DIR)
+	${PONYC} $(arch_arg) --debug -o ${BUILD_DIR} $(SRC_DIR)/test
 
 integration: $(binary) $(tests_binary)
 	$(tests_binary) --only=integration
