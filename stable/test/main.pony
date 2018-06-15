@@ -7,5 +7,7 @@ actor Main is TestList
   fun tag tests(test: PonyTest) =>
     test(TestBundle)
 
-    test(integration.TestUsage)
+    test(integration.TestUsage("")) // no arguments
+    test(integration.TestUsage("help"))
+    test(integration.TestUsage("unknown arguments"))
     test(integration.TestVersion)

@@ -75,6 +75,7 @@ class _ExpectClient is ProcessNotify
         let r = Regex(exp)?
         _status = _status and _h.assert_no_error({ ()? => r(output)? },
           stream + " match RE: " + exp)
+        _h.log(stream + " was: " + output)
       else
         _h.fail(stream + " regexp failed to compile")
         _status = false

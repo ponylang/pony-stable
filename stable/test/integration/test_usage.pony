@@ -3,8 +3,12 @@ use "process"
 use ".."
 
 class TestUsage is UnitTest
-  new iso create() => None
-  fun name(): String => "integration.Usage"
+  let _args: String
+  new iso create(args: String = "") =>
+    _args = args
+    None
+
+  fun name(): String => "integration.Usage(" + _args + ")"
 
   fun apply(h: TestHelper) =>
     h.long_test(100_000_000)
@@ -19,4 +23,4 @@ class TestUsage is UnitTest
       ],
       None, // stderr
       0)
-    _Exec(h, "stable", consume notifier)
+    _Exec(h, "stable " + _args, consume notifier)
