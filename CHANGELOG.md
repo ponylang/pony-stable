@@ -9,6 +9,7 @@ All notable changes to the Pony compiler and standard library will be documented
 
 ### Added
 
+- Add support for gitlab ([PR #69](https://github.com/ponylang/pony-stable/pull/69))
 
 ### Changed
 
