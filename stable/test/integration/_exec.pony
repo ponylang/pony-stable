@@ -58,7 +58,7 @@ class _ExpectClient is ProcessNotify
 
   fun ref failed(process: ProcessMonitor ref, err: ProcessError) =>
     _h.fail("ProcessError")
-    _status = false
+    _h.complete(false)
 
   fun ref dispose(process: ProcessMonitor ref, child_exit_code: I32) =>
     let code: I32 = consume child_exit_code
