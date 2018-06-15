@@ -36,11 +36,11 @@ class _ExpectClient is ProcessNotify
   =>
     _h = h
     _out = match stdout'
-      | None => recover Array[String](0) end
+      | None => []
       | let a: Array[String] val => a
       end
     _err = match stderr'
-      | None => recover Array[String](0) end
+      | None => []
       | let a: Array[String] val => a
       end
     _code = code'
