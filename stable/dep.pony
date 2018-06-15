@@ -9,21 +9,25 @@ interface DepAny
 primitive Dep
   fun apply(bundle: Bundle box, info: JsonObject box): DepAny ? =>
     match info.data("type")?
-    | "github" => DepGitHub(bundle, info)?
+    | "github" => DepGitHosted(bundle, info, "https://github.com/")?
+    | "gitlab" => DepGitHosted(bundle, info, "https://gitlab.com/")?
     | "local-git" => DepLocalGit(bundle, info)?
     | "local" => DepLocal(bundle, info)?
     else error
     end
 
-class DepGitHub
+class DepGitHosted
   let bundle: Bundle box
   let info: JsonObject box
+  let domain: String
   let repo: String
   let subdir: String
   let git_tag: (String | None)
-  new create(b: Bundle box, i: JsonObject box) ? =>
+
+  new create(b: Bundle box, i: JsonObject box, d: String) ? =>
     bundle = b
     info = i
+    domain = d
     repo =
       try info.data("repo")? as String
       else
@@ -46,7 +50,7 @@ class DepGitHub
     Path.join(root_path(), subdir)
 
   fun url(): String =>
-    "https://github.com/" + repo
+    domain + repo
 
   fun ref fetch() ? =>
     let fpath = FilePath(bundle.path, root_path())?
