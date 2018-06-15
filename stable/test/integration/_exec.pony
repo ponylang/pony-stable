@@ -50,29 +50,11 @@ class _ExpectClient is ProcessNotify
 
   fun ref stdout(process: ProcessMonitor ref, data: Array[U8] iso) =>
     let out = String.from_array(consume data)
+    _match_expectations("stdout", _out, out)
 
-    for exp in _out.values() do
-      try
-        let r = Regex(exp)?
-        _status = _status and _h.assert_no_error({ ()? => r(out)? }, "match RE "+exp)
-      else
-        _h.fail("stdout regexp failed to compile")
-        _status = false
-      end
-    end
-
-  // TODO deduplicate with stdout
   fun ref stderr(process: ProcessMonitor ref, data: Array[U8] iso) =>
     let out = String.from_array(consume data)
-    for exp in _err.values() do
-      try
-        let r = Regex(exp)?
-        _status = _status and _h.assert_no_error({ ()? => r(out)? }, "match RE "+exp)
-      else
-        _h.fail("stderr regexp failed to compile")
-        _status = false
-      end
-    end
+    _match_expectations("stderr", _err, out)
 
   fun ref failed(process: ProcessMonitor ref, err: ProcessError) =>
     _h.fail("ProcessError")
@@ -82,3 +64,19 @@ class _ExpectClient is ProcessNotify
     let code: I32 = consume child_exit_code
     _status = _status and _h.assert_eq[I32](_code, code)
     _h.complete(_status)
+
+  fun ref _match_expectations(
+    stream: String,
+    exps: Array[String] val,
+    output: String)
+  =>
+    for exp in exps.values() do
+      try
+        let r = Regex(exp)?
+        _status = _status and _h.assert_no_error({ ()? => r(output)? },
+          stream + " match RE: " + exp)
+      else
+        _h.fail(stream + " regexp failed to compile")
+        _status = false
+      end
+    end
