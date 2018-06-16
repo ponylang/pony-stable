@@ -54,7 +54,7 @@ test: $(tests_binary)
 clean:
 	rm -rf $(BUILD_DIR)
 
-all: $(binary)
+all: test $(binary)
 
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
@@ -69,7 +69,7 @@ package = build/$(package_name)-$(package_version)
 
 # Note: linux only
 define EXPAND_DEPLOY
-deploy: test binary
+deploy: all
 	$(SILENT)bash .bintray.bash debian "$(package_base_version)" "$(package_name)"
 	$(SILENT)bash .bintray.bash rpm    "$(package_base_version)" "$(package_name)"
 	$(SILENT)bash .bintray.bash source "$(package_base_version)" "$(package_name)"
