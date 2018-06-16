@@ -70,6 +70,16 @@ After updating the pony-stable formula, push to your fork and open a PR against 
 
 Leave a comment on the GitHub issue for this release letting everyone know that the Homebrew formula has been updated and a PR issued. Leave a link to your open PR.
 
+### Work on the release notes
+
+We do a blog post announcing each release. The release notes blog post should include highlights of any particularly interesting changes that we want the community to be aware of. 
+
+Additionally, any breaking changes that require end users to change their code should be discussed and examples of how to update their code should be included.
+
+[Examples of prior release posts](https://www.ponylang.org/categories/release) are available. If you haven't written release notes before, you should review prior examples to get a feel what should be included.
+
+To distinguish this pony-stable release from a ponyc release, be sure to title the post: "Pony-stable 0.3.1 Released".
+
 ### Wait on Travis and Appveyor
 
 During the time since you push to the release branch, Travis CI and Appveyor have been busy building release artifacts. This can take up to a couple hours depending on how busy they are. Periodically check bintray to see if the releases are there yet.
@@ -119,16 +129,6 @@ Note that its often quite quick to get everything through Homebrew's CI and merg
 ### Update the GitHub issue as needed
 
 At this point we are basically waiting on Travis, Appveyor and Homebrew. As each finishes, leave a note on the GitHub issue for this release letting everyone know where we stand status wise. For example: "Release 0.3.1 is now available via Homebrew".
-
-### Work on the release notes
-
-We do a blog post announcing each release. The release notes blog post should include highlights of any particularly interesting changes that we want the community to be aware of. 
-
-Additionally, any breaking changes that require end users to change their code should be discussed and examples of how to update their code should be included.
-
-[Examples of prior release posts](https://www.ponylang.org/categories/release) are available. If you haven't written release notes before, you should review prior examples to get a feel what should be included.
-
-To distinguish this pony-stable release from a ponyc release, be sure to title the post: "Pony-stable 0.3.1 Released".
 
 ### Merge the release blog post PR for the ponylang website
 
