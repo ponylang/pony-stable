@@ -69,7 +69,7 @@ package = build/$(package_name)-$(package_version)
 
 # Note: linux only
 define EXPAND_DEPLOY
-deploy: test
+deploy: test binary
 	$(SILENT)bash .bintray.bash debian "$(package_base_version)" "$(package_name)"
 	$(SILENT)bash .bintray.bash rpm    "$(package_base_version)" "$(package_name)"
 	$(SILENT)bash .bintray.bash source "$(package_base_version)" "$(package_name)"
