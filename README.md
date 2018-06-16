@@ -125,6 +125,21 @@ actor Main
 ' > main.pony
 ```
 
+### GitLab
+
+```bash
+mkdir myproject && cd myproject
+
+stable add gitlab jemc/pony-inspect
+
+echo '
+use "inspect"
+actor Main
+  new create(env: Env) =>
+    env.out.print(Inspect("Hello, World!"))
+' > main.pony
+```
+
 ### Local git project
 
 ```bash
