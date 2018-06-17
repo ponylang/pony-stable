@@ -11,7 +11,8 @@ actor _Exec
   =>
     try
       let args = cmdline.split_by(" ")
-      let path = FilePath(h.env.root as AmbientAuth, "build/release/stable")?
+      let path = FilePath(h.env.root as AmbientAuth,
+        _env_with_default(h.env.vars, "STABLE_BIN", "stable"))?
       let vars: Array[String] iso = []
       let auth = h.env.root as AmbientAuth
       let pm: ProcessMonitor = ProcessMonitor(auth, auth, consume notifier,
@@ -20,6 +21,21 @@ actor _Exec
     else
       h.fail("Could not create FilePath!")
     end
+
+  fun _env_with_default(
+    vars: Array[String] val,
+    key: String,
+    default: String
+  ): String =>
+    for v in vars.values() do
+      if v.contains(key) then
+        return v.substring(
+          ISize.from[USize](key.size())+1,
+          ISize.from[USize](v.size()))
+      end
+    end
+
+    default
 
 class _ExpectClient is ProcessNotify
   let _h: TestHelper
