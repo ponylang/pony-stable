@@ -18,6 +18,7 @@ actor _Exec
       let pm: ProcessMonitor = ProcessMonitor(auth, auth, consume notifier,
         path, consume args, consume vars)
       pm.done_writing()
+      h.dispose_when_done(pm)
     else
       h.fail("Could not create FilePath!")
     end
