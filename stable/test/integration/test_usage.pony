@@ -1,4 +1,5 @@
 use "ponytest"
+use "files"
 use "process"
 use ".."
 
@@ -12,6 +13,14 @@ class TestUsage is UnitTest
 
   fun apply(h: TestHelper) =>
     h.long_test(100_000_000)
+    let tmp =
+      try
+        FilePath.mkdtemp(h.env.root as AmbientAuth, "")?
+      else
+        h.fail("failed to create temporary directory")
+        return
+      end
+
     let notifier: ProcessNotify iso = _ExpectClient(h,
       [ "Usage: stable COMMAND \\[\\.\\.\\.\\]"
         "A simple dependency manager for the Pony language"
@@ -23,4 +32,4 @@ class TestUsage is UnitTest
       ],
       None, // stderr
       0)
-    _Exec(h, "stable " + _args, consume notifier)
+    _Exec(h, "stable " + _args, tmp.path, _CleanTmp(tmp), consume notifier)

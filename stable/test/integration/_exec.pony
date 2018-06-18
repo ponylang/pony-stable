@@ -7,6 +7,8 @@ actor _Exec
   new create(
     h: TestHelper,
     cmdline: String,
+    tmp: String,
+    cleaner: DisposableActor,
     notifier: ProcessNotify iso)
   =>
     let stable_bin =
@@ -18,13 +20,18 @@ actor _Exec
       end
     try
       let args = cmdline.split_by(" ")
-      let path = FilePath(h.env.root as AmbientAuth, stable_bin)?
-      let vars: Array[String] iso = []
+      let path = FilePath(h.env.root as AmbientAuth,
+        "stable/test/integration/helper.sh")?
       let auth = h.env.root as AmbientAuth
+      let vars: Array[String] iso = [
+        "CWD=" + tmp
+        "STABLE_BIN=" + stable_bin
+        ]
       let pm: ProcessMonitor = ProcessMonitor(auth, auth, consume notifier,
         path, consume args, consume vars)
       pm.done_writing()
       h.dispose_when_done(pm)
+      h.dispose_when_done(cleaner)
     else
       h.fail("Could not create FilePath!")
     end

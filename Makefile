@@ -31,7 +31,7 @@ else
 endif
 
 SOURCE_FILES := $(shell find $(SRC_DIR) -path $(SRC_DIR)/test -prune -o -name \*.pony)
-TEST_FILES := $(shell find $(SRC_DIR)/test -name \*.pony)
+TEST_FILES := $(shell find $(SRC_DIR)/test -name \*.pony -o -name helper.sh)
 VERSION := "$(tag) [$(config)]"
 GEN_FILES_IN := $(shell find $(SRC_DIR) -name \*.pony.in)
 GEN_FILES = $(patsubst %.pony.in, %.pony, $(GEN_FILES_IN))
