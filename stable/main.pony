@@ -26,7 +26,7 @@ actor Main
           "    env     - Execute the following shell command inside an environment"
           "              with PONYPATH set to include deps directories. For example,"
           "              `stable env ponyc myproject`"
-          "    add     - Add a new dependency. For exemple,"
+          "    add     - Add a new dependency. For example,"
           "              `stable add github jemc/pony-inspect"
           ""
         ]
