@@ -13,6 +13,7 @@ actor EnvTests is TestList
     test(TestEnvBundleInSameDir)
     test(TestEnvBundleInSameDirWithCall)
     test(TestEnvBundleInParentDir)
+    test(TestEnvBadBundleInNestedAndValidBundleInParentDir)
 
 class TestEnvNoBundle is UnitTest
   new iso create() => None
@@ -175,5 +176,42 @@ class TestEnvBundleInParentDir is UnitTest
     let notifier: ProcessNotify iso = _ExpectClient(h,
       ["PONYPATH=../local/a"],
       None,
+      0)
+    _Exec(h, "stable env", nested.path, _CleanTmp(tmp), consume notifier)
+
+class TestEnvBadBundleInNestedAndValidBundleInParentDir is UnitTest
+  new iso create() => None
+
+  fun name(): String => "integration.Env(invalid bundle.json in nested dir)"
+
+  fun apply(h: TestHelper) =>
+    h.long_test(100_000_000)
+    let tmp =
+      try
+        FilePath.mkdtemp(h.env.root as AmbientAuth, "")?
+      else
+        h.fail("failed to create temporary directory")
+        return
+      end
+
+    (let bad_bundle, let good_bundle, let nested) =
+      try
+        h.assert_true(Directory(tmp)?.mkdir("nested"), "create nested directory")
+        let n = tmp.join("nested")?
+        (Directory(n)?.create_file("bundle.json")?,
+         Directory(tmp)?.create_file("bundle.json")?,
+         n)
+      else
+        h.fail("failed to create bundle.json example data files")
+        return
+      end
+    h.assert_true(good_bundle.write("{\"deps\":[
+      {\"type\": \"local\", \"local-path\":\"../local/a\"}
+      ]}\n"), "prepare good bundle.json")
+    h.assert_true(bad_bundle.write("{}"), "prepare bad bundle.json")
+
+    let notifier: ProcessNotify iso = _ExpectClient(h,
+      ["PONYPATH=../local/a"],
+      ["JSON error at: " + bad_bundle.path.path + ": missing \"deps\" array"],
       0)
     _Exec(h, "stable env", nested.path, _CleanTmp(tmp), consume notifier)
