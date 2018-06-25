@@ -15,7 +15,8 @@ class TestUsage is UnitTest
     h.long_test(100_000_000)
     let tmp =
       try
-        FilePath.mkdtemp(h.env.root as AmbientAuth, "")?
+        FilePath.mkdtemp(h.env.root as AmbientAuth,
+          "stable/test/integration/tmp/")?
       else
         h.fail("failed to create temporary directory")
         return
