@@ -12,7 +12,7 @@ class TestUsage is UnitTest
   fun name(): String => "integration.Usage(" + _args + ")"
 
   fun apply(h: TestHelper) =>
-    h.long_test(100_000_000)
+    h.long_test(200_000_000)
     let tmp =
       try
         FilePath.mkdtemp(h.env.root as AmbientAuth,
