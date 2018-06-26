@@ -50,7 +50,7 @@ $(tests_binary): $(GEN_FILES) $(SOURCE_FILES) $(TEST_FILES) | $(BUILD_DIR)
 	${PONYC} $(arch_arg) --debug -o ${BUILD_DIR} $(SRC_DIR)/test
 
 integration: $(binary) $(tests_binary)
-	STABLE_BIN=$$(pwd)/$(binary) $(tests_binary) --only=integration
+	STABLE_BIN=$$(pwd)/$(binary) $(tests_binary) --only=integration --sequential
 
 test: $(tests_binary)
 	$^ --exclude=integration
