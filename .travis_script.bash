@@ -3,6 +3,63 @@
 set -o errexit
 set -o nounset
 
+build_deb(){
+  deb_distro=$1
+
+  # untar source code
+  tar -xvzf "pony-stable_${package_version}.orig.tar.gz"
+
+  pushd "pony-stable-${package_version}"
+
+  cp -r .packaging/deb debian
+  cp LICENSE debian/copyright
+
+  # create changelog
+  rm -f debian/changelog
+  dch --package pony-stable -v "${package_version}" -D "${deb_distro}" --force-distribution --controlmaint --create "Release ${package_version}"
+
+  # create package for distro using docker to run debuild
+  sudo docker run -v "$(pwd)/..:/home/pony" --rm --user root "ponylang/ponyc-ci:${deb_distro}-deb-builder" sh -c 'cd pony-stable* && mk-build-deps -t "apt-get -o Debug::pkgProblemResolver=yes --no-install-recommends -y" -i -r && debuild -b -us -uc'
+
+  ls -l ..
+
+  # restore original working directory
+  popd
+
+  # create bintray upload json file
+  bash .bintray_deb.bash "$package_version" "$deb_distro"
+
+  # rename package to avoid clashing across different distros packages
+  mv "pony-stable_${package_version}_amd64.deb" "pony-stable_${package_version}_${deb_distro}_amd64.deb"
+
+  # clean up old build directory to ensure things are all clean
+  sudo rm -rf "pony-stable-${package_version}"
+}
+
+pony-stable-build-debs(){
+  package_version=$1
+
+  set -x
+
+  echo "Install devscripts..."
+  sudo apt-get update
+  sudo apt-get install -y devscripts
+
+  echo "Building pony-stable debs for bintray..."
+  wget "https://github.com/ponylang/pony-stable/archive/${package_version}.tar.gz" -O "pony-stable_${package_version}.orig.tar.gz"
+
+  build_deb xenial
+  build_deb artful
+  build_deb bionic
+  build_deb trusty
+  build_deb buster
+  build_deb stretch
+  build_deb jessie
+
+  ls -la
+  set +x
+}
+
 build_and_submit_deb_src(){
   deb_distro=$1
   rm -f debian/changelog
@@ -84,6 +141,7 @@ pony-stable-build-packages(){
 
 if [[ "$TRAVIS_BRANCH" == "release" && "$TRAVIS_PULL_REQUEST" == "false" ]]
 then
+  pony-stable-build-debs "$(cat VERSION)"
   pony-stable-kickoff-copr-ppa
   pony-stable-build-packages
 fi
