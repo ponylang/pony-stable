@@ -11,3 +11,5 @@ actor Main is TestList
     test(integration.TestUsage("help"))
     test(integration.TestUsage("unknown arguments"))
     test(integration.TestVersion)
+
+    integration.EnvTests.make().tests(test)

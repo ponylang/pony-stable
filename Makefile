@@ -31,7 +31,7 @@ else
 endif
 
 SOURCE_FILES := $(shell find $(SRC_DIR) -path $(SRC_DIR)/test -prune -o -name \*.pony)
-TEST_FILES := $(shell find $(SRC_DIR)/test -name \*.pony)
+TEST_FILES := $(shell find $(SRC_DIR)/test -name \*.pony -o -name helper.sh)
 VERSION := "$(tag) [$(config)]"
 GEN_FILES_IN := $(shell find $(SRC_DIR) -name \*.pony.in)
 GEN_FILES = $(patsubst %.pony.in, %.pony, $(GEN_FILES_IN))
@@ -50,7 +50,7 @@ $(tests_binary): $(GEN_FILES) $(SOURCE_FILES) $(TEST_FILES) | $(BUILD_DIR)
 	${PONYC} $(arch_arg) --debug -o ${BUILD_DIR} $(SRC_DIR)/test
 
 integration: $(binary) $(tests_binary)
-	STABLE_BIN=$$(pwd)/$(binary) $(tests_binary) --only=integration
+	STABLE_BIN=$$(pwd)/$(binary) $(tests_binary) --only=integration --sequential
 
 test: $(tests_binary)
 	$^ --exclude=integration
