@@ -30,12 +30,13 @@ class TestEnvNoBundle is UnitTest
         h.fail("failed to create temporary directory")
         return
       end
+    h.dispose_when_done(_CleanTmp(tmp))
 
     let notifier: ProcessNotify iso = _ExpectClient(h,
       None,
       ["No bundle.json in current working directory or ancestors."],
       0)
-    _Exec(h, "stable env", tmp.path, _CleanTmp(tmp), consume notifier)
+    _Exec(h, "stable env", tmp.path, consume notifier)
 
 class TestEnvEmptyBundleInSameDir is UnitTest
   new iso create() => None
@@ -52,6 +53,7 @@ class TestEnvEmptyBundleInSameDir is UnitTest
         h.fail("failed to create temporary directory")
         return
       end
+    h.dispose_when_done(_CleanTmp(tmp))
 
     let f =
       try
@@ -66,7 +68,7 @@ class TestEnvEmptyBundleInSameDir is UnitTest
       ["PONYPATH=\n"], // empty
       None,
       0)
-    _Exec(h, "stable env", tmp.path, _CleanTmp(tmp), consume notifier)
+    _Exec(h, "stable env", tmp.path, consume notifier)
 
 class TestEnvBundleInSameDir is UnitTest
   new iso create() => None
@@ -83,6 +85,7 @@ class TestEnvBundleInSameDir is UnitTest
         h.fail("failed to create temporary directory")
         return
       end
+    h.dispose_when_done(_CleanTmp(tmp))
 
     let f =
       try
@@ -113,7 +116,7 @@ class TestEnvBundleInSameDir is UnitTest
       ["PONYPATH=" + expected],
       None,
       0)
-    _Exec(h, "stable env", tmp.path, _CleanTmp(tmp), consume notifier)
+    _Exec(h, "stable env", tmp.path, consume notifier)
 
 class TestEnvBundleInSameDirWithCall is UnitTest
   new iso create() => None
@@ -130,6 +133,7 @@ class TestEnvBundleInSameDirWithCall is UnitTest
         h.fail("failed to create temporary directory")
         return
       end
+    h.dispose_when_done(_CleanTmp(tmp))
 
     let f =
       try
@@ -146,8 +150,7 @@ class TestEnvBundleInSameDirWithCall is UnitTest
       ["../local/a"],
       None,
       0)
-    _Exec(h, "stable env printenv PONYPATH", tmp.path, _CleanTmp(tmp),
-      consume notifier)
+    _Exec(h, "stable env printenv PONYPATH", tmp.path, consume notifier)
 
 class TestEnvBundleInParentDir is UnitTest
   new iso create() => None
@@ -164,6 +167,7 @@ class TestEnvBundleInParentDir is UnitTest
         h.fail("failed to create temporary directory")
         return
       end
+    h.dispose_when_done(_CleanTmp(tmp))
 
     (let f, let nested) =
       try
@@ -182,7 +186,7 @@ class TestEnvBundleInParentDir is UnitTest
       ["PONYPATH=../local/a"],
       None,
       0)
-    _Exec(h, "stable env", nested.path, _CleanTmp(tmp), consume notifier)
+    _Exec(h, "stable env", nested.path, consume notifier)
 
 class TestEnvBadBundleInNestedAndValidBundleInParentDir is UnitTest
   new iso create() => None
@@ -199,6 +203,7 @@ class TestEnvBadBundleInNestedAndValidBundleInParentDir is UnitTest
         h.fail("failed to create temporary directory")
         return
       end
+    h.dispose_when_done(_CleanTmp(tmp))
 
     (let bad_bundle, let good_bundle, let nested) =
       try
@@ -220,4 +225,4 @@ class TestEnvBadBundleInNestedAndValidBundleInParentDir is UnitTest
       ["PONYPATH=../local/a"],
       ["JSON error at: " + bad_bundle.path.path + ": missing \"deps\" array"],
       0)
-    _Exec(h, "stable env", nested.path, _CleanTmp(tmp), consume notifier)
+    _Exec(h, "stable env", nested.path, consume notifier)

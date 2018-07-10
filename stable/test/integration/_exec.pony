@@ -8,7 +8,6 @@ actor _Exec
     h: TestHelper,
     cmdline: String,
     tmp: String,
-    cleaner: DisposableActor,
     notifier: ProcessNotify iso)
   =>
     let stable_bin =
@@ -31,7 +30,6 @@ actor _Exec
         path, consume args, consume vars)
       pm.done_writing()
       h.dispose_when_done(pm)
-      h.dispose_when_done(cleaner)
     else
       h.fail("Could not create FilePath!")
     end

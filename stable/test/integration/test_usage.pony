@@ -21,6 +21,7 @@ class TestUsage is UnitTest
         h.fail("failed to create temporary directory")
         return
       end
+    h.dispose_when_done(_CleanTmp(tmp))
 
     let notifier: ProcessNotify iso = _ExpectClient(h,
       [ "Usage: stable COMMAND \\[\\.\\.\\.\\]"
@@ -33,4 +34,4 @@ class TestUsage is UnitTest
       ],
       None, // stderr
       0)
-    _Exec(h, "stable " + _args, tmp.path, _CleanTmp(tmp), consume notifier)
+    _Exec(h, "stable " + _args, tmp.path, consume notifier)
