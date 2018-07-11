@@ -221,8 +221,10 @@ class TestEnvBadBundleInNestedAndValidBundleInParentDir is UnitTest
       ]}\n"), "prepare good bundle.json")
     h.assert_true(bad_bundle.write("{}"), "prepare bad bundle.json")
 
+    // This verifies that the parent-dir bundle.json isn't picked up if the
+    // nested-dir bundle.json is invalid.
     let notifier: ProcessNotify iso = _ExpectClient(h,
-      ["PONYPATH=../local/a"],
+      ["PONYPATH=$"],
       ["JSON error at: " + bad_bundle.path.path + ": missing \"deps\" array"],
       0)
     _Exec(h, "stable env", nested.path, consume notifier)
