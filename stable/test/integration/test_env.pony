@@ -21,7 +21,7 @@ class TestEnvNoBundle is UnitTest
   fun name(): String => "integration.Env(no bundle.json)"
 
   fun apply(h: TestHelper) =>
-    h.long_test(200_000_000)
+    h.long_test(2_000_000_000)
     let tmp =
       try
         FilePath.mkdtemp(h.env.root as AmbientAuth,
@@ -45,7 +45,7 @@ class TestEnvEmptyBundleInSameDir is UnitTest
   fun name(): String => "integration.Env(empty bundle in same directory)"
 
   fun apply(h: TestHelper) =>
-    h.long_test(200_000_000)
+    h.long_test(2_000_000_000)
     let tmp =
       try
         FilePath.mkdtemp(h.env.root as AmbientAuth,
@@ -79,7 +79,7 @@ class TestEnvBundleInSameDir is UnitTest
   fun name(): String => "integration.Env(bundle in same directory)"
 
   fun apply(h: TestHelper) =>
-    h.long_test(200_000_000)
+    h.long_test(2_000_000_000)
     let tmp =
       try
         FilePath.mkdtemp(h.env.root as AmbientAuth,
@@ -130,7 +130,7 @@ class TestEnvBundleInSameDirWithCall is UnitTest
   fun name(): String => "integration.Env(calling a program)"
 
   fun apply(h: TestHelper) =>
-    h.long_test(200_000_000)
+    h.long_test(2_000_000_000)
     let tmp =
       try
         FilePath.mkdtemp(h.env.root as AmbientAuth,
@@ -166,7 +166,7 @@ class TestEnvBundleInParentDir is UnitTest
   fun name(): String => "integration.Env(bundle.json in parent dir)"
 
   fun apply(h: TestHelper) =>
-    h.long_test(200_000_000)
+    h.long_test(2_000_000_000)
     let tmp =
       try
         FilePath.mkdtemp(h.env.root as AmbientAuth,
@@ -204,7 +204,7 @@ class TestEnvBadBundleInNestedAndValidBundleInParentDir is UnitTest
   fun name(): String => "integration.Env(invalid bundle.json in nested dir)"
 
   fun apply(h: TestHelper) =>
-    h.long_test(200_000_000)
+    h.long_test(2_000_000_000)
     let tmp =
       try
         FilePath.mkdtemp(h.env.root as AmbientAuth,
