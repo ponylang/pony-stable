@@ -15,6 +15,7 @@ actor _Exec
          _env_var(h.env.vars, "STABLE_BIN")?
       else
         h.fail("STABLE_BIN not set")
+        h.complete(false)
         return
       end
     try
@@ -32,6 +33,7 @@ actor _Exec
       h.dispose_when_done(pm)
     else
       h.fail("Could not create FilePath!")
+      h.complete(false)
     end
 
   fun _env_var(vars: Array[String] val, key: String): String ? =>
