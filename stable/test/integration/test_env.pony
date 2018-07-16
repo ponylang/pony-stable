@@ -28,6 +28,7 @@ class TestEnvNoBundle is UnitTest
           "stable/test/integration/tmp/")?
       else
         h.fail("failed to create temporary directory")
+        h.complete(false)
         return
       end
     h.dispose_when_done(_CleanTmp(tmp))
@@ -51,6 +52,7 @@ class TestEnvEmptyBundleInSameDir is UnitTest
           "stable/test/integration/tmp/")?
       else
         h.fail("failed to create temporary directory")
+        h.complete(false)
         return
       end
     h.dispose_when_done(_CleanTmp(tmp))
@@ -60,6 +62,7 @@ class TestEnvEmptyBundleInSameDir is UnitTest
         Directory(tmp)?.create_file("bundle.json")?
       else
         h.fail("failed to create bundle.json in temporary directory")
+        h.complete(false)
         return
       end
     h.assert_true(f.write("{\"deps\":[]}\n"), "prepare bundle.json")
@@ -83,6 +86,7 @@ class TestEnvBundleInSameDir is UnitTest
           "stable/test/integration/tmp/")?
       else
         h.fail("failed to create temporary directory")
+        h.complete(false)
         return
       end
     h.dispose_when_done(_CleanTmp(tmp))
@@ -92,6 +96,7 @@ class TestEnvBundleInSameDir is UnitTest
         Directory(tmp)?.create_file("bundle.json")?
       else
         h.fail("failed to create bundle.json in temporary directory")
+        h.complete(false)
         return
       end
     h.assert_true(f.write("{\"deps\":[
@@ -109,6 +114,7 @@ class TestEnvBundleInSameDir is UnitTest
         tmp.join(".deps/gitlab/d")?.path
       else
         h.fail("failed to construct expected PONYPATH")
+        h.complete(false)
         return
       end
 
@@ -131,6 +137,7 @@ class TestEnvBundleInSameDirWithCall is UnitTest
           "stable/test/integration/tmp/")?
       else
         h.fail("failed to create temporary directory")
+        h.complete(false)
         return
       end
     h.dispose_when_done(_CleanTmp(tmp))
@@ -140,6 +147,7 @@ class TestEnvBundleInSameDirWithCall is UnitTest
         Directory(tmp)?.create_file("bundle.json")?
       else
         h.fail("failed to create bundle.json in temporary directory")
+        h.complete(false)
         return
       end
     h.assert_true(f.write("{\"deps\":[
@@ -165,6 +173,7 @@ class TestEnvBundleInParentDir is UnitTest
           "stable/test/integration/tmp/")?
       else
         h.fail("failed to create temporary directory")
+        h.complete(false)
         return
       end
     h.dispose_when_done(_CleanTmp(tmp))
@@ -176,6 +185,7 @@ class TestEnvBundleInParentDir is UnitTest
         (Directory(tmp)?.create_file("bundle.json")?, n)
       else
         h.fail("failed to create bundle.json in nested temporary directory")
+        h.complete(false)
         return
       end
     h.assert_true(f.write("{\"deps\":[
@@ -201,6 +211,7 @@ class TestEnvBadBundleInNestedAndValidBundleInParentDir is UnitTest
           "stable/test/integration/tmp/")?
       else
         h.fail("failed to create temporary directory")
+        h.complete(false)
         return
       end
     h.dispose_when_done(_CleanTmp(tmp))
@@ -214,6 +225,7 @@ class TestEnvBadBundleInNestedAndValidBundleInParentDir is UnitTest
          n)
       else
         h.fail("failed to create bundle.json example data files")
+        h.complete(false)
         return
       end
     h.assert_true(good_bundle.write("{\"deps\":[
