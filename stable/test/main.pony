@@ -7,6 +7,7 @@ actor Main is TestList
 
   fun tag tests(test: PonyTest) =>
     test(TestBundle)
+    test(TestDep)
     PrivateTests.make().tests(test)
 
     test(integration.TestUsage("")) // no arguments
