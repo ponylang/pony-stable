@@ -30,7 +30,8 @@ else
   tag := $(shell cat VERSION)
 endif
 
-SOURCE_FILES := $(shell find $(SRC_DIR) -name \*.pony)
+SOURCE_FILES := $(shell find $(SRC_DIR) -path $(SRC_DIR)/test -prune -o -name \*.pony)
+TEST_FILES := $(shell find $(SRC_DIR)/test -name \*.pony -o -name helper.sh)
 VERSION := "$(tag) [$(config)]"
 GEN_FILES_IN := $(shell find $(SRC_DIR) -name \*.pony.in)
 GEN_FILES = $(patsubst %.pony.in, %.pony, $(GEN_FILES_IN))
@@ -45,11 +46,14 @@ install: $(binary)
 	mkdir -p $(DESTDIR)$(prefix)/bin
 	cp $^ $(DESTDIR)$(prefix)/bin
 
-$(tests_binary): $(GEN_FILES) $(SOURCE_FILES) | $(BUILD_DIR)
-	${PONYC} $(arch_arg) --debug  -o ${BUILD_DIR} $(SRC_DIR)/test
+$(tests_binary): $(GEN_FILES) $(SOURCE_FILES) $(TEST_FILES) | $(BUILD_DIR)
+	${PONYC} $(arch_arg) --debug -o ${BUILD_DIR} $(SRC_DIR)/test
+
+integration: $(binary) $(tests_binary)
+	STABLE_BIN=$$(pwd)/$(binary) $(tests_binary) --only=integration --sequential
 
 test: $(tests_binary)
-	$^
+	$^ --exclude=integration
 
 clean:
 	rm -rf $(BUILD_DIR)
@@ -59,11 +63,10 @@ all: test $(binary)
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
 
-# package_name, _version, and _iteration can be overridden by Travis or AppVeyor
+# package_name and _version can be overridden by Travis or AppVeyor
 package_base_version ?= $(tag)
-package_iteration ?= "1"
 package_name ?= "pony-stable"
-package_version = $(package_base_version)-$(package_iteration)
+package_version = $(package_base_version)
 archive = $(package_name)-$(package_version).tar
 package = build/$(package_name)-$(package_version)
 
@@ -81,8 +84,8 @@ deploy: all
 	$(SILENT)cp $(BUILD_DIR)/stable $(package)/usr/lib/pony-stable/$(package_version)/bin
 
 	$(SILENT)ln -f -s /usr/lib/pony-stable/$(package_version)/bin/stable $(package)/usr/bin/stable
-	$(SILENT)fpm -s dir -t deb -C $(package) -p build/bin --name $(package_name) --version $(package_base_version) --iteration "$(package_iteration)" --description "Pony dependency manager" --provides "pony-stable"
-	$(SILENT)fpm -s dir -t rpm -C $(package) -p build/bin --name $(package_name) --version $(package_base_version) --iteration "$(package_iteration)" --description "Pony dependency manager" --provides "pony-stable"
+	$(SILENT)fpm -s dir -t deb -C $(package) -p build/bin --name $(package_name) --version $(package_base_version) --description "Pony dependency manager" --provides "pony-stable"
+	$(SILENT)fpm -s dir -t rpm -C $(package) -p build/bin --name $(package_name) --version $(package_base_version) --description "Pony dependency manager" --provides "pony-stable"
 	$(SILENT)git archive HEAD > build/bin/$(archive)
 	$(SILENT)bzip2 build/bin/$(archive)
 	$(SILENT)rm -rf $(package) build/bin/$(archive)
@@ -90,4 +93,4 @@ endef
 
 $(eval $(call EXPAND_DEPLOY))
 
-.PHONY: all clean deploy install test
+.PHONY: all clean deploy install test integration

@@ -5,13 +5,13 @@ jobs:
       - image: ponylang/ponyc:release
     steps:
       - checkout
-      - run: make test
+      - run: make test integration
   vs-ponyc-master:
     docker:
       - image: ponylang/ponyc:latest
     steps:
       - checkout
-      - run: make test
+      - run: make test integration
   verify-changelog:
     docker:
       - image: ponylang/changelog-tool:release
