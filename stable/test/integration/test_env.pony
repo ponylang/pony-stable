@@ -108,7 +108,7 @@ class TestEnvBundleInSameDir is UnitTest
 
     let expected =
       try
-        "../local/a" + ":" +
+        Path.join(tmp.path, "../local/a") + ":" +
         tmp.join(".deps/-local-git-b16798852821555717647")?.path + ":" +
         tmp.join(".deps/github/c")?.path + ":" +
         tmp.join(".deps/gitlab/d")?.path
@@ -193,7 +193,7 @@ class TestEnvBundleInParentDir is UnitTest
       ]}\n"), "prepare bundle.json")
 
     let notifier: ProcessNotify iso = _ExpectClient(h,
-      ["PONYPATH=../local/a"],
+      ["PONYPATH=" + Path.join(tmp.path, "../local/a")],
       None,
       0)
     _Exec(h, "stable env", nested.path, consume notifier)
