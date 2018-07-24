@@ -123,7 +123,7 @@ class DepLocal
       end
 
   fun root_path(): String =>
-    local_path
+    Path.join(bundle.path.path, local_path)
 
   fun packages_path(): String =>
     root_path()

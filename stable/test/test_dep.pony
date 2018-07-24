@@ -72,8 +72,9 @@ class TestDep is UnitTest
 
     info = JsonObject.from_map(local)
     dep = Dep(bundle, info)?
-    h.assert_eq[String]("../foo/bar", dep.root_path())
-    h.assert_eq[String]("../foo/bar", dep.packages_path())
+
+    h.assert_eq[String](Path.join(bundle.path.path, "../foo/bar"), dep.root_path())
+    h.assert_eq[String](Path.join(bundle.path.path, "../foo/bar"), dep.packages_path())
 
     let incomplete_local = Map[String, JsonType]
     incomplete_local("type") = "local"
