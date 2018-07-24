@@ -53,7 +53,7 @@ integration: $(binary) $(tests_binary)
 	STABLE_BIN=$$(pwd)/$(binary) $(tests_binary) --only=integration --sequential
 
 test: $(tests_binary)
-	$^ --exclude=integration
+	$^ --exclude=integration --sequential
 
 clean:
 	rm -rf $(BUILD_DIR)
