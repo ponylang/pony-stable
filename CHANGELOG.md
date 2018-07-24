@@ -2,17 +2,11 @@
 
 All notable changes to the Pony compiler and standard library will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CHANGELOG](http://keepachangelog.com/).
 
-## [unreleased] - unreleased
-
-### Fixed
-
+## [0.1.6] - 2018-07-24
 
 ### Added
 
 - No user facing changes in this release
-
-### Changed
-
 
 ## [0.1.5] - 2018-07-24
 
