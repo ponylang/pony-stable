@@ -91,6 +91,9 @@ deploy: all
 	$(SILENT)rm -rf $(package) build/bin/$(archive)
 endef
 
+dshell:
+	@docker-compose run --rm pony
+
 $(eval $(call EXPAND_DEPLOY))
 
 .PHONY: all clean deploy install test integration

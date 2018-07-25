@@ -1,0 +1,9 @@
+version: "2.4"
+
+services:
+  pony:
+    image: ponylang/ponyc:release
+    entrypoint: bash
+    working_dir: /stable
+    volumes:
+      - .:/stable
