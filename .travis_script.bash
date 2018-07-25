@@ -139,6 +139,13 @@ pony-stable-build-packages(){
   make arch=x86-64 package_name="pony-stable" package_base_version="$(cat VERSION)" package_iteration="${PACKAGE_ITERATION}" deploy
 }
 
+# nightly builds
+if [[ "$TRAVIS_BRANCH" == "master" && "$TRAVIS_EVENT_TYPE" == "cron" ]]
+then
+  pony-stable-build-debs master
+fi
+
+# normal release logic
 if [[ "$TRAVIS_BRANCH" == "release" && "$TRAVIS_PULL_REQUEST" == "false" ]]
 then
   pony-stable-build-debs "$(cat VERSION)"
