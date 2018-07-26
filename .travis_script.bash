@@ -3,13 +3,50 @@
 set -o errexit
 set -o nounset
 
+build_appimage(){
+  package_version=$1
+
+  mkdir pony-stable.AppDir
+
+  cat > ./pony-stable.desktop <<\EOF
+[Desktop Entry]
+Name=Pony Dependency Manager
+Icon=pony-stable
+Type=Application
+NoDisplay=true
+Exec=stable
+Terminal=true
+Categories=Development;
+EOF
+
+  curl https://www.ponylang.org/images/logo.png -o pony-stable.png
+
+  curl https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage -o linuxdeploy-x86_64.AppImage -J -L
+  chmod +x linuxdeploy-x86_64.AppImage
+
+  # remove any existing build artifacts
+  sudo rm -rf build
+
+  # can't run appimages in docker; need to extract and then run
+  ./linuxdeploy-x86_64.AppImage --appimage-extract
+
+  # need to run in CentOS 7 docker image
+  sudo docker run -v "$(pwd):/home/pony" --rm --user root ponylang/ponyc-ci:centos7-llvm-3.9.1 sh -c "yum install yum-plugin-copr -y && yum copr enable ponylang/ponylang epel-7 -y && yum install ponyc -y && make arch=x86-64 DESTDIR=pony-stable.AppDir prefix=/usr test integration"
+  sudo docker run -v "$(pwd):/home/pony" --rm ponylang/ponyc-ci:centos7-llvm-3.9.1 sh -c "make arch=x86-64 DESTDIR=pony-stable.AppDir prefix=/usr install"
+  sudo docker run -v "$(pwd):/home/pony" --rm ponylang/ponyc-ci:centos7-llvm-3.9.1 sh -c "ARCH=x86_64 ./squashfs-root/AppRun --appdir pony-stable.AppDir --desktop-file=pony-stable.desktop --icon-file=pony-stable.png --app-name=pony-stable --output appimage"
+
+  mv Pony_Dependency_Manager-x86_64.AppImage "Pony_Depencency_Manager-${package_version}-x86_64.AppImage"
+
+  bash .bintray.bash appimage "${package_version}" pony-stable
+}
+
 build_deb(){
   deb_distro=$1
 
   # untar source code
   tar -xvzf "pony-stable_${package_version}.orig.tar.gz"
 
-  pushd "pony-stable-${package_version}"
+  pushd pony-stable-*
 
   cp -r .packaging/deb debian
   cp LICENSE debian/copyright
@@ -33,7 +70,7 @@ build_deb(){
   mv "pony-stable_${package_version}_amd64.deb" "pony-stable_${package_version}_${deb_distro}_amd64.deb"
 
   # clean up old build directory to ensure things are all clean
-  sudo rm -rf "pony-stable-${package_version}"
+  sudo rm -rf pony-stable-*
 }
 
 pony-stable-build-debs(){
@@ -47,6 +84,12 @@ pony-stable-build-debs(){
 
   echo "Building pony-stable debs for bintray..."
   wget "https://github.com/ponylang/pony-stable/archive/${package_version}.tar.gz" -O "pony-stable_${package_version}.orig.tar.gz"
+
+  if [ "${package_version}" == "master" ]
+  then
+    mv "pony-stable_${package_version}.orig.tar.gz" "pony-stable_$(cat VERSION).orig.tar.gz"
+    package_version=$(cat VERSION)
+  fi
 
   build_deb xenial
   build_deb artful
@@ -145,6 +188,7 @@ then
   case "${TRAVIS_OS_NAME}" in
     "linux")
       pony-stable-build-debs master
+      build_appimage "$(cat VERSION)"
     ;;
 
     "osx")
@@ -163,6 +207,7 @@ fi
 # normal release logic
 if [[ "$RELEASE_CONFIG" == "yes" && "$TRAVIS_BRANCH" == "release" && "$TRAVIS_PULL_REQUEST" == "false" ]]
 then
+  build_appimage "$(cat VERSION)"
   pony-stable-build-debs "$(cat VERSION)"
   pony-stable-kickoff-copr-ppa
   pony-stable-build-packages
