@@ -142,13 +142,37 @@ pony-stable-build-packages(){
 # nightly builds
 if [[ "$TRAVIS_BRANCH" == "master" && "$TRAVIS_EVENT_TYPE" == "cron" ]]
 then
-  pony-stable-build-debs master
+  case "${TRAVIS_OS_NAME}" in
+    "linux")
+      pony-stable-build-debs master
+    ;;
+
+    "osx")
+      brew install pony-stable --HEAD
+      brew uninstall pony-stable
+    ;;
+
+    *)
+      echo "ERROR: An unrecognized OS. Consider OS: ${TRAVIS_OS_NAME}."
+      exit 1
+    ;;
+
+  esac
 fi
 
 # normal release logic
-if [[ "$TRAVIS_BRANCH" == "release" && "$TRAVIS_PULL_REQUEST" == "false" ]]
+if [[ "$RELEASE_CONFIG" == "yes" && "$TRAVIS_BRANCH" == "release" && "$TRAVIS_PULL_REQUEST" == "false" ]]
 then
   pony-stable-build-debs "$(cat VERSION)"
   pony-stable-kickoff-copr-ppa
   pony-stable-build-packages
 fi
+
+
+case "${TRAVIS_OS_NAME}" in
+  "osx")
+    make
+    make test integration
+  ;;
+
+esac
