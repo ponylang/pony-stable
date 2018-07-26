@@ -12,4 +12,19 @@ install_ponyc(){
   sudo apt-get -V install ponyc libpcre2-dev -y
 }
 
-install_ponyc
+case "${TRAVIS_OS_NAME}" in
+  "linux")
+    install_ponyc
+  ;;
+
+  "osx")
+    brew update
+    brew install ponyc
+  ;;
+
+  *)
+    echo "ERROR: An unrecognized OS. Consider OS: ${TRAVIS_OS_NAME}."
+    exit 1
+  ;;
+
+esac
