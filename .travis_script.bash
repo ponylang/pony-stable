@@ -28,7 +28,7 @@ EOF
   sudo rm -rf build
 
   # can't run appimages in docker; need to extract and then run
-  ./linuxdeploy-x86_64.AppImage --appimage-extract
+  sudo docker run -v "$(pwd):/home/pony" --rm -u pony:2000 ponylang/ponyc-ci:centos7-llvm-3.9.1 sh -c "./linuxdeploy-x86_64.AppImage --appimage-extract"
 
   # need to run in CentOS 7 docker image
   sudo docker run -v "$(pwd):/home/pony" --rm --user root ponylang/ponyc-ci:centos7-llvm-3.9.1 sh -c "yum install yum-plugin-copr -y && yum copr enable ponylang/ponylang epel-7 -y && yum install ponyc -y && make arch=x86-64 DESTDIR=pony-stable.AppDir prefix=/usr test integration"
