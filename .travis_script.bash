@@ -32,8 +32,8 @@ EOF
 
   # need to run in CentOS 7 docker image
   sudo docker run -v "$(pwd):/home/pony" --rm --user root ponylang/ponyc-ci:centos7-llvm-3.9.1 sh -c "yum install yum-plugin-copr -y && yum copr enable ponylang/ponylang epel-7 -y && yum install ponyc -y && make arch=x86-64 DESTDIR=pony-stable.AppDir prefix=/usr test integration"
-  sudo docker run -v "$(pwd):/home/pony" --rm ponylang/ponyc-ci:centos7-llvm-3.9.1 sh -c "make arch=x86-64 DESTDIR=pony-stable.AppDir prefix=/usr install"
-  sudo docker run -v "$(pwd):/home/pony" --rm ponylang/ponyc-ci:centos7-llvm-3.9.1 sh -c "ARCH=x86_64 ./squashfs-root/AppRun --appdir pony-stable.AppDir --desktop-file=pony-stable.desktop --icon-file=pony-stable.png --app-name=pony-stable --output appimage"
+  sudo docker run -v "$(pwd):/home/pony" --rm -u pony:2000 ponylang/ponyc-ci:centos7-llvm-3.9.1 sh -c "make arch=x86-64 DESTDIR=pony-stable.AppDir prefix=/usr install"
+  sudo docker run -v "$(pwd):/home/pony" --rm -u pony:2000 ponylang/ponyc-ci:centos7-llvm-3.9.1 sh -c "ARCH=x86_64 ./squashfs-root/AppRun --appdir pony-stable.AppDir --desktop-file=pony-stable.desktop --icon-file=pony-stable.png --app-name=pony-stable --output appimage"
 
   mv Pony_Dependency_Manager-x86_64.AppImage "Pony_Depencency_Manager-${package_version}-x86_64.AppImage"
 
@@ -182,8 +182,8 @@ pony-stable-build-packages(){
   make arch=x86-64 package_name="pony-stable" package_base_version="$(cat VERSION)" package_iteration="${PACKAGE_ITERATION}" deploy
 }
 
-# nightly builds
-if [[ "$TRAVIS_BRANCH" == "master" && "$TRAVIS_EVENT_TYPE" == "cron" ]]
+# when running for a nightly cron job or manual api requested job to make sure packaging isn't broken
+if [[ "$TRAVIS_BRANCH" == "master" && ( "$TRAVIS_EVENT_TYPE" == "cron" || "$TRAVIS_EVENT_TYPE" == "api" ) ]]
 then
   case "${TRAVIS_OS_NAME}" in
     "linux")
