@@ -12,6 +12,7 @@ All notable changes to the Pony compiler and standard library will be documented
 
 ### Changed
 
+- Resolve Local Dependencies From Bundle Path ([PR #78](https://github.com/ponylang/pony-stable/pull/78))
 
 ## [0.1.6] - 2018-07-24
 
