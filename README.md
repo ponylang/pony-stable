@@ -1,6 +1,6 @@
 # pony-stable
 
-A simple dependency manager for the [Pony language](http://www.ponylang.org/).
+A simple dependency manager for the [Pony language](http://www.ponylang.io/).
 
 Too many ponies to keep track of?
 
