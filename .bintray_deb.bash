@@ -40,7 +40,7 @@ JSON="{
     \"repo\": \"$BINTRAY_REPO_NAME\",
     \"name\": \"pony-stable\",
     \"subject\": \"pony-language\",
-    \"website_url\": \"https://www.ponylang.org/\",
+    \"website_url\": \"https://www.ponylang.io/\",
     \"issue_tracker_url\": \"https://github.com/ponylang/pony-stable/issues\",
     \"vcs_url\": \"https://github.com/ponylang/pony-stable.git\",
     \"licenses\": [\"BSD 2-Clause\"],
