@@ -79,10 +79,10 @@ rpm --import pubkey.gpg
 zypper install pony-stable
 ```
 
-### Arch-Linux (AUR)
+### Arch Linux
 
 ```bash
-pacaur -S pony-stable-git
+pacman -S pony-stable
 ```
 
 ### From Source
