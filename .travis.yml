@@ -1,7 +1,11 @@
 language: c
 
 notifications:
-  email: false
+  irc:
+    channels:
+      - "chat.freenode.net#ponylang"
+    on_success: change
+    on_failure: change
 
 branches:
   only:
