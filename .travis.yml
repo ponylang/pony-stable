@@ -1,6 +1,7 @@
 language: c
 
 notifications:
+  email: false
   irc:
     channels:
       - "chat.freenode.net#ponylang"
