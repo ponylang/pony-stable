@@ -14,7 +14,7 @@ class Bundle
     path = path'
     log = log'
 
-    let bundle_path = path.join("bundle.json")?
+    let bundle_path = path.join("tack.json")?
 
     if not bundle_path.exists() then
       if create_on_missing then
@@ -96,5 +96,5 @@ class Bundle
       else JsonArray
       end
     deps_array.data.push(dep_json)
-    let file = CreateFile(path.join("bundle.json")?) as File
+    let file = CreateFile(path.join("tack.json")?) as File
     file.write(json.string("  ", true))

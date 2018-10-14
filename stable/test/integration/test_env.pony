@@ -18,7 +18,7 @@ actor EnvTests is TestList
 class TestEnvNoBundle is UnitTest
   new iso create() => None
 
-  fun name(): String => "integration.Env(no bundle.json)"
+  fun name(): String => "integration.Env(no tack.json)"
 
   fun apply(h: TestHelper) =>
     h.long_test(2_000_000_000)
@@ -35,7 +35,7 @@ class TestEnvNoBundle is UnitTest
 
     let notifier: ProcessNotify iso = _ExpectClient(h,
       None,
-      ["No bundle.json in current working directory or ancestors."],
+      ["No tack.json in current working directory or ancestors."],
       0)
     _Exec(h, "stable env", tmp.path, consume notifier)
 
@@ -59,13 +59,13 @@ class TestEnvEmptyBundleInSameDir is UnitTest
 
     let f =
       try
-        Directory(tmp)?.create_file("bundle.json")?
+        Directory(tmp)?.create_file("tack.json")?
       else
-        h.fail("failed to create bundle.json in temporary directory")
+        h.fail("failed to create tack.json in temporary directory")
         h.complete(false)
         return
       end
-    h.assert_true(f.write("{\"deps\":[]}\n"), "prepare bundle.json")
+    h.assert_true(f.write("{\"deps\":[]}\n"), "prepare tack.json")
 
     let notifier: ProcessNotify iso = _ExpectClient(h,
       ["PONYPATH=\n"], // empty
@@ -93,9 +93,9 @@ class TestEnvBundleInSameDir is UnitTest
 
     let f =
       try
-        Directory(tmp)?.create_file("bundle.json")?
+        Directory(tmp)?.create_file("tack.json")?
       else
-        h.fail("failed to create bundle.json in temporary directory")
+        h.fail("failed to create tack.json in temporary directory")
         h.complete(false)
         return
       end
@@ -104,7 +104,7 @@ class TestEnvBundleInSameDir is UnitTest
       {\"type\": \"local-git\", \"local-path\":\"../local-git/b\"},
       {\"type\": \"github\", \"repo\":\"github/c\"},
       {\"type\": \"gitlab\", \"repo\":\"gitlab/d\"}
-      ]}\n"), "prepare bundle.json")
+      ]}\n"), "prepare tack.json")
 
     let expected =
       try
@@ -144,15 +144,15 @@ class TestEnvBundleInSameDirWithCall is UnitTest
 
     let f =
       try
-        Directory(tmp)?.create_file("bundle.json")?
+        Directory(tmp)?.create_file("tack.json")?
       else
-        h.fail("failed to create bundle.json in temporary directory")
+        h.fail("failed to create tack.json in temporary directory")
         h.complete(false)
         return
       end
     h.assert_true(f.write("{\"deps\":[
       {\"type\": \"local\", \"local-path\":\"../local/a\"}
-      ]}\n"), "prepare bundle.json")
+      ]}\n"), "prepare tack.json")
 
     let notifier: ProcessNotify iso = _ExpectClient(h,
       ["../local/a"],
@@ -163,7 +163,7 @@ class TestEnvBundleInSameDirWithCall is UnitTest
 class TestEnvBundleInParentDir is UnitTest
   new iso create() => None
 
-  fun name(): String => "integration.Env(bundle.json in parent dir)"
+  fun name(): String => "integration.Env(tack.json in parent dir)"
 
   fun apply(h: TestHelper) =>
     h.long_test(2_000_000_000)
@@ -182,15 +182,15 @@ class TestEnvBundleInParentDir is UnitTest
       try
         h.assert_true(Directory(tmp)?.mkdir("nested"), "create nested directory")
         let n = tmp.join("nested")?
-        (Directory(tmp)?.create_file("bundle.json")?, n)
+        (Directory(tmp)?.create_file("tack.json")?, n)
       else
-        h.fail("failed to create bundle.json in nested temporary directory")
+        h.fail("failed to create tack.json in nested temporary directory")
         h.complete(false)
         return
       end
     h.assert_true(f.write("{\"deps\":[
       {\"type\": \"local\", \"local-path\":\"../local/a\"}
-      ]}\n"), "prepare bundle.json")
+      ]}\n"), "prepare tack.json")
 
     let notifier: ProcessNotify iso = _ExpectClient(h,
       ["PONYPATH=" + Path.join(tmp.path, "../local/a")],
@@ -201,7 +201,7 @@ class TestEnvBundleInParentDir is UnitTest
 class TestEnvBadBundleInNestedAndValidBundleInParentDir is UnitTest
   new iso create() => None
 
-  fun name(): String => "integration.Env(invalid bundle.json in nested dir)"
+  fun name(): String => "integration.Env(invalid tack.json in nested dir)"
 
   fun apply(h: TestHelper) =>
     h.long_test(2_000_000_000)
@@ -220,21 +220,21 @@ class TestEnvBadBundleInNestedAndValidBundleInParentDir is UnitTest
       try
         h.assert_true(Directory(tmp)?.mkdir("nested"), "create nested directory")
         let n = tmp.join("nested")?
-        (Directory(n)?.create_file("bundle.json")?,
-         Directory(tmp)?.create_file("bundle.json")?,
+        (Directory(n)?.create_file("tack.json")?,
+         Directory(tmp)?.create_file("tack.json")?,
          n)
       else
-        h.fail("failed to create bundle.json example data files")
+        h.fail("failed to create tack.json example data files")
         h.complete(false)
         return
       end
     h.assert_true(good_bundle.write("{\"deps\":[
       {\"type\": \"local\", \"local-path\":\"../local/a\"}
-      ]}\n"), "prepare good bundle.json")
-    h.assert_true(bad_bundle.write("{}"), "prepare bad bundle.json")
+      ]}\n"), "prepare good tack.json")
+    h.assert_true(bad_bundle.write("{}"), "prepare bad tack.json")
 
-    // This verifies that the parent-dir bundle.json isn't picked up if the
-    // nested-dir bundle.json is invalid.
+    // This verifies that the parent-dir tack.json isn't picked up if the
+    // nested-dir tack.json is invalid.
     let notifier: ProcessNotify iso = _ExpectClient(h,
       ["PONYPATH=$"],
       ["JSON error at: " + bad_bundle.path.path + ": missing \"deps\" array"],

@@ -23,10 +23,10 @@ class _TestBundleLocator is UnitTest
     h.assert_eq[String]("stable/test/testdata/nested/deeply",
       _BundleLocator(h.env, bundle("nested/deeply")) as String)
 
-    // nested/empty has no bundle.json
+    // nested/empty has no tack.json
     h.assert_eq[String]("stable/test/testdata/nested",
       _BundleLocator(h.env, bundle("nested/empty")) as String)
 
-    // stable itself has no bundle.json, so this ancestor-checking
-    // from stable/test/testdata/empty yields no bundle.json
+    // stable itself has no tack.json, so this ancestor-checking
+    // from stable/test/testdata/empty yields no tack.json
     h.assert_eq[None](None, _BundleLocator(h.env, bundle("empty")) as None)

@@ -17,7 +17,7 @@ actor Main
           ""
           "    A simple dependency manager for the Pony language."
           ""
-          "    Invoke in a working directory containing a bundle.json."
+          "    Invoke in a working directory containing a tack.json."
           ""
           "Commands:"
           "    help    - Print this message"
@@ -41,7 +41,7 @@ actor Main
         if create_on_missing then
           Bundle(FilePath(env.root as AmbientAuth, cwd)?, log, true)?
         else
-          log("No bundle.json in current working directory or ancestors.")
+          log("No tack.json in current working directory or ancestors.")
           error
         end
     end

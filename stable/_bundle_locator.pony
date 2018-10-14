@@ -5,7 +5,7 @@ primitive _BundleLocator
     var path = start_path
     while path.size() > 0 do
       let candidate = try
-          FilePath(env.root as AmbientAuth, path)?.join("bundle.json")?
+          FilePath(env.root as AmbientAuth, path)?.join("tack.json")?
         else
           return None
         end

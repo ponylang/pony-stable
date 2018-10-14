@@ -11,9 +11,9 @@ class TestBundle is UnitTest
 
   fun apply(h: TestHelper) ? =>
     h.assert_error(_BundleCreate(h.env, "notfound")?, "nonexistant directory")
-    h.assert_error(_BundleCreate(h.env, bundle("empty"))?, "no bundle.json")
-    h.assert_error(_BundleCreate(h.env, bundle("bad/empty"))?, "empty bundle.json")
-    h.assert_error(_BundleCreate(h.env, bundle("bad/wrong_format"))?, "wrong bundle.json")
+    h.assert_error(_BundleCreate(h.env, bundle("empty"))?, "no tack.json")
+    h.assert_error(_BundleCreate(h.env, bundle("bad/empty"))?, "empty tack.json")
+    h.assert_error(_BundleCreate(h.env, bundle("bad/wrong_format"))?, "wrong tack.json")
 
     h.assert_no_error(_BundleCreate(h.env, bundle("empty-deps"))?, "empty deps")
     h.assert_no_error(_BundleCreate(h.env, bundle("github"))?, "github dep")
@@ -27,14 +27,14 @@ class TestBundle is UnitTest
 
     h.assert_no_error(_BundleCreate(h.env, bundle("empty"), true)?, "create in directory with no bunde.json")
 
-    let file = FilePath(h.env.root as AmbientAuth, bundle("empty/bundle.json"))?
-    h.assert_true(file.exists(), "empty bundle.json created")
+    let file = FilePath(h.env.root as AmbientAuth, bundle("empty/tack.json"))?
+    h.assert_true(file.exists(), "empty tack.json created")
     let f = OpenFile(file) as File
     let content: String = f.read_string(f.size())
     h.assert_eq[String]("{\"deps\":[]}\n", content)
 
   fun tear_down(h: TestHelper) =>
-    let created_bundle = bundle("empty/bundle.json")
+    let created_bundle = bundle("empty/tack.json")
     try
       FilePath(h.env.root as AmbientAuth, created_bundle)?.remove()
     else
