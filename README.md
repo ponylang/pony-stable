@@ -29,7 +29,7 @@ For Debian Linux, the `release` builds are packaged and available on Bintray ([p
 To install builds via Apt (and install Bintray's public key):
 
 ```bash
-sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys "D401AB61 DBE1D0A2"
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys D401AB61 DBE1D0A2
 echo "deb https://dl.bintray.com/pony-language/pony-stable-debian /" | sudo tee -a /etc/apt/sources.list
 sudo apt-get update
 sudo apt-get -V install pony-stable
