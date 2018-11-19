@@ -32,6 +32,22 @@ The `github` type represents a github repository. It has up to four keys:
 * `"subdir"`:
   [Optional] A subdirectory to use as the root of this dependency.
 
+## gitlab
+
+The `gitlab` type represents a gitlab repository. It has up to four keys:
+
+* `"type"`:
+  **[Required]** For the `gitlab` dependency type, this is `"gitlab"`.
+* `"repo"`:
+  **[Required]** The path of the url for your dependency project. For example,
+  `pony-stable`'s repo would be `"ponylang/pony-stable"`.
+* `"tag"`:
+  [Optional] A specific tag to checkout from the git repo. Technically, this
+  can be any git "tree-ish".
+* `"subdir"`:
+  [Optional] A subdirectory to use as the root of this dependency.
+
+
 ## local-git
 
 The `local-git` type represents a git repository already on your workstation.
