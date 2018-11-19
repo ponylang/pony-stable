@@ -4,6 +4,7 @@ stable-add(1) -- add a dependency
 ## SYNOPSIS
 
     stable add github <url-path> [options]
+    stable add gitlab <url-path> [options]
     stable add local-git <path> [options]
     stable add local <path>
     stable add
@@ -26,8 +27,23 @@ Download a github repository into your project.
   * `-d` _directory_ , `--subdir` _directory_:
   Fetch only a subdirectory of the project
 
-      stable add github jemc/pony-inspect
+  ```
+  stable add github jemc/pony-inspect
+  ```
+  
+### gitlab
 
+Download a gitlab repository into your project.
+
+  * `-t` _git-tag_, `--tag` _git-tag_:
+  Specify a tag from the source repository
+  * `-d` _directory_ , `--subdir` _directory_:
+  Fetch only a subdirectory of the project
+
+  ```
+  stable add gitlab org/repo
+  ```
+  
 ### local-git
 
 Copy a local git repository into your project.
