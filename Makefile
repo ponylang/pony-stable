@@ -16,10 +16,9 @@ ifdef config
   endif
 endif
 
-ifeq ($(config),release)
-	PONYC = ponyc
-else
-	PONYC = ponyc --debug
+PONYC ?= ponyc
+ifeq ($(config),debug)
+	PONYC += --debug
 endif
 
 ifneq ($(arch),)

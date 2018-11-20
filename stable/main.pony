@@ -1,4 +1,5 @@
 use "files"
+use "cli"
 
 actor Main
   let env: Env
@@ -8,102 +9,72 @@ actor Main
     env = env'
     log = LogSimple(env.err)
 
-    command(try env.args(1)? else "" end, env.args.slice(2))
-
-  fun _print_usage() =>
-    env.out.printv(
-      recover
-        [ "Usage: stable COMMAND [...]"
-          ""
-          "    A simple dependency manager for the Pony language."
-          ""
-          "    Invoke in a working directory containing a bundle.json."
-          ""
-          "Commands:"
-          "    help    - Print this message"
-          "    version - Print version information"
-          "    fetch   - Fetch/update the deps for this bundle"
-          "    env     - Execute the following shell command inside an environment"
-          "              with PONYPATH set to include deps directories. For example,"
-          "              `stable env ponyc myproject`"
-          "    add     - Add a new dependency. For example,"
-          "              `stable add github jemc/pony-inspect"
-          ""
-        ]
-      end)
-
-  fun _load_bundle(create_on_missing: Bool = false): Bundle ? =>
-    let cwd = Path.cwd()
-    match _BundleLocator(env, cwd)
-    | let path: String =>
-        Bundle(FilePath(env.root as AmbientAuth, path)?, log, false)?
-    | None =>
-        if create_on_missing then
-          Bundle(FilePath(env.root as AmbientAuth, cwd)?, log, true)?
-        else
-          log("No bundle.json in current working directory or ancestors.")
-          error
-        end
-    end
-
-  fun command_fetch() =>
-    try _load_bundle()?.fetch() end
-
-  fun command_env(rest: Array[String] box) =>
-    let ponypath =
+    let cs =
       try
-        let bundle = _load_bundle()?
-        let ponypath' = recover trn String end
-        let iter = bundle.paths().values()
-        let sep = Path.list_sep()(0)?
-        for path in iter do
-          ponypath'.append(path)
-          if iter.has_next() then ponypath'.push(sep) end
-        end
+        CommandSpec.parent(
+          "stable",
+          """
+          A simple dependency manager for the Pony language.
 
-        ponypath'
+          Invoke in a working directory containing a bundle.json.
+          """,
+          [], // options
+          [   // subcommands
+            VersionCmd.command_spec()?
+            FetchCmd.command_spec()?
+            EnvCmd.command_spec()?
+            AddCmd.command_spec()?
+          ])? .> add_help("help", "Shows this text and exits.")?
       else
-        ""
+        log("Error instantiating stable cli.")
+        env.exitcode(1)
+        return
       end
-    try
-      ifdef windows then
-        var cmd: String trn = recover String end
-        cmd.append("cmd /C \"set \"PONYPATH=")
-        cmd.append(ponypath)
-        cmd.append("\" &&")
-        for arg in rest.values() do
-          cmd.append(" ")
-          cmd.append(arg)
-        end
-        cmd.append("\"")
-        Shell(consume cmd, env.exitcode)?
+    let cmd =
+      match CommandParser(cs).parse(env.args, env.vars)
+      | let c: Command => c
+      | let ch: CommandHelp =>
+        ch.print_help(env.out)
+        env.exitcode(0)
+        return
+      | let se: SyntaxError =>
+        log(se.string())
+        log("")
+        Help.general(cs).print_help(env.err)
+        env.exitcode(1)
+        return
+      end
+
+    let locator =
+      try
+        _BundleLocator(env.root as AmbientAuth, log)
       else
-        Shell.from_array(
-          ["env"; "PONYPATH=" + ponypath] .> append(rest), env.exitcode)?
+        log("unable to locate bundle.json, no sufficient Auth provided.")
+        env.exitcode(1)
+        return
       end
-    end
-
-  fun command_add(rest: Array[String] box) =>
+    // dispatch to subcommands
     try
-      let bundle = _load_bundle(true)?
-      let added_json = Add(rest, log)?
-      bundle.add_dep(added_json)?
-      bundle.fetch()
-    end
-
-  fun command_version(rest: Array[String] box) =>
-    env.out.print(Version())
-
-  fun command(s: String, rest: Array[String] box) =>
-    match s
-    | "fetch" =>
-      command_fetch()
-    | "env" =>
-      command_env(rest)
-    | "add" =>
-      command_add(rest)
-    | "version" =>
-      command_version(rest)
+      match cmd.spec().name()
+      | VersionCmd.name() =>
+        env.out.print(VersionCmd())
+      | FetchCmd.name() =>
+        let bundle = locator.load_from_cwd()?
+        FetchCmd(cmd, bundle, log)
+      | EnvCmd.name() =>
+        let bundle = locator.load_from_cwd()?
+        EnvCmd(env, cmd, bundle, log)?
+        return // avoid overwriting the exitcode
+      | AddCmd.name() =>
+        let bundle = locator.load_from_cwd(true)?
+        AddCmd(cmd, bundle, log)?
+      else
+        log("unknown subcommand")
+        Help.general(cs).print_help(env.err)
+        env.exitcode(1)
+      end
+      env.exitcode(0)
     else
-      _print_usage()
+      env.exitcode(1)
     end
+
