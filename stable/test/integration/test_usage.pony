@@ -24,22 +24,18 @@ class TestUsage is UnitTest
     h.dispose_when_done(_CleanTmp(tmp))
 
     let notifier: ProcessNotify iso = _ExpectClient(h,
-      [ "usage: stable \\[\\<options\\>\\] \\<command\\> \\[\\<args\\> \\.\\.\\.\\]"
-        ""
+      [
+        "usage: stable \\[\\<options\\>\\] \\<command\\> \\[\\<args\\> \\.\\.\\.\\]"
         "A simple dependency manager for the Pony language\\."
-        ""
         "Invoke in a working directory containing a bundle\\.json\\."
-        ""
-        ""
         "Options:"
-        "   -h, --help=false    Shows this text and exits."
-        ""
+        "-h, --help=false\\s+Shows this text and exits\\."
         "Commands:"
-        "   env <command>          Executes the given command within the environment defined by the local `bundle.json`."
-        "   help <command>"
-        "   add <type> <source>    Adds a new dependency to the local `bundle.json`."
-        "   version                Prints the version of stable."
-        "   fetch                  Updates the local `.deps` directory with the most recent content from the source repositories."
+        "env <command>\\s+Executes the given command within the environment defined by the local `bundle\\.json`\\."
+        "help <command>"
+        "add <type>\\s?<source>\\s+Adds a new dependency to the local `bundle\\.json`\\."
+        "version\\s+Prints the version of stable\\."
+        "fetch\\s+Updates the local `\\.deps` directory with the most recent content from the source repositories\\."
       ],
       None, // stderr
       0)
@@ -68,23 +64,17 @@ class TestUsageOnError is UnitTest
     let notifier: ProcessNotify iso = _ExpectClient(h,
       None, // stdout
       [ "Error: .+"
-        ""
-        "usage: stable \\[\\<options\\>\\] \\<command\\> \\[\\<args\\> \\.\\.\\.\\]"
-        ""
+         "usage: stable \\[\\<options\\>\\] \\<command\\> \\[\\<args\\> \\.\\.\\.\\]"
         "A simple dependency manager for the Pony language\\."
-        ""
         "Invoke in a working directory containing a bundle\\.json\\."
-        ""
-        ""
         "Options:"
-        "   -h, --help=false    Shows this text and exits."
-        ""
+        "-h, --help=false\\s+Shows this text and exits\\."
         "Commands:"
-        "   env <command>          Executes the given command within the environment defined by the local `bundle.json`."
-        "   help <command>"
-        "   add <type> <source>    Adds a new dependency to the local `bundle.json`."
-        "   version                Prints the version of stable."
-        "   fetch                  Updates the local `.deps` directory with the most recent content from the source repositories."
+        "env <command>\\s+Executes the given command within the environment defined by the local `bundle\\.json`\\."
+        "help <command>"
+        "add <type>\\s?<source>\\s+Adds a new dependency to the local `bundle\\.json`\\."
+        "version\\s+Prints the version of stable\\."
+        "fetch\\s+Updates the local `\\.deps` directory with the most recent content from the source repositories\\."
       ], //stderr
       1)
     _Exec(h, "stable " + _args, tmp.path, consume notifier)
