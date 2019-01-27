@@ -1,145 +1,127 @@
 language: c
-
 notifications:
   email: false
   irc:
     channels:
-      - "chat.freenode.net#ponylang"
+    - chat.freenode.net#ponylang
     on_success: change
     on_failure: change
-
+  slack:
+    secure: cz5gBuTG0sFoUisTZEpbHiRc63277RzrASeTTh9EEzR1o1TvBSfYRP9W37VGZzkASep/GNyUYvv58PYOgJWdvlVVgir9lbQt96ZellnCEoDYUqnL7BH6dtElVNQYViZC/KdQgdHWI6uWinU/QGu8c6NvZPqZdaSDyVwJZglwCalezK9lCkfOd6vxtFwcOt7PSDpOftzs7cR7NiW/Ei2X51n2581khQp/wMxtDwUVTvIFkiAj+rkWSlsU0QzXahrUSZmwZSY3rxSKN0ZLjwB55Y/OBF8YEfSntuvPZQeLQfcYagGG/ePpsNg2ajKxbcx/E9xxeTWcl7xBSaCxzJh4zMByK4fsxZdGr3hgzFLhHuf3/rswijFemZa3VeqUfbCXlbZyuYOqrF/bGXfq5grreOz/0vg0Abeb9yrVLuqAaWY94C3aUA6LurVAUgJhm8nX/Jcwq/gI5u0O+tsihBaEh4HHg91vHa7R9PmbsSGp7kcghMpFhnjDASqawS31qXa5a3BpokjdlM+7RhZxmtxRv1Rb0QEy2Lgf2e6av87Lrl4GBd6ro1NOHe2byPUVGIN+qKsm7SZih47gAMGry4RmCfBMB1vE8tp7wTndV/Y3qlbdq8cNAi2EYnm162FPptHYowM/cXoSufjhmoNxRgFLr2Juc6etjkLYxVJJNbsqxTY=
+    on_success: change
+    on_failure: change
 branches:
   only:
-    - master
-    - release
-
+  - master
+  - release
 sudo: required
-
-# NOTE: This holds fedora COPR API related variables. Unfortunately, the values expire every 180 days.
-# As a result, we have to remember to visit https://copr.fedorainfracloud.org/api/ and generate a new token
-# and then run the following to update variables and replace the "secure" value.
-# travis encrypt COPR_LOGIN=VALUE COPR_TOKEN=VALUE --org -r ponylang/pony-stable
 env:
   global:
-    - secure: "tJ3Q2y22jftE5nsEJJUx/XzvdsoSM8v2Lsw/4EtpTDGhX751n5NlUwlnCkJaoStfivksBh83WEvIypU3a/BKzror3KV1WpcSdHHJiJ8/eQxHBD9+Gx59yHSTxwDr6XdHA6pCmbtX4KxJiFUKYtvPnync9ZDHmH7e3ocmmmyqVnEM0I+N8M4cRD7Fv0Gsj2DQEWBOj8fRK/EIUoAi/+roay20K251rkD9EycclQmUfh76n7AQwlHXkk86z1pdNvI91JcY8wWx/U7KPeKpVX+HE98CBX6UdYkwMYYMzZj+KtMpXzekuSgRmt7FvQrtc1zo9DkPBjHx0IViMkfGXrJVgBODP4T7XlZxGoIMSx2FReaAh/VBuQrguu4rNYz9NzTejwd730vySKz0ZOv6pvRJr8lNIbmFF82oEDVWRvwFr5Z5Wl/a2pFCVdjnTIXZKhJD3yysWnbVsIMlFW1zTMpT2L7B+bfG0+EsCsSYXCpA3jL+2oJafR9DRMhDV1kIr+hFH0TF58Pe2wadPcLn6lnCIfvctbPknmuYe0nk+B8hcVHSqmkAhZmIUK4I8u7b/cWeOBHnWjwP1CFdVz2eXgf1A4tZP1VOt3VLohpOCzFk64CT7dwah0acuuOWUnGVzkQTpy25khM0fr+v6jL8xkUHgoBvt7g5KG5ifdie1HHxcWw="
-    - RELEASE_CONFIG=no
-
+  - secure: tJ3Q2y22jftE5nsEJJUx/XzvdsoSM8v2Lsw/4EtpTDGhX751n5NlUwlnCkJaoStfivksBh83WEvIypU3a/BKzror3KV1WpcSdHHJiJ8/eQxHBD9+Gx59yHSTxwDr6XdHA6pCmbtX4KxJiFUKYtvPnync9ZDHmH7e3ocmmmyqVnEM0I+N8M4cRD7Fv0Gsj2DQEWBOj8fRK/EIUoAi/+roay20K251rkD9EycclQmUfh76n7AQwlHXkk86z1pdNvI91JcY8wWx/U7KPeKpVX+HE98CBX6UdYkwMYYMzZj+KtMpXzekuSgRmt7FvQrtc1zo9DkPBjHx0IViMkfGXrJVgBODP4T7XlZxGoIMSx2FReaAh/VBuQrguu4rNYz9NzTejwd730vySKz0ZOv6pvRJr8lNIbmFF82oEDVWRvwFr5Z5Wl/a2pFCVdjnTIXZKhJD3yysWnbVsIMlFW1zTMpT2L7B+bfG0+EsCsSYXCpA3jL+2oJafR9DRMhDV1kIr+hFH0TF58Pe2wadPcLn6lnCIfvctbPknmuYe0nk+B8hcVHSqmkAhZmIUK4I8u7b/cWeOBHnWjwP1CFdVz2eXgf1A4tZP1VOt3VLohpOCzFk64CT7dwah0acuuOWUnGVzkQTpy25khM0fr+v6jL8xkUHgoBvt7g5KG5ifdie1HHxcWw=
+  - RELEASE_CONFIG=no
 matrix:
   include:
-    - os: osx
-
-    - os: linux
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - g++-6
-      env:
-        - RELEASE_CONFIG=yes
-
+  - os: osx
+  - os: linux
+    addons:
+      apt:
+        sources:
+        - ubuntu-toolchain-r-test
+        packages:
+        - g++-6
+    env:
+    - RELEASE_CONFIG=yes
 install:
-  - bash .travis_install.bash
-
+- bash .travis_install.bash
 script:
-  - bash .travis_script.bash
-
+- bash .travis_script.bash
 deploy:
-  - provider: bintray
-    user: pony-buildbot-2
-    file: /home/travis/build/ponylang/pony-stable/bintray_debian.json
-    skip_cleanup: true
-    on:
-      branch: release
-      condition: "$RELEASE_CONFIG == yes"
-    key:
-      secure: "BsQuv9cfqG2O5Qvz4rdtHJ7QnjorOzPM2obbzpTA33MqtWR9NPS/W26RPUdMEGspUT72j6PNjbcgV4LXcysVQQLLoVRzPU9sy8U/fW00Om/RkyOa0ia5D3U4OWCme2rkTA/QAnkCT5E8hgx/TLtpbfTWmwiTqpi2toNuAjKXpHsGaXYQaQH6VjSzosTsdnhpwynCQA5qnHw/Wn3vEI2dt+ZvLE3xsVkU+1QoSWGsqBCoEXEZXAyxh4UcsBDHfgUaKGMZbbeXTZBFhCuCzQwMXruW0MLOJJEpGgCxY34KPFgVKyOk/2A7TfrzsZeBm2I6Dx/raLWU28cUNdIR2JYepbImqO8neGmDarskHPf+Kj9t8KrKm7yFXpBIjq1wpL7qcLEWIFolnbAreDZVaR+7wbai9r8iUergjLVlL+2Fs3vAMCSniFXWZtekHoa7YHKnVesq5ElHHLDc+1PiHM7S0QSClUvSzcQHWj0icnvzzLuO4oPc3Qc668uk7/XraTcHrqU4G59co2Co6egcK4fGOcGYWEbEamoR34JAiLlar2iAu3BiBAJBCDNbSbcs1JwL6b4KQD58j7VXYHE5mjEFNA96yG54siHRqbFXGhef/nc0+Wo3QpgH5sYYLUn84/aJbs49S/hyqtxTDsp5vUNWGUhADatMFWhY4KNBvnjjUcs="
-
-  - provider: bintray
-    user: pony-buildbot-2
-    file: /home/travis/build/ponylang/pony-stable/bintray_rpm.json
-    skip_cleanup: true
-    on:
-      branch: release
-      condition: "$RELEASE_CONFIG == yes"
-    key:
-      secure: "BsQuv9cfqG2O5Qvz4rdtHJ7QnjorOzPM2obbzpTA33MqtWR9NPS/W26RPUdMEGspUT72j6PNjbcgV4LXcysVQQLLoVRzPU9sy8U/fW00Om/RkyOa0ia5D3U4OWCme2rkTA/QAnkCT5E8hgx/TLtpbfTWmwiTqpi2toNuAjKXpHsGaXYQaQH6VjSzosTsdnhpwynCQA5qnHw/Wn3vEI2dt+ZvLE3xsVkU+1QoSWGsqBCoEXEZXAyxh4UcsBDHfgUaKGMZbbeXTZBFhCuCzQwMXruW0MLOJJEpGgCxY34KPFgVKyOk/2A7TfrzsZeBm2I6Dx/raLWU28cUNdIR2JYepbImqO8neGmDarskHPf+Kj9t8KrKm7yFXpBIjq1wpL7qcLEWIFolnbAreDZVaR+7wbai9r8iUergjLVlL+2Fs3vAMCSniFXWZtekHoa7YHKnVesq5ElHHLDc+1PiHM7S0QSClUvSzcQHWj0icnvzzLuO4oPc3Qc668uk7/XraTcHrqU4G59co2Co6egcK4fGOcGYWEbEamoR34JAiLlar2iAu3BiBAJBCDNbSbcs1JwL6b4KQD58j7VXYHE5mjEFNA96yG54siHRqbFXGhef/nc0+Wo3QpgH5sYYLUn84/aJbs49S/hyqtxTDsp5vUNWGUhADatMFWhY4KNBvnjjUcs="
-
-  - provider: bintray
-    user: pony-buildbot-2
-    file: /home/travis/build/ponylang/pony-stable/bintray_appimage.json
-    skip_cleanup: true
-    on:
-      branch: release
-    key:
-      secure: "BsQuv9cfqG2O5Qvz4rdtHJ7QnjorOzPM2obbzpTA33MqtWR9NPS/W26RPUdMEGspUT72j6PNjbcgV4LXcysVQQLLoVRzPU9sy8U/fW00Om/RkyOa0ia5D3U4OWCme2rkTA/QAnkCT5E8hgx/TLtpbfTWmwiTqpi2toNuAjKXpHsGaXYQaQH6VjSzosTsdnhpwynCQA5qnHw/Wn3vEI2dt+ZvLE3xsVkU+1QoSWGsqBCoEXEZXAyxh4UcsBDHfgUaKGMZbbeXTZBFhCuCzQwMXruW0MLOJJEpGgCxY34KPFgVKyOk/2A7TfrzsZeBm2I6Dx/raLWU28cUNdIR2JYepbImqO8neGmDarskHPf+Kj9t8KrKm7yFXpBIjq1wpL7qcLEWIFolnbAreDZVaR+7wbai9r8iUergjLVlL+2Fs3vAMCSniFXWZtekHoa7YHKnVesq5ElHHLDc+1PiHM7S0QSClUvSzcQHWj0icnvzzLuO4oPc3Qc668uk7/XraTcHrqU4G59co2Co6egcK4fGOcGYWEbEamoR34JAiLlar2iAu3BiBAJBCDNbSbcs1JwL6b4KQD58j7VXYHE5mjEFNA96yG54siHRqbFXGhef/nc0+Wo3QpgH5sYYLUn84/aJbs49S/hyqtxTDsp5vUNWGUhADatMFWhY4KNBvnjjUcs="
-
-  - provider: bintray
-    user: pony-buildbot-2
-    file: /home/travis/build/ponylang/pony-stable/bintray_debian_trusty.json
-    skip_cleanup: true
-    on:
-      branch: release
-      condition: "$RELEASE_CONFIG == yes"
-    key:
-      secure: "BsQuv9cfqG2O5Qvz4rdtHJ7QnjorOzPM2obbzpTA33MqtWR9NPS/W26RPUdMEGspUT72j6PNjbcgV4LXcysVQQLLoVRzPU9sy8U/fW00Om/RkyOa0ia5D3U4OWCme2rkTA/QAnkCT5E8hgx/TLtpbfTWmwiTqpi2toNuAjKXpHsGaXYQaQH6VjSzosTsdnhpwynCQA5qnHw/Wn3vEI2dt+ZvLE3xsVkU+1QoSWGsqBCoEXEZXAyxh4UcsBDHfgUaKGMZbbeXTZBFhCuCzQwMXruW0MLOJJEpGgCxY34KPFgVKyOk/2A7TfrzsZeBm2I6Dx/raLWU28cUNdIR2JYepbImqO8neGmDarskHPf+Kj9t8KrKm7yFXpBIjq1wpL7qcLEWIFolnbAreDZVaR+7wbai9r8iUergjLVlL+2Fs3vAMCSniFXWZtekHoa7YHKnVesq5ElHHLDc+1PiHM7S0QSClUvSzcQHWj0icnvzzLuO4oPc3Qc668uk7/XraTcHrqU4G59co2Co6egcK4fGOcGYWEbEamoR34JAiLlar2iAu3BiBAJBCDNbSbcs1JwL6b4KQD58j7VXYHE5mjEFNA96yG54siHRqbFXGhef/nc0+Wo3QpgH5sYYLUn84/aJbs49S/hyqtxTDsp5vUNWGUhADatMFWhY4KNBvnjjUcs="
-
-  - provider: bintray
-    user: pony-buildbot-2
-    file: /home/travis/build/ponylang/pony-stable/bintray_debian_xenial.json
-    skip_cleanup: true
-    on:
-      branch: release
-      condition: "$RELEASE_CONFIG == yes"
-    key:
-      secure: "BsQuv9cfqG2O5Qvz4rdtHJ7QnjorOzPM2obbzpTA33MqtWR9NPS/W26RPUdMEGspUT72j6PNjbcgV4LXcysVQQLLoVRzPU9sy8U/fW00Om/RkyOa0ia5D3U4OWCme2rkTA/QAnkCT5E8hgx/TLtpbfTWmwiTqpi2toNuAjKXpHsGaXYQaQH6VjSzosTsdnhpwynCQA5qnHw/Wn3vEI2dt+ZvLE3xsVkU+1QoSWGsqBCoEXEZXAyxh4UcsBDHfgUaKGMZbbeXTZBFhCuCzQwMXruW0MLOJJEpGgCxY34KPFgVKyOk/2A7TfrzsZeBm2I6Dx/raLWU28cUNdIR2JYepbImqO8neGmDarskHPf+Kj9t8KrKm7yFXpBIjq1wpL7qcLEWIFolnbAreDZVaR+7wbai9r8iUergjLVlL+2Fs3vAMCSniFXWZtekHoa7YHKnVesq5ElHHLDc+1PiHM7S0QSClUvSzcQHWj0icnvzzLuO4oPc3Qc668uk7/XraTcHrqU4G59co2Co6egcK4fGOcGYWEbEamoR34JAiLlar2iAu3BiBAJBCDNbSbcs1JwL6b4KQD58j7VXYHE5mjEFNA96yG54siHRqbFXGhef/nc0+Wo3QpgH5sYYLUn84/aJbs49S/hyqtxTDsp5vUNWGUhADatMFWhY4KNBvnjjUcs="
-
-  - provider: bintray
-    user: pony-buildbot-2
-    file: /home/travis/build/ponylang/pony-stable/bintray_debian_artful.json
-    skip_cleanup: true
-    on:
-      branch: release
-      condition: "$RELEASE_CONFIG == yes"
-    key:
-      secure: "BsQuv9cfqG2O5Qvz4rdtHJ7QnjorOzPM2obbzpTA33MqtWR9NPS/W26RPUdMEGspUT72j6PNjbcgV4LXcysVQQLLoVRzPU9sy8U/fW00Om/RkyOa0ia5D3U4OWCme2rkTA/QAnkCT5E8hgx/TLtpbfTWmwiTqpi2toNuAjKXpHsGaXYQaQH6VjSzosTsdnhpwynCQA5qnHw/Wn3vEI2dt+ZvLE3xsVkU+1QoSWGsqBCoEXEZXAyxh4UcsBDHfgUaKGMZbbeXTZBFhCuCzQwMXruW0MLOJJEpGgCxY34KPFgVKyOk/2A7TfrzsZeBm2I6Dx/raLWU28cUNdIR2JYepbImqO8neGmDarskHPf+Kj9t8KrKm7yFXpBIjq1wpL7qcLEWIFolnbAreDZVaR+7wbai9r8iUergjLVlL+2Fs3vAMCSniFXWZtekHoa7YHKnVesq5ElHHLDc+1PiHM7S0QSClUvSzcQHWj0icnvzzLuO4oPc3Qc668uk7/XraTcHrqU4G59co2Co6egcK4fGOcGYWEbEamoR34JAiLlar2iAu3BiBAJBCDNbSbcs1JwL6b4KQD58j7VXYHE5mjEFNA96yG54siHRqbFXGhef/nc0+Wo3QpgH5sYYLUn84/aJbs49S/hyqtxTDsp5vUNWGUhADatMFWhY4KNBvnjjUcs="
-
-  - provider: bintray
-    user: pony-buildbot-2
-    file: /home/travis/build/ponylang/pony-stable/bintray_debian_bionic.json
-    skip_cleanup: true
-    on:
-      branch: release
-      condition: "$RELEASE_CONFIG == yes"
-    key:
-      secure: "BsQuv9cfqG2O5Qvz4rdtHJ7QnjorOzPM2obbzpTA33MqtWR9NPS/W26RPUdMEGspUT72j6PNjbcgV4LXcysVQQLLoVRzPU9sy8U/fW00Om/RkyOa0ia5D3U4OWCme2rkTA/QAnkCT5E8hgx/TLtpbfTWmwiTqpi2toNuAjKXpHsGaXYQaQH6VjSzosTsdnhpwynCQA5qnHw/Wn3vEI2dt+ZvLE3xsVkU+1QoSWGsqBCoEXEZXAyxh4UcsBDHfgUaKGMZbbeXTZBFhCuCzQwMXruW0MLOJJEpGgCxY34KPFgVKyOk/2A7TfrzsZeBm2I6Dx/raLWU28cUNdIR2JYepbImqO8neGmDarskHPf+Kj9t8KrKm7yFXpBIjq1wpL7qcLEWIFolnbAreDZVaR+7wbai9r8iUergjLVlL+2Fs3vAMCSniFXWZtekHoa7YHKnVesq5ElHHLDc+1PiHM7S0QSClUvSzcQHWj0icnvzzLuO4oPc3Qc668uk7/XraTcHrqU4G59co2Co6egcK4fGOcGYWEbEamoR34JAiLlar2iAu3BiBAJBCDNbSbcs1JwL6b4KQD58j7VXYHE5mjEFNA96yG54siHRqbFXGhef/nc0+Wo3QpgH5sYYLUn84/aJbs49S/hyqtxTDsp5vUNWGUhADatMFWhY4KNBvnjjUcs="
-
-  - provider: bintray
-    user: pony-buildbot-2
-    file: /home/travis/build/ponylang/pony-stable/bintray_debian_jessie.json
-    skip_cleanup: true
-    on:
-      branch: release
-      condition: "$RELEASE_CONFIG == yes"
-    key:
-      secure: "BsQuv9cfqG2O5Qvz4rdtHJ7QnjorOzPM2obbzpTA33MqtWR9NPS/W26RPUdMEGspUT72j6PNjbcgV4LXcysVQQLLoVRzPU9sy8U/fW00Om/RkyOa0ia5D3U4OWCme2rkTA/QAnkCT5E8hgx/TLtpbfTWmwiTqpi2toNuAjKXpHsGaXYQaQH6VjSzosTsdnhpwynCQA5qnHw/Wn3vEI2dt+ZvLE3xsVkU+1QoSWGsqBCoEXEZXAyxh4UcsBDHfgUaKGMZbbeXTZBFhCuCzQwMXruW0MLOJJEpGgCxY34KPFgVKyOk/2A7TfrzsZeBm2I6Dx/raLWU28cUNdIR2JYepbImqO8neGmDarskHPf+Kj9t8KrKm7yFXpBIjq1wpL7qcLEWIFolnbAreDZVaR+7wbai9r8iUergjLVlL+2Fs3vAMCSniFXWZtekHoa7YHKnVesq5ElHHLDc+1PiHM7S0QSClUvSzcQHWj0icnvzzLuO4oPc3Qc668uk7/XraTcHrqU4G59co2Co6egcK4fGOcGYWEbEamoR34JAiLlar2iAu3BiBAJBCDNbSbcs1JwL6b4KQD58j7VXYHE5mjEFNA96yG54siHRqbFXGhef/nc0+Wo3QpgH5sYYLUn84/aJbs49S/hyqtxTDsp5vUNWGUhADatMFWhY4KNBvnjjUcs="
-
-  - provider: bintray
-    user: pony-buildbot-2
-    file: /home/travis/build/ponylang/pony-stable/bintray_debian_stretch.json
-    skip_cleanup: true
-    on:
-      branch: release
-      condition: "$RELEASE_CONFIG == yes"
-    key:
-      secure: "BsQuv9cfqG2O5Qvz4rdtHJ7QnjorOzPM2obbzpTA33MqtWR9NPS/W26RPUdMEGspUT72j6PNjbcgV4LXcysVQQLLoVRzPU9sy8U/fW00Om/RkyOa0ia5D3U4OWCme2rkTA/QAnkCT5E8hgx/TLtpbfTWmwiTqpi2toNuAjKXpHsGaXYQaQH6VjSzosTsdnhpwynCQA5qnHw/Wn3vEI2dt+ZvLE3xsVkU+1QoSWGsqBCoEXEZXAyxh4UcsBDHfgUaKGMZbbeXTZBFhCuCzQwMXruW0MLOJJEpGgCxY34KPFgVKyOk/2A7TfrzsZeBm2I6Dx/raLWU28cUNdIR2JYepbImqO8neGmDarskHPf+Kj9t8KrKm7yFXpBIjq1wpL7qcLEWIFolnbAreDZVaR+7wbai9r8iUergjLVlL+2Fs3vAMCSniFXWZtekHoa7YHKnVesq5ElHHLDc+1PiHM7S0QSClUvSzcQHWj0icnvzzLuO4oPc3Qc668uk7/XraTcHrqU4G59co2Co6egcK4fGOcGYWEbEamoR34JAiLlar2iAu3BiBAJBCDNbSbcs1JwL6b4KQD58j7VXYHE5mjEFNA96yG54siHRqbFXGhef/nc0+Wo3QpgH5sYYLUn84/aJbs49S/hyqtxTDsp5vUNWGUhADatMFWhY4KNBvnjjUcs="
-
-  - provider: bintray
-    user: pony-buildbot-2
-    file: /home/travis/build/ponylang/pony-stable/bintray_debian_buster.json
-    skip_cleanup: true
-    on:
-      branch: release
-      condition: "$RELEASE_CONFIG == yes"
-    key:
-      secure: "BsQuv9cfqG2O5Qvz4rdtHJ7QnjorOzPM2obbzpTA33MqtWR9NPS/W26RPUdMEGspUT72j6PNjbcgV4LXcysVQQLLoVRzPU9sy8U/fW00Om/RkyOa0ia5D3U4OWCme2rkTA/QAnkCT5E8hgx/TLtpbfTWmwiTqpi2toNuAjKXpHsGaXYQaQH6VjSzosTsdnhpwynCQA5qnHw/Wn3vEI2dt+ZvLE3xsVkU+1QoSWGsqBCoEXEZXAyxh4UcsBDHfgUaKGMZbbeXTZBFhCuCzQwMXruW0MLOJJEpGgCxY34KPFgVKyOk/2A7TfrzsZeBm2I6Dx/raLWU28cUNdIR2JYepbImqO8neGmDarskHPf+Kj9t8KrKm7yFXpBIjq1wpL7qcLEWIFolnbAreDZVaR+7wbai9r8iUergjLVlL+2Fs3vAMCSniFXWZtekHoa7YHKnVesq5ElHHLDc+1PiHM7S0QSClUvSzcQHWj0icnvzzLuO4oPc3Qc668uk7/XraTcHrqU4G59co2Co6egcK4fGOcGYWEbEamoR34JAiLlar2iAu3BiBAJBCDNbSbcs1JwL6b4KQD58j7VXYHE5mjEFNA96yG54siHRqbFXGhef/nc0+Wo3QpgH5sYYLUn84/aJbs49S/hyqtxTDsp5vUNWGUhADatMFWhY4KNBvnjjUcs="
+- provider: bintray
+  user: pony-buildbot-2
+  file: /home/travis/build/ponylang/pony-stable/bintray_debian.json
+  skip_cleanup: true
+  on:
+    branch: release
+    condition: $RELEASE_CONFIG == yes
+  key:
+    secure: BsQuv9cfqG2O5Qvz4rdtHJ7QnjorOzPM2obbzpTA33MqtWR9NPS/W26RPUdMEGspUT72j6PNjbcgV4LXcysVQQLLoVRzPU9sy8U/fW00Om/RkyOa0ia5D3U4OWCme2rkTA/QAnkCT5E8hgx/TLtpbfTWmwiTqpi2toNuAjKXpHsGaXYQaQH6VjSzosTsdnhpwynCQA5qnHw/Wn3vEI2dt+ZvLE3xsVkU+1QoSWGsqBCoEXEZXAyxh4UcsBDHfgUaKGMZbbeXTZBFhCuCzQwMXruW0MLOJJEpGgCxY34KPFgVKyOk/2A7TfrzsZeBm2I6Dx/raLWU28cUNdIR2JYepbImqO8neGmDarskHPf+Kj9t8KrKm7yFXpBIjq1wpL7qcLEWIFolnbAreDZVaR+7wbai9r8iUergjLVlL+2Fs3vAMCSniFXWZtekHoa7YHKnVesq5ElHHLDc+1PiHM7S0QSClUvSzcQHWj0icnvzzLuO4oPc3Qc668uk7/XraTcHrqU4G59co2Co6egcK4fGOcGYWEbEamoR34JAiLlar2iAu3BiBAJBCDNbSbcs1JwL6b4KQD58j7VXYHE5mjEFNA96yG54siHRqbFXGhef/nc0+Wo3QpgH5sYYLUn84/aJbs49S/hyqtxTDsp5vUNWGUhADatMFWhY4KNBvnjjUcs=
+- provider: bintray
+  user: pony-buildbot-2
+  file: /home/travis/build/ponylang/pony-stable/bintray_rpm.json
+  skip_cleanup: true
+  on:
+    branch: release
+    condition: $RELEASE_CONFIG == yes
+  key:
+    secure: BsQuv9cfqG2O5Qvz4rdtHJ7QnjorOzPM2obbzpTA33MqtWR9NPS/W26RPUdMEGspUT72j6PNjbcgV4LXcysVQQLLoVRzPU9sy8U/fW00Om/RkyOa0ia5D3U4OWCme2rkTA/QAnkCT5E8hgx/TLtpbfTWmwiTqpi2toNuAjKXpHsGaXYQaQH6VjSzosTsdnhpwynCQA5qnHw/Wn3vEI2dt+ZvLE3xsVkU+1QoSWGsqBCoEXEZXAyxh4UcsBDHfgUaKGMZbbeXTZBFhCuCzQwMXruW0MLOJJEpGgCxY34KPFgVKyOk/2A7TfrzsZeBm2I6Dx/raLWU28cUNdIR2JYepbImqO8neGmDarskHPf+Kj9t8KrKm7yFXpBIjq1wpL7qcLEWIFolnbAreDZVaR+7wbai9r8iUergjLVlL+2Fs3vAMCSniFXWZtekHoa7YHKnVesq5ElHHLDc+1PiHM7S0QSClUvSzcQHWj0icnvzzLuO4oPc3Qc668uk7/XraTcHrqU4G59co2Co6egcK4fGOcGYWEbEamoR34JAiLlar2iAu3BiBAJBCDNbSbcs1JwL6b4KQD58j7VXYHE5mjEFNA96yG54siHRqbFXGhef/nc0+Wo3QpgH5sYYLUn84/aJbs49S/hyqtxTDsp5vUNWGUhADatMFWhY4KNBvnjjUcs=
+- provider: bintray
+  user: pony-buildbot-2
+  file: /home/travis/build/ponylang/pony-stable/bintray_appimage.json
+  skip_cleanup: true
+  on:
+    branch: release
+  key:
+    secure: BsQuv9cfqG2O5Qvz4rdtHJ7QnjorOzPM2obbzpTA33MqtWR9NPS/W26RPUdMEGspUT72j6PNjbcgV4LXcysVQQLLoVRzPU9sy8U/fW00Om/RkyOa0ia5D3U4OWCme2rkTA/QAnkCT5E8hgx/TLtpbfTWmwiTqpi2toNuAjKXpHsGaXYQaQH6VjSzosTsdnhpwynCQA5qnHw/Wn3vEI2dt+ZvLE3xsVkU+1QoSWGsqBCoEXEZXAyxh4UcsBDHfgUaKGMZbbeXTZBFhCuCzQwMXruW0MLOJJEpGgCxY34KPFgVKyOk/2A7TfrzsZeBm2I6Dx/raLWU28cUNdIR2JYepbImqO8neGmDarskHPf+Kj9t8KrKm7yFXpBIjq1wpL7qcLEWIFolnbAreDZVaR+7wbai9r8iUergjLVlL+2Fs3vAMCSniFXWZtekHoa7YHKnVesq5ElHHLDc+1PiHM7S0QSClUvSzcQHWj0icnvzzLuO4oPc3Qc668uk7/XraTcHrqU4G59co2Co6egcK4fGOcGYWEbEamoR34JAiLlar2iAu3BiBAJBCDNbSbcs1JwL6b4KQD58j7VXYHE5mjEFNA96yG54siHRqbFXGhef/nc0+Wo3QpgH5sYYLUn84/aJbs49S/hyqtxTDsp5vUNWGUhADatMFWhY4KNBvnjjUcs=
+- provider: bintray
+  user: pony-buildbot-2
+  file: /home/travis/build/ponylang/pony-stable/bintray_debian_trusty.json
+  skip_cleanup: true
+  on:
+    branch: release
+    condition: $RELEASE_CONFIG == yes
+  key:
+    secure: BsQuv9cfqG2O5Qvz4rdtHJ7QnjorOzPM2obbzpTA33MqtWR9NPS/W26RPUdMEGspUT72j6PNjbcgV4LXcysVQQLLoVRzPU9sy8U/fW00Om/RkyOa0ia5D3U4OWCme2rkTA/QAnkCT5E8hgx/TLtpbfTWmwiTqpi2toNuAjKXpHsGaXYQaQH6VjSzosTsdnhpwynCQA5qnHw/Wn3vEI2dt+ZvLE3xsVkU+1QoSWGsqBCoEXEZXAyxh4UcsBDHfgUaKGMZbbeXTZBFhCuCzQwMXruW0MLOJJEpGgCxY34KPFgVKyOk/2A7TfrzsZeBm2I6Dx/raLWU28cUNdIR2JYepbImqO8neGmDarskHPf+Kj9t8KrKm7yFXpBIjq1wpL7qcLEWIFolnbAreDZVaR+7wbai9r8iUergjLVlL+2Fs3vAMCSniFXWZtekHoa7YHKnVesq5ElHHLDc+1PiHM7S0QSClUvSzcQHWj0icnvzzLuO4oPc3Qc668uk7/XraTcHrqU4G59co2Co6egcK4fGOcGYWEbEamoR34JAiLlar2iAu3BiBAJBCDNbSbcs1JwL6b4KQD58j7VXYHE5mjEFNA96yG54siHRqbFXGhef/nc0+Wo3QpgH5sYYLUn84/aJbs49S/hyqtxTDsp5vUNWGUhADatMFWhY4KNBvnjjUcs=
+- provider: bintray
+  user: pony-buildbot-2
+  file: /home/travis/build/ponylang/pony-stable/bintray_debian_xenial.json
+  skip_cleanup: true
+  on:
+    branch: release
+    condition: $RELEASE_CONFIG == yes
+  key:
+    secure: BsQuv9cfqG2O5Qvz4rdtHJ7QnjorOzPM2obbzpTA33MqtWR9NPS/W26RPUdMEGspUT72j6PNjbcgV4LXcysVQQLLoVRzPU9sy8U/fW00Om/RkyOa0ia5D3U4OWCme2rkTA/QAnkCT5E8hgx/TLtpbfTWmwiTqpi2toNuAjKXpHsGaXYQaQH6VjSzosTsdnhpwynCQA5qnHw/Wn3vEI2dt+ZvLE3xsVkU+1QoSWGsqBCoEXEZXAyxh4UcsBDHfgUaKGMZbbeXTZBFhCuCzQwMXruW0MLOJJEpGgCxY34KPFgVKyOk/2A7TfrzsZeBm2I6Dx/raLWU28cUNdIR2JYepbImqO8neGmDarskHPf+Kj9t8KrKm7yFXpBIjq1wpL7qcLEWIFolnbAreDZVaR+7wbai9r8iUergjLVlL+2Fs3vAMCSniFXWZtekHoa7YHKnVesq5ElHHLDc+1PiHM7S0QSClUvSzcQHWj0icnvzzLuO4oPc3Qc668uk7/XraTcHrqU4G59co2Co6egcK4fGOcGYWEbEamoR34JAiLlar2iAu3BiBAJBCDNbSbcs1JwL6b4KQD58j7VXYHE5mjEFNA96yG54siHRqbFXGhef/nc0+Wo3QpgH5sYYLUn84/aJbs49S/hyqtxTDsp5vUNWGUhADatMFWhY4KNBvnjjUcs=
+- provider: bintray
+  user: pony-buildbot-2
+  file: /home/travis/build/ponylang/pony-stable/bintray_debian_artful.json
+  skip_cleanup: true
+  on:
+    branch: release
+    condition: $RELEASE_CONFIG == yes
+  key:
+    secure: BsQuv9cfqG2O5Qvz4rdtHJ7QnjorOzPM2obbzpTA33MqtWR9NPS/W26RPUdMEGspUT72j6PNjbcgV4LXcysVQQLLoVRzPU9sy8U/fW00Om/RkyOa0ia5D3U4OWCme2rkTA/QAnkCT5E8hgx/TLtpbfTWmwiTqpi2toNuAjKXpHsGaXYQaQH6VjSzosTsdnhpwynCQA5qnHw/Wn3vEI2dt+ZvLE3xsVkU+1QoSWGsqBCoEXEZXAyxh4UcsBDHfgUaKGMZbbeXTZBFhCuCzQwMXruW0MLOJJEpGgCxY34KPFgVKyOk/2A7TfrzsZeBm2I6Dx/raLWU28cUNdIR2JYepbImqO8neGmDarskHPf+Kj9t8KrKm7yFXpBIjq1wpL7qcLEWIFolnbAreDZVaR+7wbai9r8iUergjLVlL+2Fs3vAMCSniFXWZtekHoa7YHKnVesq5ElHHLDc+1PiHM7S0QSClUvSzcQHWj0icnvzzLuO4oPc3Qc668uk7/XraTcHrqU4G59co2Co6egcK4fGOcGYWEbEamoR34JAiLlar2iAu3BiBAJBCDNbSbcs1JwL6b4KQD58j7VXYHE5mjEFNA96yG54siHRqbFXGhef/nc0+Wo3QpgH5sYYLUn84/aJbs49S/hyqtxTDsp5vUNWGUhADatMFWhY4KNBvnjjUcs=
+- provider: bintray
+  user: pony-buildbot-2
+  file: /home/travis/build/ponylang/pony-stable/bintray_debian_bionic.json
+  skip_cleanup: true
+  on:
+    branch: release
+    condition: $RELEASE_CONFIG == yes
+  key:
+    secure: BsQuv9cfqG2O5Qvz4rdtHJ7QnjorOzPM2obbzpTA33MqtWR9NPS/W26RPUdMEGspUT72j6PNjbcgV4LXcysVQQLLoVRzPU9sy8U/fW00Om/RkyOa0ia5D3U4OWCme2rkTA/QAnkCT5E8hgx/TLtpbfTWmwiTqpi2toNuAjKXpHsGaXYQaQH6VjSzosTsdnhpwynCQA5qnHw/Wn3vEI2dt+ZvLE3xsVkU+1QoSWGsqBCoEXEZXAyxh4UcsBDHfgUaKGMZbbeXTZBFhCuCzQwMXruW0MLOJJEpGgCxY34KPFgVKyOk/2A7TfrzsZeBm2I6Dx/raLWU28cUNdIR2JYepbImqO8neGmDarskHPf+Kj9t8KrKm7yFXpBIjq1wpL7qcLEWIFolnbAreDZVaR+7wbai9r8iUergjLVlL+2Fs3vAMCSniFXWZtekHoa7YHKnVesq5ElHHLDc+1PiHM7S0QSClUvSzcQHWj0icnvzzLuO4oPc3Qc668uk7/XraTcHrqU4G59co2Co6egcK4fGOcGYWEbEamoR34JAiLlar2iAu3BiBAJBCDNbSbcs1JwL6b4KQD58j7VXYHE5mjEFNA96yG54siHRqbFXGhef/nc0+Wo3QpgH5sYYLUn84/aJbs49S/hyqtxTDsp5vUNWGUhADatMFWhY4KNBvnjjUcs=
+- provider: bintray
+  user: pony-buildbot-2
+  file: /home/travis/build/ponylang/pony-stable/bintray_debian_jessie.json
+  skip_cleanup: true
+  on:
+    branch: release
+    condition: $RELEASE_CONFIG == yes
+  key:
+    secure: BsQuv9cfqG2O5Qvz4rdtHJ7QnjorOzPM2obbzpTA33MqtWR9NPS/W26RPUdMEGspUT72j6PNjbcgV4LXcysVQQLLoVRzPU9sy8U/fW00Om/RkyOa0ia5D3U4OWCme2rkTA/QAnkCT5E8hgx/TLtpbfTWmwiTqpi2toNuAjKXpHsGaXYQaQH6VjSzosTsdnhpwynCQA5qnHw/Wn3vEI2dt+ZvLE3xsVkU+1QoSWGsqBCoEXEZXAyxh4UcsBDHfgUaKGMZbbeXTZBFhCuCzQwMXruW0MLOJJEpGgCxY34KPFgVKyOk/2A7TfrzsZeBm2I6Dx/raLWU28cUNdIR2JYepbImqO8neGmDarskHPf+Kj9t8KrKm7yFXpBIjq1wpL7qcLEWIFolnbAreDZVaR+7wbai9r8iUergjLVlL+2Fs3vAMCSniFXWZtekHoa7YHKnVesq5ElHHLDc+1PiHM7S0QSClUvSzcQHWj0icnvzzLuO4oPc3Qc668uk7/XraTcHrqU4G59co2Co6egcK4fGOcGYWEbEamoR34JAiLlar2iAu3BiBAJBCDNbSbcs1JwL6b4KQD58j7VXYHE5mjEFNA96yG54siHRqbFXGhef/nc0+Wo3QpgH5sYYLUn84/aJbs49S/hyqtxTDsp5vUNWGUhADatMFWhY4KNBvnjjUcs=
+- provider: bintray
+  user: pony-buildbot-2
+  file: /home/travis/build/ponylang/pony-stable/bintray_debian_stretch.json
+  skip_cleanup: true
+  on:
+    branch: release
+    condition: $RELEASE_CONFIG == yes
+  key:
+    secure: BsQuv9cfqG2O5Qvz4rdtHJ7QnjorOzPM2obbzpTA33MqtWR9NPS/W26RPUdMEGspUT72j6PNjbcgV4LXcysVQQLLoVRzPU9sy8U/fW00Om/RkyOa0ia5D3U4OWCme2rkTA/QAnkCT5E8hgx/TLtpbfTWmwiTqpi2toNuAjKXpHsGaXYQaQH6VjSzosTsdnhpwynCQA5qnHw/Wn3vEI2dt+ZvLE3xsVkU+1QoSWGsqBCoEXEZXAyxh4UcsBDHfgUaKGMZbbeXTZBFhCuCzQwMXruW0MLOJJEpGgCxY34KPFgVKyOk/2A7TfrzsZeBm2I6Dx/raLWU28cUNdIR2JYepbImqO8neGmDarskHPf+Kj9t8KrKm7yFXpBIjq1wpL7qcLEWIFolnbAreDZVaR+7wbai9r8iUergjLVlL+2Fs3vAMCSniFXWZtekHoa7YHKnVesq5ElHHLDc+1PiHM7S0QSClUvSzcQHWj0icnvzzLuO4oPc3Qc668uk7/XraTcHrqU4G59co2Co6egcK4fGOcGYWEbEamoR34JAiLlar2iAu3BiBAJBCDNbSbcs1JwL6b4KQD58j7VXYHE5mjEFNA96yG54siHRqbFXGhef/nc0+Wo3QpgH5sYYLUn84/aJbs49S/hyqtxTDsp5vUNWGUhADatMFWhY4KNBvnjjUcs=
+- provider: bintray
+  user: pony-buildbot-2
+  file: /home/travis/build/ponylang/pony-stable/bintray_debian_buster.json
+  skip_cleanup: true
+  on:
+    branch: release
+    condition: $RELEASE_CONFIG == yes
+  key:
+    secure: BsQuv9cfqG2O5Qvz4rdtHJ7QnjorOzPM2obbzpTA33MqtWR9NPS/W26RPUdMEGspUT72j6PNjbcgV4LXcysVQQLLoVRzPU9sy8U/fW00Om/RkyOa0ia5D3U4OWCme2rkTA/QAnkCT5E8hgx/TLtpbfTWmwiTqpi2toNuAjKXpHsGaXYQaQH6VjSzosTsdnhpwynCQA5qnHw/Wn3vEI2dt+ZvLE3xsVkU+1QoSWGsqBCoEXEZXAyxh4UcsBDHfgUaKGMZbbeXTZBFhCuCzQwMXruW0MLOJJEpGgCxY34KPFgVKyOk/2A7TfrzsZeBm2I6Dx/raLWU28cUNdIR2JYepbImqO8neGmDarskHPf+Kj9t8KrKm7yFXpBIjq1wpL7qcLEWIFolnbAreDZVaR+7wbai9r8iUergjLVlL+2Fs3vAMCSniFXWZtekHoa7YHKnVesq5ElHHLDc+1PiHM7S0QSClUvSzcQHWj0icnvzzLuO4oPc3Qc668uk7/XraTcHrqU4G59co2Co6egcK4fGOcGYWEbEamoR34JAiLlar2iAu3BiBAJBCDNbSbcs1JwL6b4KQD58j7VXYHE5mjEFNA96yG54siHRqbFXGhef/nc0+Wo3QpgH5sYYLUn84/aJbs49S/hyqtxTDsp5vUNWGUhADatMFWhY4KNBvnjjUcs=
