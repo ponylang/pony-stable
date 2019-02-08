@@ -6,6 +6,7 @@ All notable changes to the Pony compiler and standard library will be documented
 
 ### Fixed
 
+- Don't process already-seen paths ([PR #97](https://github.com/ponylang/pony-stable/pull/97))
 
 ### Added
 
