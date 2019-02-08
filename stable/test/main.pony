@@ -7,6 +7,8 @@ actor Main is TestList
 
   fun tag tests(test: PonyTest) =>
     test(TestBundle)
+    test(TestBundleSelfReferentialPaths)
+    test(TestBundleMutuallyRecursivePaths)
     test(TestDep)
     PrivateTests.make().tests(test)
 

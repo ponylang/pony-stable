@@ -68,15 +68,24 @@ class Bundle
       try Bundle(FilePath(path, dep.root_path())?, log)?.fetch() end
     end
 
-  fun paths(): Array[String] val =>
+  fun paths(seen_paths: Array[String] = []): Array[String] val =>
     let out = recover trn Array[String] end
+
     for dep in deps() do
-      out.push(dep.packages_path())
+      let dep_path = dep.packages_path()
+      if (not seen_paths.contains(dep_path, {(x,y) => x == y})) then
+        out.push(dep_path)
+        seen_paths.push(dep_path)
+      end
     end
+
     for dep in deps() do
-      // TODO: detect and prevent infinite recursion here.
-      try
-        out.append(Bundle(FilePath(path, dep.packages_path())?, log)?.paths())
+      let dep_path' = dep.packages_path()
+      if (not seen_paths.contains(dep_path', {(x,y) => x == y})) then
+        try
+          out.append(Bundle(FilePath(path, dep_path')?, log)?
+            .paths(seen_paths.clone()))
+        end
       end
     end
     out
