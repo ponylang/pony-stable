@@ -178,6 +178,9 @@ pony-stable-build-packages(){
   # used to disambiguate packages with the same version).
   PACKAGE_ITERATION="${TRAVIS_BUILD_NUMBER}.$(git rev-parse --short --verify 'HEAD^{commit}')"
 
+  # Clean up build directory
+  sudo rm -rf build
+
   echo "Building pony-stable packages for deployment..."
   make arch=x86-64 package_name="pony-stable" package_base_version="$(cat VERSION)" package_iteration="${PACKAGE_ITERATION}" deploy
 }
