@@ -210,12 +210,21 @@ fi
 # normal release logic
 if [[ "$RELEASE_CONFIG" == "yes" && "$TRAVIS_BRANCH" == "release" && "$TRAVIS_PULL_REQUEST" == "false" ]]
 then
-  build_appimage "$(cat VERSION)"
-  pony-stable-build-debs "$(cat VERSION)"
-  pony-stable-kickoff-copr-ppa
-  pony-stable-build-packages
-fi
+  case "${TRAVIS_OS_NAME}" in
+    "linux")
+      build_appimage "$(cat VERSION)"
+      pony-stable-build-debs "$(cat VERSION)"
+      pony-stable-kickoff-copr-ppa
+      pony-stable-build-packages
+    ;;
 
+    *)
+      echo "Nothing to do for release on this OS- exiting"
+      exit 0
+    ;;
+
+  esac
+fi
 
 case "${TRAVIS_OS_NAME}" in
   "osx")
