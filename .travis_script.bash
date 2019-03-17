@@ -93,7 +93,6 @@ pony-stable-build-debs(){
 
   build_deb xenial
   build_deb bionic
-  build_deb trusty
   build_deb buster
   build_deb stretch
   build_deb jessie
@@ -155,7 +154,6 @@ pony-stable-kickoff-copr-ppa(){
   build_and_submit_deb_src xenial
   build_and_submit_deb_src bionic
   build_and_submit_deb_src cosmic
-  build_and_submit_deb_src trusty
 
   # COPR for fedora/centos/suse
   echo "Kicking off pony-stable packaging for COPR..."
