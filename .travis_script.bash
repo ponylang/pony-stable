@@ -92,7 +92,6 @@ pony-stable-build-debs(){
   fi
 
   build_deb xenial
-  build_deb artful
   build_deb bionic
   build_deb trusty
   build_deb buster
@@ -154,7 +153,6 @@ pony-stable-kickoff-copr-ppa(){
   sudo chmod 400 ~/.ssh/config
 
   build_and_submit_deb_src xenial
-  build_and_submit_deb_src artful
   build_and_submit_deb_src bionic
   build_and_submit_deb_src cosmic
   build_and_submit_deb_src trusty

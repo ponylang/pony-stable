@@ -12,6 +12,7 @@ All notable changes to the Pony compiler and standard library will be documented
 
 ### Changed
 
+- Stop building binary packages for Ubuntu Artful
 
 ## [0.2.0] - 2019-02-09
 
