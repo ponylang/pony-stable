@@ -15,6 +15,7 @@ All notable changes to the Pony compiler and standard library will be documented
 - Stop building binary packages for Ubuntu Artful
 - Stop building binary packages for Ubuntu Trusty
 - Stop building binary packages for Debian Jessie
+- Stop building binary packages for Ubuntu Cosmic
 
 ## [0.2.0] - 2019-02-09
 

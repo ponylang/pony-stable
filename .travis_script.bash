@@ -152,7 +152,6 @@ pony-stable-kickoff-copr-ppa(){
 
   build_and_submit_deb_src xenial
   build_and_submit_deb_src bionic
-  build_and_submit_deb_src cosmic
 
   # COPR for fedora/centos/suse
   echo "Kicking off pony-stable packaging for COPR..."
