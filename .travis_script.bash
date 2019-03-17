@@ -95,7 +95,6 @@ pony-stable-build-debs(){
   build_deb bionic
   build_deb buster
   build_deb stretch
-  build_deb jessie
 
   ls -la
   set +x
