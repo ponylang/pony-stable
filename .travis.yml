@@ -1,11 +1,11 @@
 language: c
 notifications:
   email: false
-  slack:
-    rooms:
-      - secure: sShVEQiV3LTdiOzRFt9gmjLXxGfBSM5XaxPNGs1bdCdSpqzKUKh22EbSVtoUVECkh2x/DO1Adx9vkkKjzoXIvVKy+IcC2Hr8WDkMMjtX0W8/71hEdbKUW8PGOeHB/W4RKDEBsIPur+TpojQD8bOYoGaEQYfQf79YTYhnPj9Emt8rkZrkbOuGwtp3uUy7q+jAbCgRdsx05viBPM9GWaDVOyHLF2drjGPCeAdPVWA7bzGux2naIa6cVdWIvhfD9CIHpGSB10vlEq84ibnfvwDnVhPUsq5GTF7XVI08mXUUryAo3YQQiyD4Neqp1PXubtpZ+jLcY53rjaIzn3+7ceJ55ENgd/0Vr0c/taMUH32LWR2zsfsb5xXBukCoOZAKzBgsPbjVSIGMCHH5NHxfD4a0iq9NEGgVqAU+rFmxD6oRzjieWqdZQmndQthBRDZ+yi0Qucl0/+oBclUyo/eTZWVgV9P+YYoXvUud2v0bdoADVs5pSZ1d0xlrNoRytpwaGVQfeV+l0osN0kLufHfoQyWe5Uqa/D5KDYGicze8F5dRMfiNvFCi59LTIlDhtjFaHptwyYz2gpQiF1cg3qrZwM4oiCfYBr/026SdVRw3m4542wk8ZrUC7fZIqcPKtwML2PsUTAoeGZPS1OvXbXphiExnlfx6ZSQoGoGJzQlB0EWTBig=
-    on_success: change
-    on_failure: change
+  webhooks:
+    urls:
+      - secure: Y/1bqkKq//rsH9rXLO5G3zlu/k51Mw0rPIiQDE6BZtdmDLyNr7WncdRlJG+PPvYKBpMtQVvSMlT8nAtMKAf3r81K/68LwgnrgOhYo6Wf94vgPOZzVn2NhKjtsNt0FcRcOjglyzpVZAvyd4HUhH0s+0SMMNuh3BafR0rLtgVVnfJP2Igw901TtFmj7FPmdWLRM3VQ4Wys7WD4r6c1VNzc3CQ0b8v1Vs8ZP0QTlv4w51G9Gn4oVOcvvk/pX5hTmCQb08OqOf+gy5y0zD10Cr+FMhKTn6Jc0GNAKmVC0z+xGrb106f4Fc/2jIY+24877lWp7h1HuysmMitf+KU5sO32bnyQlatBII+jB3raEnJifD6z2GrAGbHeF3WVGzDsSGYkam/kENrtoH5MxVhC4DsK8qa5mwLJTlkOM/ftfiwAVO78TI7W2nUWJ+w1Y1/+xEhN02J3gnhpVNyMmcLcHAZ1tTsvqt+Xvm6VW2ZP9Zdu3vIkKjzjLhlOsFB7EJN9Yc+HAbYBmnaPQ2pufx83h1fz5dI+3Hj2mAIapAca0tGZy5o3tRzbEocYiNnOqNcGmVF6+ddI0hLyYnIEulD1KVugQNj7GCf3Nff9lqHczdDb0zzW4TAXOG/B0PS9oYhOqQj5zi/OT6+gAYdIWx3oXK+kmtxSJZLvf0D+jBOjSK4YmcQ=
+    on_success: always
+    on_failure: always
 branches:
   only:
   - master
