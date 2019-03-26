@@ -1,5 +1,5 @@
 Source: pony-stable
-Maintainer: Pony Core Team <buildbot@pony.groups.io>
+Maintainer: Pony Core Team <buildbot@ponylang.io>
 Build-Depends: debhelper (>= 9.0.0), ponyc
 Priority: optional
 Standards-Version: 3.9.7
