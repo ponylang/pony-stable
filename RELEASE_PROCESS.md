@@ -125,7 +125,7 @@ curl -sL https://raw.githubusercontent.com/Homebrew/homebrew-core/master/Formula
 
 If the formulae has been successfully updated, you'll see the new download url in the output of the command. If it hasn't, you'll see the old url.
 
-Note that its often quite quick to get everything through Homebrew's CI and merge process, however its often quite slow as well. We've seen their Jenkins CI often fail with errors that are unrelated to PR in question. Don't wait too long on Homebrew. If it hasn't passed CI and been merged within a couple hours move ahead without it having passed. If Homebrew is being slow about merging, when you inform Zulip and pony-user of the release, note that the Homebrew version isn't available yet and include a link to the Homebrew PR and the pony-stable Github release issue so that people can follow along. When the Homebrew PR is eventually merged, update pony-user, and Zulip.
+Note that its often quite quick to get everything through Homebrew's CI and merge process, however its often quite slow as well. We've seen their Jenkins CI often fail with errors that are unrelated to PR in question. Don't wait too long on Homebrew. If it hasn't passed CI and been merged within a couple hours move ahead without it having passed. If Homebrew is being slow about merging, when you inform Zulip of the release, note that the Homebrew version isn't available yet and include a link to the Homebrew PR and the pony-stable Github release issue so that people can follow along. When the Homebrew PR is eventually merged update Zulip.
 
 ### Update the GitHub issue as needed
 
@@ -138,12 +138,6 @@ Once all the release steps have been confirmed as successful, merge the PR you c
 ### Inform the Pony Zulip
 
 Once Travis, Appveyor and Homebrew are all finished, drop a note in the [#announce stream](https://ponylang.zulipchat.com/#narrow/stream/189932-announce) of the Pony Zulip letting everyone know that the release is out and include a link the release blog post. Set the topic of your message to something like "Pony Stable 0.3.1 released".
-
-If this is an "emergency release" that is designed to get a high priority bug fix out, be sure to note that everyone is advised to update ASAP. If the high priority bug only affects certain platforms, adjust the "update ASAP" note accordingly.
-
-### Inform pony-user
-
-Once Travis, Appveyor and Homebrew are all finished, send an email to the [pony user](https://pony.groups.io/g/user) mailing list letting everyone know that the release is out and include a link the release blog post.
 
 If this is an "emergency release" that is designed to get a high priority bug fix out, be sure to note that everyone is advised to update ASAP. If the high priority bug only affects certain platforms, adjust the "update ASAP" note accordingly.
 
