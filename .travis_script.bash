@@ -44,7 +44,7 @@ EOF
 
   ls -alh
 
-  mv Pony_Dependency_Manager-x86_64.AppImage "Pony_Depencency_Manager-${package_version}-x86_64.AppImage"
+  mv Pony_Dependency_Manager*-x86_64.AppImage "Pony_Depencency_Manager-${package_version}-x86_64.AppImage"
 
   bash .bintray.bash appimage "${package_version}" pony-stable
 }
