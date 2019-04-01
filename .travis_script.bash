@@ -27,13 +27,22 @@ EOF
   # remove any existing build artifacts
   sudo rm -rf build
 
+  ls -alh
+
+  echo "STEP 1"
   # can't run appimages in docker; need to extract and then run
   sudo docker run -v "$(pwd):/home/pony" --rm -u pony:2000 ponylang/ponyc-ci:centos7-llvm-3.9.1 sh -c "./linuxdeploy-x86_64.AppImage --appimage-extract"
 
+  echo "STEP 2"
   # need to run in CentOS 7 docker image
   sudo docker run -v "$(pwd):/home/pony" --rm --user root ponylang/ponyc-ci:centos7-llvm-3.9.1 sh -c "yum install yum-plugin-copr -y && yum copr enable ponylang/ponylang epel-7 -y && yum install ponyc -y && make arch=x86-64 DESTDIR=pony-stable.AppDir prefix=/usr test integration"
+  echo "STEP 3"
   sudo docker run -v "$(pwd):/home/pony" --rm -u pony:2000 ponylang/ponyc-ci:centos7-llvm-3.9.1 sh -c "make arch=x86-64 DESTDIR=pony-stable.AppDir prefix=/usr install"
+  echo "STEP 4"
   sudo docker run -v "$(pwd):/home/pony" --rm -u pony:2000 ponylang/ponyc-ci:centos7-llvm-3.9.1 sh -c "ARCH=x86_64 ./squashfs-root/AppRun --appdir pony-stable.AppDir --desktop-file=pony-stable.desktop --icon-file=pony-stable.png --output appimage"
+  echo "STEP 5"
+
+  ls -alh
 
   mv Pony_Dependency_Manager-x86_64.AppImage "Pony_Depencency_Manager-${package_version}-x86_64.AppImage"
 
@@ -179,9 +188,6 @@ pony-stable-build-packages(){
   make arch=x86-64 package_name="pony-stable" package_base_version="$(cat VERSION)" package_iteration="${PACKAGE_ITERATION}" deploy
 }
 
-# when running for a nightly cron job or manual api requested job to make sure packaging isn't broken
-if [[ "$TRAVIS_BRANCH" == "master" && ( "$TRAVIS_EVENT_TYPE" == "cron" || "$TRAVIS_EVENT_TYPE" == "api" ) ]]
-then
   case "${TRAVIS_OS_NAME}" in
     "linux")
       pony-stable-build-debs master
@@ -199,31 +205,3 @@ then
     ;;
 
   esac
-fi
-
-# normal release logic
-if [[ "$RELEASE_CONFIG" == "yes" && "$TRAVIS_BRANCH" == "release" && "$TRAVIS_PULL_REQUEST" == "false" ]]
-then
-  case "${TRAVIS_OS_NAME}" in
-    "linux")
-      build_appimage "$(cat VERSION)"
-      pony-stable-build-debs "$(cat VERSION)"
-      pony-stable-kickoff-copr-ppa
-      pony-stable-build-packages
-    ;;
-
-    *)
-      echo "Nothing to do for release on this OS- exiting"
-      exit 0
-    ;;
-
-  esac
-fi
-
-case "${TRAVIS_OS_NAME}" in
-  "osx")
-    make
-    make test integration
-  ;;
-
-esac
