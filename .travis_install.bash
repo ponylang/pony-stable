@@ -9,7 +9,7 @@ install_ponyc(){
   sudo apt-get update
   # NOTE: libpcre2-dev is specified because otherwise
   # apt refuses to install it and everything fails
-  sudo apt-get -V install ponyc libpcre2-dev -y
+  sudo apt-get -V install ponyc libpcre2-dev -y --allow-unauthenticated
 }
 
 case "${TRAVIS_OS_NAME}" in
