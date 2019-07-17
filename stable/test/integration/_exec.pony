@@ -1,7 +1,7 @@
 use "ponytest"
 use "files"
 use "process"
-use "regex"
+//use "regex"
 
 actor _Exec
   new create(
@@ -89,11 +89,11 @@ class _ExpectClient is ProcessNotify
   fun ref dispose(process: ProcessMonitor ref, child_exit_code: I32) =>
     let code: I32 = consume child_exit_code
     _status = _status and _h.assert_eq[I32](_code, code)
-    _match_expectations("stdout", _out, _stdout)
-    _match_expectations("stderr", _err, _stderr)
+    //_match_expectations("stdout", _out, _stdout)
+    //_match_expectations("stderr", _err, _stderr)
     _h.complete(_status)
 
-  fun ref _match_expectations(
+  /*fun ref _match_expectations(
     stream: String,
     exps: Array[String] val,
     output: String)
@@ -108,4 +108,4 @@ class _ExpectClient is ProcessNotify
         _h.fail(stream + " regexp failed to compile")
         _status = false
       end
-    end
+    end*/
