@@ -93,7 +93,6 @@ pony-stable-build-debs(){
 
   build_deb xenial
   build_deb bionic
-  build_deb buster
   build_deb stretch
 
   ls -la
