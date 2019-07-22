@@ -58,7 +58,7 @@ class DepGitHosted
       Shell("git -C " + root_path() + " fetch")?
     else
       fpath.mkdir()
-      Shell("git clone " + url() + " " + root_path())?
+      Shell("git clone --recursive " + url() + " " + root_path())?
     end
     _CheckoutTag(root_path(), git_tag)?
 
@@ -103,7 +103,7 @@ class DepLocalGit
       Shell("git -C " + root_path() + " pull " + local_path)?
     else
       fpath.mkdir()
-      Shell("git clone " + local_path + " " + root_path())?
+      Shell("git clone --recursive " + local_path + " " + root_path())?
     end
     _CheckoutTag(root_path(), git_tag)?
 
