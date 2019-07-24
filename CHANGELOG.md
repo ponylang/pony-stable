@@ -2,14 +2,11 @@
 
 All notable changes to the Pony compiler and standard library will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CHANGELOG](http://keepachangelog.com/).
 
-## [unreleased] - unreleased
+## [0.2.1] - 2019-07-24
 
 ### Fixed
 
 - Clone repositories recursively to support submodules ([PR #112](https://github.com/ponylang/pony-stable/pull/112))
-
-### Added
-
 
 ### Changed
 
@@ -74,3 +71,4 @@ All notable changes to the Pony compiler and standard library will be documented
 ### Added
 
 - Display an error message when add subcommand cannot be found ([PR #39](https://github.com/ponylang/pony-stable/pull/39))
+
