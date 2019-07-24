@@ -10,21 +10,9 @@ Put them in a stable and make your life easier.
 
 ## Installation
 
-### Ubuntu Linux using a DEB package (via Launchpad PPA)
+### Debian and Ubuntu Linux using a DEB package (via Bintray)
 
-For Ubuntu Linux (Trusty, Xenial, Artful, Bionic, Cosmic), the `release` builds are packaged and available on Launchpad PPA ([ponylang/ponylang](https://launchpad.net/~ponylang/+archive/ubuntu/ponylang)).
-
-To install builds via Apt:
-
-```bash
-add-apt-repository ppa:ponylang/ponylang
-apt-get update
-apt-get install pony-stable
-```
-
-### Debian Linux using a DEB package (via Bintray)
-
-For Debian Linux, the `release` builds are packaged and available on Bintray ([pony-language/ponyc-debian](https://bintray.com/pony-language/ponyc-debian)).
+For Debian and Ubuntu versions of Linux, the `release` builds are packaged and available on Bintray ([pony-language/ponyc-debian](https://bintray.com/pony-language/ponyc-debian)).
 
 To install builds via Apt (and install Bintray's public key):
 
@@ -65,15 +53,6 @@ dnf install pony-stable
 
 ```bash
 zypper addrepo --refresh --repo https://copr.fedorainfracloud.org/coprs/ponylang/ponylang/repo/opensuse-leap-15.0/ponylang-ponylang-opensuse-leap-15.0.repo
-wget https://copr-be.cloud.fedoraproject.org/results/ponylang/ponylang/pubkey.gpg
-rpm --import pubkey.gpg
-zypper install pony-stable
-```
-
-#### Using Zypper for OpenSuSE Tumbleweed:
-
-```bash
-zypper addrepo --refresh --repo https://copr.fedorainfracloud.org/coprs/ponylang/ponylang/repo/opensuse-tumbleweed/ponylang-ponylang-opensuse-tumbleweed.repo
 wget https://copr-be.cloud.fedoraproject.org/results/ponylang/ponylang/pubkey.gpg
 rpm --import pubkey.gpg
 zypper install pony-stable

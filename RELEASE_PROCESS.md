@@ -73,7 +73,7 @@ Leave a comment on the GitHub issue for this release letting everyone know that 
 
 ### Work on the release notes
 
-We do a blog post announcing each release. The release notes blog post should include highlights of any particularly interesting changes that we want the community to be aware of. 
+We do a blog post announcing each release. The release notes blog post should include highlights of any particularly interesting changes that we want the community to be aware of.
 
 Additionally, any breaking changes that require end users to change their code should be discussed and examples of how to update their code should be included.
 
@@ -98,20 +98,15 @@ For windows, the versions look something like:
 
 where the `1526` is the AppVeyor build number and the `8a8ee28` is the abbreviated SHA for the commit we built from.
 
-### Wait on COPR/PPA
+### Wait on COPR
 
-The Travis CI build for the release branch kicks off packaging builds on Fedora COPR and Ubuntu Launchpad PPA. These packaging builds can take some time but are usually quick. Periodically check to see if the releases are finished and published on these site:
+The Travis CI build for the release branch kicks off packaging builds on Fedora COPR. These packaging builds can take some time but are usually quick. Periodically check to see if the releases are finished and published on these site:
 
 * [Fedora COPR](https://copr.fedorainfracloud.org/coprs/ponylang/ponylang/builds/)
-* [Ubuntu Launchpad PPA](https://launchpad.net/~ponylang/+archive/ubuntu/ponylang/+packages)
 
-The pattern for packaging release builds is similar as what we previously saw. In the case of Fedora COPR, the version looks something like:
+The pattern for packaging release builds is similar as what we previously saw. The version looks something like:
 
 `0.3.1-1.fc27`
-
-The pattern for packaging release builds is similar as what we previously saw. In the case of Ubuntu Launchpad PPA, the versions looks something like:
-
-`pony-stable - 0.3.1-0ppa1~<UBUNTU DISTRIBUTION NAME>`
 
 ### Wait on Homebrew
 
