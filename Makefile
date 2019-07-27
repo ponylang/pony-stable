@@ -2,6 +2,7 @@ prefix ?= /usr/local
 destdir ?= ${prefix}
 config ?= release
 arch ?=
+link ?= dynamic
 
 BUILD_DIR ?= build/$(config)
 SRC_DIR ?= stable
@@ -24,10 +25,34 @@ ifneq ($(arch),)
   arch_arg := --cpu $(arch)
 endif
 
-ifneq ($(wildcard .git),)
-  tag := $(shell cat VERSION)-$(shell git rev-parse --short HEAD)
+ifdef link
+  ifeq (,$(filter $(link),static dynamic))
+  	$(error "Unknown linking strategy "$(link))
+  endif
+ endif
+
+ifeq ($(link),static)
+  LINK = --static
+else
+  LINK = 
+ endif
+
+# Default to version from `VERSION` file but allowing overridding on the
+# make command line like:
+# make version="nightly-19710702"
+# overridden version *should not* contain spaces or characters that aren't
+# legal in filesystem path names
+ifndef version
+  version := $(shell cat VERSION)
+  ifneq ($(wildcard .git),)
+    sha := $(shell git rev-parse --short HEAD)
+    tag := $(version)-$(sha)
+  else
+    tag := $(version)
+  endif
 else
   tag := $(shell cat VERSION)
+  tag := $(version)
 endif
 
 SOURCE_FILES := $(shell find $(SRC_DIR) -path $(SRC_DIR)/test -prune -o -name \*.pony)
@@ -40,9 +65,12 @@ GEN_FILES = $(patsubst %.pony.in, %.pony, $(GEN_FILES_IN))
 	sed s/%%VERSION%%/$(VERSION)/ $< > $@
 
 $(binary): $(GEN_FILES) $(SOURCE_FILES) | $(BUILD_DIR)
-	${PONYC} $(arch_arg) $(SRC_DIR) -o ${BUILD_DIR}
+	@echo "foo"
+	@echo "${PONYC} $(arch_arg) $(LINK) ${static_arg} $(SRC_DIR) -o ${BUILD_DIR}"
+	${PONYC} $(arch_arg) $(LINK) ${static_arg} $(SRC_DIR) -o ${BUILD_DIR}
 
 install: $(binary)
+	@echo "install"
 	mkdir -p $(DESTDIR)$(prefix)/bin
 	cp $^ $(DESTDIR)$(prefix)/bin
 
