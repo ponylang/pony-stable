@@ -16,7 +16,7 @@ ARCH=x86-64
 
 # Triple construction
 VENDOR=unknown
-OS=linux
+OS=linux-gnu
 TRIPLE=${ARCH}-${VENDOR}-${OS}
 
 # Build parameters
@@ -39,7 +39,6 @@ ASSET_DESCRIPTION="https://github.com/ponylang/pony-stable"
 
 # Build stable installation
 echo "Building stable..."
-echo "make install prefix=${BUILD_DIR} arch=${ARCH} version=${STABLE_VERSION} link=static"
 make install prefix=${BUILD_DIR} arch=${ARCH} version="${STABLE_VERSION}"
 
 # Package it all up

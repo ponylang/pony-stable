@@ -4,11 +4,12 @@ orbs:
   zulip: ponylang/zulip@1.0.0
 
 jobs:
-  x86-64-unknown-linux-nightly:
+  x86-64-unknown-linux-gnu-nightly:
     docker:
-      - image: ponylang/ponyc:release-alpine
+      - image: ponylang/ponyc:latest
     steps:
-      - run: apk add --update py-pip clang-dev
+      - run: apt-get update
+      - run: apt-get install -y python-pip
       - run: pip install cloudsmith-cli
       - checkout
       - run: bash .ci-scripts/x86-64-unknown-linux-nightly.bash ${CLOUDSMITH_API_KEY}
@@ -51,7 +52,7 @@ workflows:
       - vs-ponyc-release:
           context: org-global
       # 1 time test
-      - x86-64-unknown-linux-nightly:
+      - x86-64-unknown-linux-gnu-nightly:
           context: org-global
 
   daily-check-for-breakage:
@@ -73,5 +74,5 @@ workflows:
             branches:
               only: master
     jobs: 
-      - x86-64-unknown-linux-nightly:
+      - x86-64-unknown-linux-gnu-nightly:
           context: org-global
