@@ -4,6 +4,18 @@ orbs:
   zulip: ponylang/zulip@1.0.0
 
 jobs:
+  x86-64-unknown-linux-gnu-nightly:
+    docker:
+      - image: ponylang/ponyc:latest
+    steps:
+      - run: apt-get update
+      - run: apt-get install -y python-pip
+      - run: pip install cloudsmith-cli
+      - checkout
+      - run: bash .ci-scripts/x86-64-unknown-linux-gnu-nightly.bash ${CLOUDSMITH_API_KEY}
+      - zulip/status:
+          fail_only: true
+
   vs-ponyc-release:
     docker:
       - image: ponylang/ponyc:release
@@ -33,17 +45,17 @@ jobs:
 
 workflows:
   version: 2
-  commit:
+  every-commit:
     jobs:
       - verify-changelog:
           context: org-global 
       - vs-ponyc-release:
           context: org-global
 
-  nightly:
+  daily-check-for-breakage:
     triggers:
       - schedule:
-          cron: "0 0 * * *"
+          cron: "0 3 * * *"
           filters:
             branches:
               only: master
@@ -51,3 +63,13 @@ workflows:
       - vs-ponyc-master:
           context: org-global
 
+  create-and-upload-nightly-release:
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only: master
+    jobs: 
+      - x86-64-unknown-linux-gnu-nightly:
+          context: org-global
