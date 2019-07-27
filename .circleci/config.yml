@@ -1,30 +1,49 @@
-version: 2
+version: 2.1
+
+orbs:
+  zulip: ponylang/zulip@1.0.0
+
 jobs:
   vs-ponyc-release:
     docker:
       - image: ponylang/ponyc:release
     steps:
+      - run: apt-get update
+      - run: apt-get install -y curl
       - checkout
       - run: make test integration
+      - zulip/status:
+          fail_only: true
+
   vs-ponyc-master:
     docker:
       - image: ponylang/ponyc:latest
     steps:
       - checkout
       - run: make test integration
+      - zulip/status:
+          fail_only: true
+
   verify-changelog:
     docker:
       - image: ponylang/changelog-tool:release
     steps:
+      - run: apt-get update
+      - run: apt-get install -y curl
       - checkout
       - run: changelog-tool verify CHANGELOG.md
+      - zulip/status:
+          fail_only: true
 
 workflows:
   version: 2
   commit:
     jobs:
-      - verify-changelog
-      - vs-ponyc-release
+      - verify-changelog:
+          context: org-global 
+      - vs-ponyc-release:
+          context: org-global
+
   nightly:
     triggers:
       - schedule:
@@ -33,4 +52,6 @@ workflows:
             branches:
               only: master
     jobs:
-      - vs-ponyc-master
+      - vs-ponyc-master:
+          context: org-global
+
