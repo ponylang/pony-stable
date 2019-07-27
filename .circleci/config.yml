@@ -51,9 +51,6 @@ workflows:
           context: org-global 
       - vs-ponyc-release:
           context: org-global
-      # 1 time test
-      - x86-64-unknown-linux-gnu-nightly:
-          context: org-global
 
   daily-check-for-breakage:
     triggers:
