@@ -39,7 +39,7 @@ ASSET_DESCRIPTION="https://github.com/ponylang/pony-stable"
 
 # Build stable installation
 echo "Building stable..."
-make install prefix=${BUILD_DIR} arch=${ARCH} version="${STABLE_VERSION}" link=static
+make install prefix=${BUILD_DIR} arch=${ARCH} version="${STABLE_VERSION}" static=true linker=bfd
 
 # Package it all up
 echo "Creating .tar.gz of stable..."

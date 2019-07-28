@@ -2,7 +2,8 @@ prefix ?= /usr/local
 destdir ?= ${prefix}
 config ?= release
 arch ?=
-link ?= dynamic
+static ?= false
+linker ?=
 
 BUILD_DIR ?= build/$(config)
 SRC_DIR ?= stable
@@ -25,17 +26,21 @@ ifneq ($(arch),)
   arch_arg := --cpu $(arch)
 endif
 
-ifdef link
-  ifeq (,$(filter $(link),static dynamic))
-  	$(error "Unknown linking strategy "$(link))
+ifdef static
+  ifeq (,$(filter $(static),true false))
+  	$(error "static must be true or false)
   endif
  endif
 
-ifeq ($(link),static)
-  LINK = --static --link-ldcmd=bfd
-else
-  LINK = 
- endif
+ifeq ($(static),true)
+  LINKER += --static 
+endif
+
+ifneq ($(linker),)
+  LINKER += --link-ldcmd=$(linker)
+endif
+
+
 
 # Default to version from `VERSION` file but allowing overridding on the
 # make command line like:
@@ -65,9 +70,7 @@ GEN_FILES = $(patsubst %.pony.in, %.pony, $(GEN_FILES_IN))
 	sed s/%%VERSION%%/$(VERSION)/ $< > $@
 
 $(binary): $(GEN_FILES) $(SOURCE_FILES) | $(BUILD_DIR)
-	@echo "foo"
-	@echo "${PONYC} $(arch_arg) $(LINK) ${static_arg} $(SRC_DIR) -o ${BUILD_DIR}"
-	${PONYC} $(arch_arg) $(LINK) ${static_arg} $(SRC_DIR) -o ${BUILD_DIR}
+	${PONYC} $(arch_arg) $(LINKER) $(SRC_DIR) -o ${BUILD_DIR}
 
 install: $(binary)
 	@echo "install"
@@ -75,7 +78,7 @@ install: $(binary)
 	cp $^ $(DESTDIR)$(prefix)/bin
 
 $(tests_binary): $(GEN_FILES) $(SOURCE_FILES) $(TEST_FILES) | $(BUILD_DIR)
-	${PONYC} $(arch_arg) --debug -o ${BUILD_DIR} $(SRC_DIR)/test
+	${PONYC} $(arch_arg) $(LINKER) --debug -o ${BUILD_DIR} $(SRC_DIR)/test
 
 integration: $(binary) $(tests_binary)
 	STABLE_BIN=$$(pwd)/$(binary) $(tests_binary) --only=integration --sequential
