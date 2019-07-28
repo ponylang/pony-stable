@@ -30,7 +30,7 @@ ifdef static
   ifeq (,$(filter $(static),true false))
   	$(error "static must be true or false)
   endif
- endif
+endif
 
 ifeq ($(static),true)
   LINKER += --static 
