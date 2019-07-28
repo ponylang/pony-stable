@@ -40,8 +40,6 @@ ifneq ($(linker),)
   LINKER += --link-ldcmd=$(linker)
 endif
 
-
-
 # Default to version from `VERSION` file but allowing overridding on the
 # make command line like:
 # make version="nightly-19710702"
