@@ -13,8 +13,7 @@ jobs:
       - run: pip install cloudsmith-cli
       - checkout
       - run: bash .ci-scripts/x86-64-unknown-linux-gnu-nightly.bash ${CLOUDSMITH_API_KEY}
-      - zulip/status:
-          fail_only: true
+      - zulip/status
 
   vs-ponyc-release:
     docker:
