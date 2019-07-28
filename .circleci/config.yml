@@ -49,10 +49,7 @@ workflows:
           context: org-global 
       - vs-ponyc-release:
           context: org-global
-      # temp test
-      - x86-64-unknown-linux-nightly:
-          context: org-global          
-
+          
   daily-check-for-breakage:
     triggers:
       - schedule:
