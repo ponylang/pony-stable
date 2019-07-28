@@ -49,7 +49,7 @@ workflows:
           context: org-global 
       - vs-ponyc-release:
           context: org-global
-          
+
   daily-check-for-breakage:
     triggers:
       - schedule:
