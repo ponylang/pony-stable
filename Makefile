@@ -32,7 +32,7 @@ ifdef link
  endif
 
 ifeq ($(link),static)
-  LINK = --static
+  LINK = --static --link-ldcmd=bfd
 else
   LINK = 
  endif
