@@ -38,13 +38,6 @@ case "$REPO_TYPE" in
       ],
     \"publish\": true"
     ;;
-  "appimage")
-    FILES="\"files\":
-      [
-        {\"includePattern\": \"/home/travis/build/ponylang/pony-stable/(.*.AppImage)\", \"uploadPattern\": \"\$1\"}
-      ],
-    \"publish\": true"
-    ;;
 esac
 
 JSON="{
