@@ -3,43 +3,6 @@
 set -o errexit
 set -o nounset
 
-build_appimage(){
-  package_version=$1
-
-  mkdir pony-stable.AppDir
-
-  cat > ./pony-stable.desktop <<\EOF
-[Desktop Entry]
-Name=Pony Dependency Manager
-Icon=pony-stable
-Type=Application
-NoDisplay=true
-Exec=stable
-Terminal=true
-Categories=Development;
-EOF
-
-  curl https://www.ponylang.io/images/logo.png -o pony-stable.png
-
-  curl https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage -o linuxdeploy-x86_64.AppImage -J -L
-  chmod +x linuxdeploy-x86_64.AppImage
-
-  # remove any existing build artifacts
-  sudo rm -rf build
-
-  # can't run appimages in docker; need to extract and then run
-  sudo docker run -v "$(pwd):/home/pony" --rm -u pony:2000 ponylang/ponyc-ci:centos7-llvm-3.9.1 sh -c "./linuxdeploy-x86_64.AppImage --appimage-extract"
-
-  # need to run in CentOS 7 docker image
-  sudo docker run -v "$(pwd):/home/pony" --rm --user root ponylang/ponyc-ci:centos7-llvm-3.9.1 sh -c "yum install yum-plugin-copr -y && yum copr enable ponylang/ponylang epel-7 -y && yum install ponyc -y && make arch=x86-64 DESTDIR=pony-stable.AppDir prefix=/usr test integration"
-  sudo docker run -v "$(pwd):/home/pony" --rm -u pony:2000 ponylang/ponyc-ci:centos7-llvm-3.9.1 sh -c "make arch=x86-64 DESTDIR=pony-stable.AppDir prefix=/usr install"
-  sudo docker run -v "$(pwd):/home/pony" --rm -u pony:2000 ponylang/ponyc-ci:centos7-llvm-3.9.1 sh -c "ARCH=x86_64 ./squashfs-root/AppRun --appdir pony-stable.AppDir --desktop-file=pony-stable.desktop --icon-file=pony-stable.png --output appimage"
-
-  mv Pony_Dependency_Manager*-x86_64.AppImage "Pony_Depencency_Manager-${package_version}-x86_64.AppImage"
-
-  bash .bintray.bash appimage "${package_version}" pony-stable
-}
-
 build_deb(){
   deb_distro=$1
 
@@ -142,7 +105,6 @@ then
   case "${TRAVIS_OS_NAME}" in
     "linux")
       pony-stable-build-debs master
-      build_appimage "$(cat VERSION)"
     ;;
 
     "osx")
@@ -163,7 +125,6 @@ if [[ "$RELEASE_CONFIG" == "yes" && "$TRAVIS_BRANCH" == "release" && "$TRAVIS_PU
 then
   case "${TRAVIS_OS_NAME}" in
     "linux")
-      build_appimage "$(cat VERSION)"
       pony-stable-build-debs "$(cat VERSION)"
       pony-stable-kickoff-copr
       pony-stable-build-packages

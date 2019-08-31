@@ -12,6 +12,7 @@ All notable changes to the Pony compiler and standard library will be documented
 
 ### Changed
 
+- No longer release AppImage versions of pony-stable
 
 ## [0.2.1] - 2019-07-24
 
