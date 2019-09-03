@@ -4,7 +4,7 @@ notifications:
   webhooks:
     urls:
       - secure: Y/1bqkKq//rsH9rXLO5G3zlu/k51Mw0rPIiQDE6BZtdmDLyNr7WncdRlJG+PPvYKBpMtQVvSMlT8nAtMKAf3r81K/68LwgnrgOhYo6Wf94vgPOZzVn2NhKjtsNt0FcRcOjglyzpVZAvyd4HUhH0s+0SMMNuh3BafR0rLtgVVnfJP2Igw901TtFmj7FPmdWLRM3VQ4Wys7WD4r6c1VNzc3CQ0b8v1Vs8ZP0QTlv4w51G9Gn4oVOcvvk/pX5hTmCQb08OqOf+gy5y0zD10Cr+FMhKTn6Jc0GNAKmVC0z+xGrb106f4Fc/2jIY+24877lWp7h1HuysmMitf+KU5sO32bnyQlatBII+jB3raEnJifD6z2GrAGbHeF3WVGzDsSGYkam/kENrtoH5MxVhC4DsK8qa5mwLJTlkOM/ftfiwAVO78TI7W2nUWJ+w1Y1/+xEhN02J3gnhpVNyMmcLcHAZ1tTsvqt+Xvm6VW2ZP9Zdu3vIkKjzjLhlOsFB7EJN9Yc+HAbYBmnaPQ2pufx83h1fz5dI+3Hj2mAIapAca0tGZy5o3tRzbEocYiNnOqNcGmVF6+ddI0hLyYnIEulD1KVugQNj7GCf3Nff9lqHczdDb0zzW4TAXOG/B0PS9oYhOqQj5zi/OT6+gAYdIWx3oXK+kmtxSJZLvf0D+jBOjSK4YmcQ=
-    on_success: always
+    on_success: change
     on_failure: always
 branches:
   only:
