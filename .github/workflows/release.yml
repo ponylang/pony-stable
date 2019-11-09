@@ -42,4 +42,4 @@ jobs:
       - name: Trigger release announcement
         run: bash .ci-scripts/release/trigger-release-announcement.bash
         env:
-          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
