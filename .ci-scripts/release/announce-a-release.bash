@@ -15,7 +15,6 @@
 # - jq
 
 set -o errexit
-set -o nounset
 
 # Pull in shared configuration specific to this repo
 base=$(dirname "$0")
@@ -61,6 +60,10 @@ if [[ -z "${ZULIP_TOKEN}" ]]; then
   echo -e "\e[31mA Zulip access token needs to be set in ZULIP_TOKEN. Exiting."
   exit 1
 fi
+
+# no unset variables allowed from here on out
+# allow above so we can display nice error messages for expected unset variables
+set -o nounset
 
 # Set up .netrc file with GitHub credentials
 cat <<- EOF > $HOME/.netrc
