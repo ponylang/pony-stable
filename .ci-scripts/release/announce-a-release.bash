@@ -99,7 +99,7 @@ json=$(jq -n \
 
 # Upload release notes
 echo -e "\e[34mUploading release notes..."
-result=$(curl -X POST "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases" \
+result=$(curl -s -X POST "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases" \
   -H "Content-Type: application/x-www-form-urlencoded" \
   -u "${RELEASE_TOKEN}" \
   --data "${json}")
@@ -120,7 +120,7 @@ Version ${VERSION} of ${APPLICATION_NAME} has been released.
 See the [release notes](https://github.com/${GITHUB_REPOSITORY}/releases/tag/${VERSION}) for more details.
 "
 
-curl -X POST https://ponylang.zulipchat.com/api/v1/messages \
+curl -s -X POST https://ponylang.zulipchat.com/api/v1/messages \
   -u ${ZULIP_TOKEN} \
   -d "type=stream" \
   -d "to=announce" \
@@ -150,7 +150,7 @@ See the [release notes](https://github.com/${GITHUB_REPOSITORY}/releases/tag/${V
   --arg body "$body" \
   "${jsontemplate}")
 
-  result=$(curl -X POST "$lwip_url/comments" \
+  result=$(curl -s -X POST "$lwip_url/comments" \
     -H "Content-Type: application/x-www-form-urlencoded" \
     -u "${RELEASE_TOKEN}" \
     --data "${json}")
