@@ -12,6 +12,8 @@ All notable changes to the Pony compiler and standard library will be documented
 
 ### Changed
 
+- No longer provide .deb release packages ([#125](https://github.com/ponylang/pony-stable/pull/125))
+- No longer release pony-stable via COPR ([#125](https://github.com/ponylang/pony-stable/pull/125))
 - No longer release AppImage versions of pony-stable
 
 ## [0.2.1] - 2019-07-24

@@ -4,7 +4,7 @@ image: Visual Studio 2015
 
 branches:
   only:
-    - release
+    - /\d*\.\d*\.\d*/
 
 configuration:
   - release
