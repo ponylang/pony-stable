@@ -54,7 +54,7 @@ git config --global user.name 'Ponylang Main Bot'
 git config --global user.email 'ponylang.main@gmail.com'
 git config --global push.default simple
 
-PUSH_TO="https://${ACCESS_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+PUSH_TO="https://${RELEASE_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
 
 # Extract version from tag reference
 # Tag ref version: "refs/tags/1.0.0"
