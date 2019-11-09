@@ -24,7 +24,7 @@ source "${base}/config.bash"
 # We validate all that need to be set in case, in an absolute emergency,
 # we need to run this by hand. Otherwise the GitHub actions environment should
 # provide all of these if properly configured
-if [[ -z "${APPLICATION_NAME} ]]; then
+if [[ -z "${APPLICATION_NAME}" ]]; then
   echo -e "\e[31mName of the application being announced needs to be set in APPLICATION_NAME. Exiting."
   exit 1
 fi
