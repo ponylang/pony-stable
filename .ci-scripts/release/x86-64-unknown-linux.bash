@@ -15,7 +15,6 @@
 # - GNU tar
 
 set -o errexit
-set -o nounset
 
 # Pull in shared configuration specific to this repo
 base=$(dirname "$0")
@@ -59,6 +58,10 @@ if [[ -z "${CLOUDSMITH_REPO}" ]]; then
   echo -e "\e[31mExiting."
   exit 1
 fi
+
+# no unset variables allowed from here on out
+# allow above so we can display nice error messages for expected unset variables
+set -o nounset
 
 TODAY=$(date +%Y%m%d)
 

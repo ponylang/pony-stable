@@ -13,7 +13,6 @@
 # - docker
 
 set -o errexit
-set -o nounset
 
 # Pull in shared configuration specific to this repo
 base=$(dirname "$0")
@@ -40,6 +39,10 @@ if [[ -z "${GITHUB_REPOSITORY}" ]]; then
   echo -e "\e[31mExiting."
   exit 1
 fi
+
+# no unset variables allowed from here on out
+# allow above so we can display nice error messages for expected unset variables
+set -o nounset
 
 # We aren't validating TAG is in our x.y.z format but we could.
 # For now, TAG validating is left up to the configuration in

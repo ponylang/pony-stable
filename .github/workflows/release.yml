@@ -42,4 +42,4 @@ jobs:
       - name: Trigger release announcement
         run: bash .ci-scripts/release/trigger-release-announcement.bash
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
