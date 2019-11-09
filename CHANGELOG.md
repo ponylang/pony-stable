@@ -4,17 +4,6 @@ All notable changes to the Pony compiler and standard library will be documented
 
 ## [unreleased] - unreleased
 
-### Fixed
-
-
-### Added
-
-
-### Changed
-
-
-## [0.2.2] - 2019-11-09
-
 ### Changed
 
 - No longer provide .deb release packages ([#125](https://github.com/ponylang/pony-stable/pull/125))
