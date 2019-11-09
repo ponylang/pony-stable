@@ -1,35 +1,18 @@
-# How to cut a pony-stable release
+# How to cut a release
 
-This document is aimed at members of the Pony team who might be cutting a release of pony-stable. It serves as a checklist that can take you through doing a release step-by-step.
+This document is aimed at members of the team who might be cutting a release. It serves as a checklist that can take you through doing a release step-by-step.
 
-## Prerequisites for doing any release
+## Prerequisites
 
-In order to do a release, you absolutely must have:
-
-* Commit access to the `pony-stable` repo
-* Version 0.3.x or later of the [changelog tool](https://github.com/ponylang/changelog-tool/releases) installed
-* Access to the ponylang twitter account
-* An account on reddit for posting release notes
-* An account on the [Pony Zulip](https://ponylang.zulipchat.com)
-
-While not strictly required, you life will be made much easier if you:
-
-* Have a [bintray account](https://bintray.com/) and have been granted access `pony-language` organization by a "release admin".
-* Have read and write access to the ponylang [travis-ci](https://travis-ci.org) account
-* Have read and write access to the ponylang [appveyor](https://www.appveyor.com) account
-
-## Prerequisites for specific releases
-
-Before getting started, you will need a number for the version that you will be releasing as well as an agreed upon "golden commit" that will form the basis of the release.  Any commit is eligible to be a "golden commit" so long as:
-
-* It passed all CI checks
+* You must have commit access to the this repository.
+* It would be helpful to have read and write access to the ponylang [cloudsmith](https://cloudsmith.io/) account.
+* Read and write access to the ponylang [appveyor](https://www.appveyor.com) account
 
 ### Validate external services are functional
 
-We rely on both Travis CI and Appveyor as part of our release process. Both need to be up and functional in order to do a release. Check the status of each before starting a release. If either is reporting issues, push the release back a day or until whenever they both are reporting no problems.
-
-* [Travis CI Status](https://www.traviscistatus.com)
 * [Appveyor Status](https://appveyor.statuspage.io)
+* [Bintray Status](http://status.bintray.com)
+* [Cloudsmith](https://status.cloudsmith.io/)
 
 ### A GitHub issue exists for the release
 
@@ -37,23 +20,22 @@ All releases should have a corresponding issue in the [pony-stable repo](https:/
 
 ## Releasing
 
-Please note that the release script was written with the assumption that you are using a clone of the `ponylang/pony-stable` repo. It is advised that you use a clone of this repo and not a fork.
+Please note that this document was written with the assumption that you are using a clone of this repo. You have to be using a clone rather than a fork. It is advised to your do this by making a fresh clone of the repo from which you will release.
 
-For the duration of this document, we will pretend the "golden commit" version is `8a8ee28` and the version is `0.3.1`. Any place you see those values, please substitute your own version.
+Before getting started, you will need a number for the version that you will be releasing as well as an agreed upon "golden commit" that will form the basis of the release.
 
-With that in mind, run the release script:
+The "golden commit" must be `HEAD` on the `master` branch of this repository. At this time, releasing from any other location is not supported.
 
-- bash release.bash 0.3.1 8a8ee28
+For the duration of this document, that we are releasing version is `0.3.1`. Any place you see those values, please substitute your own version.
 
-If the golden commit does not include the most recent CHANGELOG updates, you will have to answer `n` to the second prompt and merge the changes manually.
+```bash
+git tag release-0.3.1
+git push origin release-0.3.1
+```
 
-### Update the GitHub issue
+### Update the GitHub issue as needed
 
-Leave a comment on the GitHub issue for this release to let everyone know you are done versioning the CHANGELOG and VERSION and that they are updated on `master`.
-
-### Add CHANGELOG entries to GitHub releases
-
-By now GitHub should have a listing of this new release under [releases](https://github.com/ponylang/pony-stable/releases). Click the `0.3.1` then do "Edit Release". Paste the CHANGELOG entries for this release into the box and update.
+At this point we are basically waiting on Travis, Appveyor and Homebrew. As each finishes, leave a note on the GitHub issue for this release letting everyone know where we stand status wise. For example: "Release 0.3.1 is now available via Homebrew".
 
 ### Update Homebrew
 
@@ -71,83 +53,44 @@ After updating the pony-stable formula, push to your fork and open a PR against 
 
 Leave a comment on the GitHub issue for this release letting everyone know that the Homebrew formula has been updated and a PR issued. Leave a link to your open PR.
 
-### Work on the release notes
+### Wait on Linux Builds
 
-We do a blog post announcing each release. The release notes blog post should include highlights of any particularly interesting changes that we want the community to be aware of.
+Linux builds are built on GitHub via a GitHub action.
 
-Additionally, any breaking changes that require end users to change their code should be discussed and examples of how to update their code should be included.
+If everything worked correctly then in a few minutes, a release should appear in the [Cloudsmith releases repo](https://cloudsmith.io/~ponylang/repos/releases/packages/). If you don't see it, check the Actions tab for this repo to see where things went wrong.
 
-[Examples of prior release posts](https://www.ponylang.io/categories/release) are available. If you haven't written release notes before, you should review prior examples to get a feel what should be included.
+### Wait on Windows builds
 
-To distinguish this pony-stable release from a ponyc release, be sure to title the post: "Pony-stable 0.3.1 Released".
+During the time since you push to the release branch, Appveyor has been busy building release artifacts. This can take up to a couple hours depending on how busy it is. Periodically check bintray to see if the releases are there yet.
 
-### Wait on Travis and Appveyor
-
-During the time since you push to the release branch, Travis CI and Appveyor have been busy building release artifacts. This can take up to a couple hours depending on how busy they are. Periodically check bintray to see if the releases are there yet.
-
-* [Debian](https://bintray.com/pony-language/pony-stable-debian/pony-stable)
 * [Windows](https://bintray.com/pony-language/pony-stable-win/pony-stable)
 
-The pattern for releases is similar as what we previously saw. In the case of Deb, the version looks something like:
-
-`0.3.1`
-
-For windows, the versions look something like:
+The versions look something like:
 
 `pony-stable-release-0.3.1-1526.8a8ee28`
 
 where the `1526` is the AppVeyor build number and the `8a8ee28` is the abbreviated SHA for the commit we built from.
 
-### Wait on COPR
-
-The Travis CI build for the release branch kicks off packaging builds on Fedora COPR. These packaging builds can take some time but are usually quick. Periodically check to see if the releases are finished and published on these site:
-
-* [Fedora COPR](https://copr.fedorainfracloud.org/coprs/ponylang/ponylang/builds/)
-
-The pattern for packaging release builds is similar as what we previously saw. The version looks something like:
-
-`0.3.1-1.fc27`
-
-### Wait on Homebrew
-
-Periodically check on your Homebrew PR. They have a CI process and everything should flow through smoothly. If it doesn't attempt to fix the problem. If you can't fix the problem, leave a comment on the GitHub issue for this release asking for assistance.
-
-Your PR will be closed once your change has been merged to master. Note, that your PR itself will not show as merged in GitHub- just closed. You can use the following command to verify that your change is on Homebrew master:
-
-```bash
-curl -sL https://raw.githubusercontent.com/Homebrew/homebrew-core/master/Formula/pony-stable.rb | grep url
-```
-
-If the formulae has been successfully updated, you'll see the new download url in the output of the command. If it hasn't, you'll see the old url.
-
-Note that its often quite quick to get everything through Homebrew's CI and merge process, however its often quite slow as well. We've seen their Jenkins CI often fail with errors that are unrelated to PR in question. Don't wait too long on Homebrew. If it hasn't passed CI and been merged within a couple hours move ahead without it having passed. If Homebrew is being slow about merging, when you inform Zulip of the release, note that the Homebrew version isn't available yet and include a link to the Homebrew PR and the pony-stable Github release issue so that people can follow along. When the Homebrew PR is eventually merged update Zulip.
-
 ### Update the GitHub issue as needed
 
-At this point we are basically waiting on Travis, Appveyor and Homebrew. As each finishes, leave a note on the GitHub issue for this release letting everyone know where we stand status wise. For example: "Release 0.3.1 is now available via Homebrew".
+At this point we are basically waiting on Appveyor and Homebrew. As each finishes, leave a note on the GitHub issue for this release letting everyone know where we stand status wise. For example: "Release 0.3.1 is now available via Homebrew".
 
-### Merge the release blog post PR for the ponylang website
+---
 
-Once all the release steps have been confirmed as successful, merge the PR you created earlier for ponylang.github.io for the blog post announcing the release. Confirm it is successfully published to the [blog](https://www.ponylang.io/blog/).
+## If something goes wrong
 
-### Inform the Pony Zulip
+The release process can be restarted at various points in it's lifecycle by pushing specially crafted tags.
 
-Once Travis, Appveyor and Homebrew are all finished, drop a note in the [#announce stream](https://ponylang.zulipchat.com/#narrow/stream/189932-announce) of the Pony Zulip letting everyone know that the release is out and include a link the release blog post. Set the topic of your message to something like "Pony Stable 0.3.1 released".
+## Start a release
 
-If this is an "emergency release" that is designed to get a high priority bug fix out, be sure to note that everyone is advised to update ASAP. If the high priority bug only affects certain platforms, adjust the "update ASAP" note accordingly.
+As documented above, a release is started by pushing a tag of the form `release-x.y.z`.
 
-### Add to "Last Week in Pony"
+## Build artifacts
 
-Last Week in Pony is our weekly newsletter. Add information about the release, including a link to the release notes, to the [current Last Week in Pony](https://github.com/ponylang/ponylang.github.io/issues?q=is%3Aissue+is%3Aopen+label%3Alast-week-in-pony).
+The release process can be manually restarted from here by pushing a tag of the form `x.y.z`. The pushed tag must be on the commit to build the release artifacts from. During the normal process, that commit is the same as the one that `release-x.y.z`.
 
-### Post release notes to /r/ponylang
+## Announce release
 
-Release notes should be posted to [/r/ponylang](https://www.reddit.com/r/ponylang/).
+The release process can be manually restarted from here by push a tag of the form `announce-x.y.z`. The tag must be on a commit that is after "Release x.y.z" commit that was generated during the `Start a release` portion of the process.
 
-### Post release to ponylang twitter
-
-The release should be announced on the [ponylang twitter](https://www.twitter.com/ponylang).
-
-### Close the GitHub issue
-
-Close the GitHub issue for this release.
+If you need to restart from here, you will need to pull the latest updates from the repo as it will have changed and the commit you need to tag will not be available in your copy of the repo with pulling.
