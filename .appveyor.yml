@@ -9,7 +9,6 @@ branches:
 configuration:
   - release
 
-skip_tags: true
 skip_commits:
   files:
     - .gitattributes
