@@ -36,7 +36,7 @@ if [[ -z "${RELEASE_TOKEN}" ]]; then
   echo -e "\e[31m     USERNAME:TOKEN"
   echo -e "\e[31mfor example:"
   echo -e "\e[31m     ponylang-main:1234567890"
-  echo -e "\e[31mExiting."
+  echo -e "\e[31mExiting.\e[0m"
   exit 1
 fi
 
@@ -45,7 +45,7 @@ if [[ -z "${GITHUB_REF}" ]]; then
   echo -e "\e[31mThe tag should be in the following GitHub specific form:"
   echo -e "\e[31m    /refs/tags/release-X.Y.Z"
   echo -e "\e[31mwhere X.Y.Z is the version we are releasing"
-  echo -e "\e[31mExiting."
+  echo -e "\e[31mExiting.\e[0m"
   exit 1
 fi
 
@@ -53,7 +53,7 @@ if [[ -z "${GITHUB_REPOSITORY}" ]]; then
   echo -e "\e[31mName of this repository needs to be set in GITHUB_REPOSITORY."
   echo -e "\e[31mShould be in the form OWNER/REPO, for example:"
   echo -e "\e[31m     ponylang/ponyup"
-  echo -e "\e[31mExiting."
+  echo -e "\e[31mExiting.\e[0m"
   exit 1
 fi
 
@@ -80,24 +80,24 @@ git checkout master
 git pull
 
 # update VERSION
-echo -e "\e[34mUpdating VERSION to ${VERSION}"
+echo -e "\e[34mUpdating VERSION to ${VERSION}\e[0m"
 echo "${VERSION}" > VERSION
 
 # version the changelog
-echo -e "\e[34mUpdating CHANGELOG.md for release"
+echo -e "\e[34mUpdating CHANGELOG.md for release\e[0m"
 changelog-tool release "${VERSION}" -e
 
 # commit CHANGELOG and VERSION updates
-echo -e "\e[34mCommiting VERSION and CHANGELOG.md changes"
+echo -e "\e[34mCommiting VERSION and CHANGELOG.md changes\e[0m"
 git add CHANGELOG.md VERSION
 git commit -m "${VERSION} release"
 
 # tag release
-echo -e "\e[34mTagging for release to kick off building artifacts"
+echo -e "\e[34mTagging for release to kick off building artifacts\e[0m"
 git tag "${VERSION}"
 
 # push to release to remote
-echo -e "\e[34mPushing commited changes back to master"
+echo -e "\e[34mPushing commited changes back to master\e[0m"
 git push ${PUSH_TO} master
 echo -e "\e[34mPushing ${VERSION} tag"
 git push ${PUSH_TO} "${VERSION}"
@@ -106,7 +106,7 @@ git push ${PUSH_TO} "${VERSION}"
 git pull
 
 # update CHANGELOG for new entries
-echo -e "\e[34mAdding new 'unreleased' section to CHANGELOG.md"
+echo -e "\e[34mAdding new 'unreleased' section to CHANGELOG.md\e[0m"
 changelog-tool unreleased -e
 
 # commit changelog and push to master
@@ -114,9 +114,9 @@ echo -e "\e[34mCommiting CHANGELOG.md change"
 git add CHANGELOG.md
 git commit -m "Add unreleased section to CHANGELOG post ${VERSION} release [skip ci]"
 
-echo -e "\e[34mPushing CHANGELOG.md"
+echo -e "\e[34mPushing CHANGELOG.md\e[0m"
 git push ${PUSH_TO} master
 
 # delete release-VERSION tag
-echo -e "\e[34mDeleting no longer needed remote tag release-${VERSION}"
+echo -e "\e[34mDeleting no longer needed remote tag release-${VERSION}\e[0m"
 git push --delete ${PUSH_TO} "release-${VERSION}"
