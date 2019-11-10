@@ -33,7 +33,7 @@ if [[ -z "${RELEASE_TOKEN}" ]]; then
   echo -e "\e[31m     USERNAME:TOKEN"
   echo -e "\e[31mfor example:"
   echo -e "\e[31m     ponylang-main:1234567890"
-  echo -e "\e[31mExiting."
+  echo -e "\e[31mExiting.\e[0m"
   exit 1
 fi
 
@@ -42,7 +42,7 @@ if [[ -z "${GITHUB_REF}" ]]; then
   echo -e "\e[31mThe tag should be in the following GitHub specific form:"
   echo -e "\e[31m    /refs/tags/X.Y.Z"
   echo -e "\e[31mwhere X.Y.Z is the version we are announcing"
-  echo -e "\e[31mExiting."
+  echo -e "\e[31mExiting.\e[0m"
   exit 1
 fi
 
@@ -62,9 +62,9 @@ PUSH_TO="https://${RELEASE_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
 VERSION="${GITHUB_REF/refs\/tags\//}"
 
 # tag for announcement
-echo -e "\e[34mTagging to kick off release announcement"
+echo -e "\e[34mTagging to kick off release announcement\e[0m"
 git tag "announce-${VERSION}"
 
 # push tag
-echo -e "\e[34mPushing announce-${VERSION} tag"
+echo -e "\e[34mPushing announce-${VERSION} tag\e[0m"
 git push ${PUSH_TO} "announce-${VERSION}"

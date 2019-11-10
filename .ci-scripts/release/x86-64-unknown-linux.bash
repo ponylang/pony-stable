@@ -25,7 +25,8 @@ source "${base}/config.bash"
 # we need to run this by hand. Otherwise the GitHub actions environment should
 # provide all of these if properly configured
 if [[ -z "${CLOUDSMITH_API_KEY}" ]]; then
-  echo -e "\e[31mCloudsmith API key needs to be set in CLOUDSMITH_API_KEY. Exiting."
+  echo -e "\e[31mCloudsmith API key needs to be set in CLOUDSMITH_API_KEY."
+  echo -e "Exiting.\e[0m"
   exit 1
 fi
 
@@ -33,20 +34,20 @@ if [[ -z "${GITHUB_REPOSITORY}" ]]; then
   echo -e "\e[31mName of this repository needs to be set in GITHUB_REPOSITORY."
   echo -e "\e[31mShould be in the form OWNER/REPO, for example:"
   echo -e "\e[31m     ponylang/ponyup"
-  echo -e "\e[31mExiting."
+  echo -e "\e[31mExiting.\e[0m"
   exit 1
 fi
 
 if [[ -z "${APPLICATION_NAME}" ]]; then
   echo -e "\e[31mAPPLICATION_NAME needs to be set."
-  echo -e "\e[31mExiting."
+  echo -e "\e[31mExiting.\e[0m"
   exit 1
 fi
 
 if [[ -z "${APPLICATION_SUMMARY}" ]]; then
   echo -e "\e[31mAPPLICATION_SUMMARY needs to be set."
   echo -e "\e[31mIt's a short description of the application that will appear in Cloudsmith."
-  echo -e "\e[31mExiting."
+  echo -e "\e[31mExiting.\e[0m"
   exit 1
 fi
 
@@ -55,7 +56,7 @@ if [[ -z "${CLOUDSMITH_REPO}" ]]; then
   echo -e "\e[31mShould be one of:"
   echo -e "\e[35m     nightlies"
   echo -e "\e[35m     releases"
-  echo -e "\e[31mExiting."
+  echo -e "\e[31mExiting.\e[0m"
   exit 1
 fi
 
@@ -92,18 +93,18 @@ ASSET_SUMMARY="${APPLICATION_SUMMARY}"
 ASSET_DESCRIPTION="https://github.com/${GITHUB_REPOSITORY}"
 
 # Build application installation
-echo -e "\e[34mBuilding ${APPLICATION_NAME}..."
+echo -e "\e[34mBuilding ${APPLICATION_NAME}...\e[0m"
 make install prefix="${BUILD_DIR}" arch=${ARCH} \
   version="${APPLICATION_VERSION}" static=true linker=bfd
 
 # Package it all up
-echo -e "\e[34mCreating .tar.gz of ${APPLICATION_NAME}..."
+echo -e "\e[34mCreating .tar.gz of ${APPLICATION_NAME}...\e[0m"
 pushd "${BUILD_PREFIX}" || exit 1
 tar -cvzf "${ASSET_FILE}" *
 popd || exit 1
 
 # Ship it off to cloudsmith
-echo -e "\e[34mUploading package to cloudsmith..."
+echo -e "\e[34mUploading package to cloudsmith...\e[0m"
 cloudsmith push raw --version "${CLOUDSMITH_VERSION}" \
   --api-key "${CLOUDSMITH_API_KEY}" --summary "${ASSET_SUMMARY}" \
   --description "${ASSET_DESCRIPTION}" ${ASSET_PATH} "${ASSET_FILE}"

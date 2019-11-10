@@ -27,7 +27,7 @@ if [[ -z "${GITHUB_REF}" ]]; then
   echo -e "\e[31mThe tag should be in the following GitHub specific form:"
   echo -e "\e[31m    /refs/tags/X.Y.Z"
   echo -e "\e[31mwhere X.Y.Z is the version we are releasing"
-  echo -e "\e[31mExiting."
+  echo -e "\e[31mExiting.\e[0m"
   exit 1
 fi
 
@@ -36,7 +36,7 @@ if [[ -z "${GITHUB_REPOSITORY}" ]]; then
   echo -e "\e[31mShould be in the form OWNER/REPO, for example:"
   echo -e "\e[31m     ponylang/ponyup"
   echo -e "\e[31mThis will be used as the docker image name."
-  echo -e "\e[31mExiting."
+  echo -e "\e[31mExiting.\e[0m"
   exit 1
 fi
 
