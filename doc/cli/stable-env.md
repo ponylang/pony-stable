@@ -16,4 +16,4 @@ always separate the `command` with a double dash `--` from the `stable` parts of
 
 ## EXAMPLES
 
-    stable env -- ponyc -- debug
+    stable env -- ponyc --debug
