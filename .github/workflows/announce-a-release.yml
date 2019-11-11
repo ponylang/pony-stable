@@ -5,7 +5,7 @@ on:
     tags: announce-*.*.*
 
 jobs:
-  start-a-release:
+  announce-a-release:
     name: Announce a release
     runs-on: ubuntu-latest
     container:

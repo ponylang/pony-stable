@@ -99,7 +99,7 @@ git tag "${VERSION}"
 # push to release to remote
 echo -e "\e[34mPushing commited changes back to master\e[0m"
 git push ${PUSH_TO} master
-echo -e "\e[34mPushing ${VERSION} tag"
+echo -e "\e[34mPushing ${VERSION} tag\e[0m"
 git push ${PUSH_TO} "${VERSION}"
 
 # pull again, just in case, odds of this being needed are really slim
@@ -110,7 +110,7 @@ echo -e "\e[34mAdding new 'unreleased' section to CHANGELOG.md\e[0m"
 changelog-tool unreleased -e
 
 # commit changelog and push to master
-echo -e "\e[34mCommiting CHANGELOG.md change"
+echo -e "\e[34mCommiting CHANGELOG.md change\e[0m"
 git add CHANGELOG.md
 git commit -m "Add unreleased section to CHANGELOG post ${VERSION} release [skip ci]"
 
