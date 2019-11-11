@@ -165,7 +165,8 @@ See the [release notes](https://github.com/${GITHUB_REPOSITORY}/releases/tag/${V
     echo -e "\e[31m${result}\e[0m"
   fi
 else
-  echo -e "\e[31mUnable to post to Last Week in Pony. Can't find the issue."
+  echo -e "\e[31mUnable to post to Last Week in Pony."
+  echo -e "Can't find the issue.\e[0m"
 fi
 
 # delete announce-VERSION tag
