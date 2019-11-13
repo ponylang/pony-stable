@@ -21,7 +21,7 @@ actor _Exec
     try
       let args = cmdline.split_by(" ")
       let path = FilePath(h.env.root as AmbientAuth,
-        "stable/test/integration/helper.sh")?
+        "tack/test/integration/helper.sh")?
       let auth = h.env.root as AmbientAuth
       let vars: Array[String] iso = [
         "CWD=" + tmp

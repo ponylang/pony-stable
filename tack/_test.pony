@@ -13,20 +13,20 @@ class _TestBundleLocator is UnitTest
   fun name(): String => "stable._BundleLocator"
 
   fun bundle(subpath: String): String =>
-    Path.join("stable/test/testdata", subpath).string()
+    Path.join("tack/test/testdata", subpath).string()
 
   fun apply(h: TestHelper) ? =>
-    h.assert_eq[String]("stable/test/testdata/nested",
+    h.assert_eq[String]("tack/test/testdata/nested",
       _BundleLocator(h.env, bundle("nested")) as String)
 
     // nested has one, but so does nested/deeply
-    h.assert_eq[String]("stable/test/testdata/nested/deeply",
+    h.assert_eq[String]("tack/test/testdata/nested/deeply",
       _BundleLocator(h.env, bundle("nested/deeply")) as String)
 
     // nested/empty has no tack.json
-    h.assert_eq[String]("stable/test/testdata/nested",
+    h.assert_eq[String]("tack/test/testdata/nested",
       _BundleLocator(h.env, bundle("nested/empty")) as String)
 
     // stable itself has no tack.json, so this ancestor-checking
-    // from stable/test/testdata/empty yields no tack.json
+    // from tack/test/testdata/empty yields no tack.json
     h.assert_eq[None](None, _BundleLocator(h.env, bundle("empty")) as None)

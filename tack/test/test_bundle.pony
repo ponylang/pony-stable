@@ -4,10 +4,10 @@ use ".."
 
 class TestBundle is UnitTest
   new iso create() => None
-  fun name(): String => "stable.Bundle"
+  fun name(): String => "tack.Bundle"
 
   fun bundle(subpath: String): String =>
-    Path.join("stable/test/testdata", subpath).string()
+    Path.join("tack/test/testdata", subpath).string()
 
   fun apply(h: TestHelper) ? =>
     h.assert_error(_BundleCreate(h.env, "notfound")?, "nonexistant directory")
@@ -43,34 +43,34 @@ class TestBundle is UnitTest
 
 class TestBundleSelfReferentialPaths is UnitTest
   new iso create() => None
-  fun name(): String => "stable.Bundle.self-referential-paths"
+  fun name(): String => "tack.Bundle.self-referential-paths"
 
   fun apply(h: TestHelper) ? =>
     let b = Bundle(_Path(h.env, "self-referential")?) ?
     let paths = b.paths()
     h.assert_eq[USize](1, paths.size())
     h.assert_true(paths(0)?
-     .contains("stable/test/testdata/self-referential"))
+     .contains("tack/test/testdata/self-referential"))
 
 class TestBundleMutuallyRecursivePaths is UnitTest
   new iso create() => None
-  fun name(): String => "stable.Bundle.mutually-recursive-paths"
+  fun name(): String => "tack.Bundle.mutually-recursive-paths"
   fun apply(h: TestHelper) ? =>
     let bar_paths = Bundle(_Path(h.env, "mutually-recursive/bar")?)?.paths()
     let foo_paths = Bundle(_Path(h.env, "mutually-recursive/foo")?)?.paths()
 
     h.assert_eq[USize](1, bar_paths.size())
     h.assert_true(bar_paths(0)?
-     .contains("stable/test/testdata/mutually-recursive/foo"))
+     .contains("tack/test/testdata/mutually-recursive/foo"))
 
     h.assert_eq[USize](1, foo_paths.size())
     h.assert_true(foo_paths(0)?
-     .contains("stable/test/testdata/mutually-recursive/bar"))
+     .contains("tack/test/testdata/mutually-recursive/bar"))
 
 primitive _Path
   fun apply(env: Env, relative_path: String) : FilePath ? =>
     FilePath(env.root as AmbientAuth,
-      Path.join("stable/test/testdata", relative_path)
+      Path.join("tack/test/testdata", relative_path)
         .string())?
 
 class _BundleCreate is ITest

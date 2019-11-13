@@ -1,9 +1,9 @@
-stable-fetch(1) -- update dependencies
+tack-fetch(1) -- update dependencies
 ======================================
 
 ## SYNOPSIS
 
-    stable fetch
+    tack fetch
 
 ## DESCRIPTION
 

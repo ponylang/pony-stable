@@ -6,8 +6,8 @@ static ?= false
 linker ?=
 
 BUILD_DIR ?= build/$(config)
-SRC_DIR ?= stable
-binary := $(BUILD_DIR)/stable
+SRC_DIR ?= tack
+binary := $(BUILD_DIR)/tack
 tests_binary := $(BUILD_DIR)/test
 
 ifdef config
@@ -79,7 +79,7 @@ $(tests_binary): $(GEN_FILES) $(SOURCE_FILES) $(TEST_FILES) | $(BUILD_DIR)
 	${PONYC} $(arch_arg) $(LINKER) --debug -o ${BUILD_DIR} $(SRC_DIR)/test
 
 integration: $(binary) $(tests_binary)
-	STABLE_BIN=$$(pwd)/$(binary) $(tests_binary) --only=integration --sequential
+	TACK_BIN=$$(pwd)/$(binary) $(tests_binary) --only=integration --sequential
 
 test: $(tests_binary)
 	$^ --exclude=integration --sequential

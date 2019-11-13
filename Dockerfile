@@ -4,9 +4,9 @@ WORKDIR /src/pony-stable
 
 COPY Makefile LICENSE VERSION /src/pony-stable/
 
-WORKDIR /src/pony-stable/stable
+WORKDIR /src/pony-stable/tack
 
-COPY stable /src/pony-stable/stable/
+COPY tack /src/pony-stable/tack/
 
 WORKDIR /src/pony-stable
 
@@ -15,6 +15,6 @@ RUN make arch=x86-64 static=true linker=bfd \
 
 FROM alpine:3.10
 
-COPY --from=build /usr/local/bin/stable /usr/local/bin/stable
+COPY --from=build /usr/local/bin/tack /usr/local/bin/tack
 
-CMD stable
+CMD tack

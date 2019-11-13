@@ -12,7 +12,7 @@ class TestVersion is UnitTest
     let tmp =
       try
         FilePath.mkdtemp(h.env.root as AmbientAuth,
-          "stable/test/integration/tmp/")?
+          "tack/test/integration/tmp/")?
       else
         h.fail("failed to create temporary directory")
         return

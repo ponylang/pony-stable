@@ -25,7 +25,7 @@ class TestEnvNoBundle is UnitTest
     let tmp =
       try
         FilePath.mkdtemp(h.env.root as AmbientAuth,
-          "stable/test/integration/tmp/")?
+          "tack/test/integration/tmp/")?
       else
         h.fail("failed to create temporary directory")
         h.complete(false)
@@ -49,7 +49,7 @@ class TestEnvEmptyBundleInSameDir is UnitTest
     let tmp =
       try
         FilePath.mkdtemp(h.env.root as AmbientAuth,
-          "stable/test/integration/tmp/")?
+          "tack/test/integration/tmp/")?
       else
         h.fail("failed to create temporary directory")
         h.complete(false)
@@ -83,7 +83,7 @@ class TestEnvBundleInSameDir is UnitTest
     let tmp =
       try
         FilePath.mkdtemp(h.env.root as AmbientAuth,
-          "stable/test/integration/tmp/")?
+          "tack/test/integration/tmp/")?
       else
         h.fail("failed to create temporary directory")
         h.complete(false)
@@ -134,7 +134,7 @@ class TestEnvBundleInSameDirWithCall is UnitTest
     let tmp =
       try
         FilePath.mkdtemp(h.env.root as AmbientAuth,
-          "stable/test/integration/tmp/")?
+          "tack/test/integration/tmp/")?
       else
         h.fail("failed to create temporary directory")
         h.complete(false)
@@ -170,7 +170,7 @@ class TestEnvBundleInParentDir is UnitTest
     let tmp =
       try
         FilePath.mkdtemp(h.env.root as AmbientAuth,
-          "stable/test/integration/tmp/")?
+          "tack/test/integration/tmp/")?
       else
         h.fail("failed to create temporary directory")
         h.complete(false)
@@ -208,7 +208,7 @@ class TestEnvBadBundleInNestedAndValidBundleInParentDir is UnitTest
     let tmp =
       try
         FilePath.mkdtemp(h.env.root as AmbientAuth,
-          "stable/test/integration/tmp/")?
+          "tack/test/integration/tmp/")?
       else
         h.fail("failed to create temporary directory")
         h.complete(false)

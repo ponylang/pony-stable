@@ -6,10 +6,10 @@ use ".."
 
 class TestDep is UnitTest
   new iso create() => None
-  fun name(): String => "stable.Dep"
+  fun name(): String => "tack.Dep"
 
   fun apply(h: TestHelper) ? =>
-    let path = FilePath(h.env.root as AmbientAuth, "stable/test/testdata/empty-deps")?
+    let path = FilePath(h.env.root as AmbientAuth, "tack/test/testdata/empty-deps")?
     let bundle = Bundle(path, LogNone, false)?
     var dep: DepAny
 

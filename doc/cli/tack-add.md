@@ -1,13 +1,13 @@
-stable-add(1) -- add a dependency
+tack-add(1) -- add a dependency
 =================================
 
 ## SYNOPSIS
 
-    stable add github <url-path> [options]
-    stable add gitlab <url-path> [options]
-    stable add local-git <path> [options]
-    stable add local <path>
-    stable add
+    tack add github <url-path> [options]
+    tack add gitlab <url-path> [options]
+    tack add local-git <path> [options]
+    tack add local <path>
+    tack add
 
 ## DESCRIPTION
 
@@ -28,9 +28,9 @@ Download a github repository into your project.
   Fetch only a subdirectory of the project
 
   ```
-  stable add github jemc/pony-inspect
+  tack add github jemc/pony-inspect
   ```
-  
+
 ### gitlab
 
 Download a gitlab repository into your project.
@@ -41,9 +41,9 @@ Download a gitlab repository into your project.
   Fetch only a subdirectory of the project
 
   ```
-  stable add gitlab org/repo
+  tack add gitlab org/repo
   ```
-  
+
 ### local-git
 
 Copy a local git repository into your project.
@@ -57,6 +57,6 @@ Copy a local directory into your project.
 
 ## EXAMPLES
 
-    stable add github jemc/pony-inspect
-    stable add local-git ../other-project -t v1.1
-    stable add local ../gitless-project
+    tack add github jemc/pony-inspect
+    tack add local-git ../other-project -t v1.1
+    tack add local ../gitless-project
