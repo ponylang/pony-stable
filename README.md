@@ -8,6 +8,12 @@ Put them in a stable and make your life easier.
 
 <a href="https://openclipart.org/detail/11509/rpg-map-symbols-stables"><img src="https://openclipart.org/download/11509/nicubunu-RPG-map-symbols-Stables.svg" width="400px" /></a>
 
+## Status
+
+[![Actions Status](https://github.com/ponylang/pony-stable/workflows/vs-ponyc-latest/badge.svg)](https://github.com/ponylang/pony-stable/actions)
+
+Production ready.
+
 ## Installation
 
 ### Debian and Ubuntu Linux using a DEB package (via Bintray)
