@@ -9,6 +9,7 @@ All notable changes to the Pony compiler and standard library will be documented
 
 ### Added
 
+- Add macOS releases via Cloudsmith ([PR #138](https://github.com/ponylang/pony-stable/pull/138))
 
 ### Changed
 
