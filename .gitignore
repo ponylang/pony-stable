@@ -1,5 +1,5 @@
 build
-/stable/test/integration/tmp/**
-!/stable/test/integration/tmp/.gitkeep
+/tack/test/integration/tmp/**
+!/tack/test/integration/tmp/.gitkeep
 # generated
 stable/version.pony

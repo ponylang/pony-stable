@@ -161,7 +161,7 @@ actor Main
 
 ```bash
 stable fetch
-# The dependencies listed in `bundle.json` will be fetched
+# The dependencies listed in `tack.json` will be fetched
 # and/or updated into the local `.deps` directory.
 ```
 ```
@@ -178,7 +178,7 @@ Checking connectivity... done.
 
 ```bash
 stable env ponyc --debug
-# The local paths to the dependencies listed in `bundle.json`
+# The local paths to the dependencies listed in `tack.json`
 # will be included in the `PONYPATH` environment variable,
 # available to `use` in the `ponyc` invocation.
 # You can run any custom command here - not just `ponyc`.
