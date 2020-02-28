@@ -37,7 +37,7 @@ brew install pony-stable
 
 ### Linux using an RPM package (via COPR)
 
-For Red Hat, CentOS, Oracle Linux, Fedora Linux, or OpenSuSE, the `release` builds are packaged and available on COPR ([ponylang/ponylang](https://copr.fedorainfracloud.org/coprs/ponylang/ponylang/)).
+For Red Hat, CentOS, Oracle Linux, Fedora Linux, or openSUSE, the `release` builds are packaged and available on COPR ([ponylang/ponylang](https://copr.fedorainfracloud.org/coprs/ponylang/ponylang/)).
 
 #### Using `yum` for Red Hat, CentOS, Oracle Linux and other RHEL compatible systems:
 
@@ -55,7 +55,7 @@ dnf copr enable ponylang/ponylang
 dnf install pony-stable
 ```
 
-#### Using Zypper for OpenSuSE Leap 15:
+#### Using Zypper for openSUSE Leap 15:
 
 ```bash
 zypper addrepo --refresh --repo https://copr.fedorainfracloud.org/coprs/ponylang/ponylang/repo/opensuse-leap-15.0/ponylang-ponylang-opensuse-leap-15.0.repo
