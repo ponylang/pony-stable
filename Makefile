@@ -17,7 +17,7 @@ ifdef config
 endif
 
 ifeq ($(config),release)
-	PONYC = ponyc
+  PONYC = ponyc
 else
 	PONYC = ponyc --debug
 endif

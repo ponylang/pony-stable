@@ -36,8 +36,8 @@ class TestEnvNoBundle is UnitTest
     let notifier: ProcessNotify iso = _ExpectClient(h,
       None,
       ["No bundle.json in current working directory or ancestors."],
-      0)
-    _Exec(h, "stable env", tmp.path, consume notifier)
+      1)
+    _Exec(h, "stable env -- env", tmp.path, consume notifier)
 
 class TestEnvEmptyBundleInSameDir is UnitTest
   new iso create() => None
@@ -71,7 +71,7 @@ class TestEnvEmptyBundleInSameDir is UnitTest
       ["PONYPATH=\n"], // empty
       None,
       0)
-    _Exec(h, "stable env", tmp.path, consume notifier)
+    _Exec(h, "stable env -- env", tmp.path, consume notifier)
 
 class TestEnvBundleInSameDir is UnitTest
   new iso create() => None
@@ -122,7 +122,7 @@ class TestEnvBundleInSameDir is UnitTest
       ["PONYPATH=" + expected],
       None,
       0)
-    _Exec(h, "stable env", tmp.path, consume notifier)
+    _Exec(h, "stable env -- env", tmp.path, consume notifier)
 
 class TestEnvBundleInSameDirWithCall is UnitTest
   new iso create() => None
@@ -158,7 +158,7 @@ class TestEnvBundleInSameDirWithCall is UnitTest
       ["../local/a"],
       None,
       0)
-    _Exec(h, "stable env printenv PONYPATH", tmp.path, consume notifier)
+    _Exec(h, "stable env -- printenv PONYPATH", tmp.path, consume notifier)
 
 class TestEnvBundleInParentDir is UnitTest
   new iso create() => None
@@ -196,7 +196,7 @@ class TestEnvBundleInParentDir is UnitTest
       ["PONYPATH=" + Path.join(tmp.path, "../local/a")],
       None,
       0)
-    _Exec(h, "stable env", nested.path, consume notifier)
+    _Exec(h, "stable env -- env", nested.path, consume notifier)
 
 class TestEnvBadBundleInNestedAndValidBundleInParentDir is UnitTest
   new iso create() => None
@@ -236,7 +236,7 @@ class TestEnvBadBundleInNestedAndValidBundleInParentDir is UnitTest
     // This verifies that the parent-dir bundle.json isn't picked up if the
     // nested-dir bundle.json is invalid.
     let notifier: ProcessNotify iso = _ExpectClient(h,
-      ["PONYPATH=$"],
+      None,
       ["JSON error at: " + bad_bundle.path.path + ": missing \"deps\" array"],
-      0)
-    _Exec(h, "stable env", nested.path, consume notifier)
+      1)
+    _Exec(h, "stable env -- env", nested.path, consume notifier)

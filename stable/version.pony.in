@@ -1,3 +1,12 @@
-primitive Version
-  fun apply() : String =>
+use "cli"
+
+primitive VersionCmd
+  fun name(): String => "version"
+
+  fun command_spec(): CommandSpec ? =>
+    CommandSpec.leaf(
+      name(),
+      "Prints the version of stable.")?
+
+  fun apply(): String =>
     "%%VERSION%%"

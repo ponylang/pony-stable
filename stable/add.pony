@@ -1,10 +1,36 @@
 use "json"
-use options = "options"
+use "cli"
 
-primitive Add
-  fun apply(args: Array[String] box, log: Log): JsonObject ? =>
-    let kind = args(0)?
-    let rest = args.slice(1)
+primitive AddCmd
+  fun name(): String => "add"
+  fun command_spec(): CommandSpec ? =>
+    CommandSpec.leaf(
+      name(),
+      "Adds a new dependency to the local `bundle.json`.",
+      [ // options
+        OptionSpec.string(
+          "tag",
+          "Specifies a tag from the source repository",
+          't',
+          "")
+        OptionSpec.string(
+          "subdir",
+          "Fetch only a subdirectory of the repository",
+          'd',
+          "")
+      ],
+      [  // args
+        ArgSpec.string(
+          "type",
+          "The type of the dependency to add. Possible values: github, gitlab, local-git, local")
+        ArgSpec.string(
+          "source",
+          "The path addressing the dependency to add. For github and gitlab: <ORGANIZATION>/<REPOSITORY>, for local-git and local: a path.")
+      ]
+    )?
+
+  fun apply(cmd: Command, bundle: Bundle, log: Log) ? =>
+    let kind = cmd.arg("type").string()
     let prim =
       match kind
       | "github" => AddGitHosted
@@ -18,35 +44,31 @@ primitive Add
       end
     let info: JsonObject ref = JsonObject
     info.data("type") = kind.clone()
-    prim(rest, info)?
-
-    info
+    prim(cmd, info)
+    bundle.add_dep(info)?
+    bundle.fetch()
 
 primitive AddGitHosted
-  fun apply(args: Array[String] box, info: JsonObject) ? =>
-    info.data("repo") = args(0)?
-
-    let opts = options.Options(args.slice(1))
-    opts.add("tag", "t", options.StringArgument)
-    opts.add("subdir", "d", options.StringArgument)
-    for opt in opts do
-      match opt
-      | (let name: String, let value: String) => info.data(name) = value
-      end
+  fun apply(cmd: Command, info: JsonObject) =>
+    info.data("repo") = cmd.arg("source").string()
+    let git_tag = cmd.option("tag").string()
+    if git_tag.size() > 0 then
+      info.data("tag") = git_tag
+    end
+    let subdir = cmd.option("subdir").string()
+    if subdir.size() > 0 then
+      info.data("subdir") = subdir
     end
 
 primitive AddLocalGit
-  fun apply(args: Array[String] box, info: JsonObject) ? =>
-    info.data("local-path") = args(0)?
+  fun apply(cmd: Command, info: JsonObject) =>
+    info.data("local-path") = cmd.arg("source").string()
 
-    let opts = options.Options(args.slice(1))
-    opts.add("tag", "t", options.StringArgument)
-    for opt in opts do
-      match opt
-      | (let name: String, let value: String) => info.data(name) = value
-      end
+    let git_tag = cmd.option("tag").string()
+    if git_tag.size() > 0 then
+      info.data("tag") = git_tag
     end
 
 primitive AddLocal
-  fun apply(args: Array[String] box, info: JsonObject) ? =>
-    info.data("local-path") = args(0)?
+  fun apply(cmd: Command, info: JsonObject) =>
+    info.data("local-path") = cmd.arg("source").string()

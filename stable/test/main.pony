@@ -12,9 +12,9 @@ actor Main is TestList
     test(TestDep)
     PrivateTests.make().tests(test)
 
-    test(integration.TestUsage("")) // no arguments
+    test(integration.TestUsageOnError()) // no arguments
+    test(integration.TestUsageOnError("wrong")) // wrong subcommand
     test(integration.TestUsage("help"))
-    test(integration.TestUsage("unknown arguments"))
     test(integration.TestVersion)
 
     integration.EnvTests.make().tests(test)

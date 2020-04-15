@@ -177,7 +177,7 @@ Checking connectivity... done.
 ## Compile in a stable environment.
 
 ```bash
-stable env ponyc --debug
+stable env -- ponyc --debug
 # The local paths to the dependencies listed in `bundle.json`
 # will be included in the `PONYPATH` environment variable,
 # available to `use` in the `ponyc` invocation.
