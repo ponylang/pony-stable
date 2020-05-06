@@ -37,7 +37,7 @@ class TestEnvNoBundle is UnitTest
       None,
       ["No bundle.json in current working directory or ancestors."],
       0)
-    _Exec(h, [  "env" ], tmp.path, consume notifier)
+    _Exec(h, [ "env" ], tmp.path, consume notifier)
 
 class TestEnvEmptyBundleInSameDir is UnitTest
   new iso create() => None
@@ -158,7 +158,11 @@ class TestEnvBundleInSameDirWithCall is UnitTest
       ["../local/a"],
       None,
       0)
-    _Exec(h, [ "env"; "printenv"; "PONYPATH" ], tmp.path, consume notifier)
+    ifdef windows then
+      _Exec(h, [ "env"; "set"; "PONYPATH" ], tmp.path, consume notifier)
+    else
+      _Exec(h, [ "env"; "printenv"; "PONYPATH" ], tmp.path, consume notifier)
+    end
 
 class TestEnvBundleInParentDir is UnitTest
   new iso create() => None
