@@ -2,11 +2,12 @@ use "ponytest"
 use "files"
 use "process"
 //use "regex"
+use "debug"
 
 actor _Exec
   new create(
     h: TestHelper,
-    cmdline: String,
+    args: Array[String] val,
     tmp: String,
     notifier: ProcessNotify iso)
   =>
@@ -19,20 +20,27 @@ actor _Exec
         return
       end
     try
-      let args = cmdline.split_by(" ")
-      let path = FilePath(h.env.root as AmbientAuth,
-        "stable/test/integration/helper.sh")?
       let auth = h.env.root as AmbientAuth
-      let vars: Array[String] iso = [
-        "CWD=" + tmp
-        "STABLE_BIN=" + stable_bin
-        ]
-      let pm: ProcessMonitor = ProcessMonitor(auth, auth, consume notifier,
-        path, consume args, consume vars)
+      let binPath = FilePath(h.env.root as AmbientAuth, stable_bin)?
+      let tmpPath = FilePath(h.env.root as AmbientAuth, tmp)?
+
+      let args' =
+        recover val
+          let args'' = args.clone()
+          ifdef windows then
+            args''.unshift(stable_bin)
+          else
+            args''.unshift("stable")
+          end
+          args''
+        end
+
+      let pm = ProcessMonitor(auth, auth, consume notifier, binPath,
+        args', recover Array[String] end, tmpPath)
       pm.done_writing()
       h.dispose_when_done(pm)
     else
-      h.fail("Could not create FilePath!")
+      h.fail("Could not run stable!")
       h.complete(false)
     end
 
@@ -83,8 +91,14 @@ class _ExpectClient is ProcessNotify
     _stderr = _stderr.add(String.from_array(consume data))
 
   fun ref failed(process: ProcessMonitor ref, err: ProcessError) =>
-    _h.fail("ProcessError")
+    _h.fail(err.string())
     _h.complete(false)
+
+    Debug.out("STDOUT:")
+    Debug.out(_stdout)
+    Debug.out("")
+    Debug.out("STDERR:")
+    Debug.out(_stderr)
 
   fun ref dispose(process: ProcessMonitor ref, child_exit_code: I32) =>
     let code: I32 = consume child_exit_code
@@ -92,6 +106,12 @@ class _ExpectClient is ProcessNotify
     //_match_expectations("stdout", _out, _stdout)
     //_match_expectations("stderr", _err, _stderr)
     _h.complete(_status)
+
+    Debug.out("STDOUT:")
+    Debug.out(_stdout)
+    Debug.out("")
+    Debug.out("STDERR:")
+    Debug.out(_stderr)
 
   /*fun ref _match_expectations(
     stream: String,

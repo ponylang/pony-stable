@@ -132,6 +132,7 @@ switch ($Command.ToLower())
     & "$testFile" --exclude=integration --sequential
 
     $env:STABLE_BIN = Join-Path -Path $buildDir -ChildPath "stable.exe"
+    Write-Output "STABLE_BIN=$env:STABLE_BIN"
     & "$testFile" --only=integration --sequential
     break
   }
