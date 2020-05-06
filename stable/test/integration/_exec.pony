@@ -35,8 +35,8 @@ actor _Exec
           args''
         end
 
-      let pm = ProcessMonitor(auth, auth, consume notifier, binPath,
-        args', recover Array[String] end, tmpPath)
+      let pm = ProcessMonitor(auth, auth, consume notifier, binPath, args',
+        h.env.vars, tmpPath)
       pm.done_writing()
       h.dispose_when_done(pm)
     else
@@ -46,14 +46,16 @@ actor _Exec
 
   fun _env_var(vars: Array[String] val, key: String): String ? =>
     for v in vars.values() do
-      if v.contains(key) then
-        return v.substring(
-          ISize.from[USize](key.size()) + 1,
-          ISize.from[USize](v.size()))
+      try
+        if v.find(key)? == 0 then
+          return v.substring(
+            ISize.from[USize](key.size() + 1),
+            ISize.from[USize](v.size()))
+        end
       end
     end
-
     error
+
 
 class _ExpectClient is ProcessNotify
   let _h: TestHelper
@@ -94,6 +96,7 @@ class _ExpectClient is ProcessNotify
     _h.fail(err.string())
     _h.complete(false)
 
+    Debug.out("failed: " + err.string())
     Debug.out("STDOUT:")
     Debug.out(_stdout)
     Debug.out("")
@@ -107,6 +110,7 @@ class _ExpectClient is ProcessNotify
     //_match_expectations("stderr", _err, _stderr)
     _h.complete(_status)
 
+    Debug.out("dispose: " + _status.string())
     Debug.out("STDOUT:")
     Debug.out(_stdout)
     Debug.out("")
