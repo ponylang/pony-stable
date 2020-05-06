@@ -23,4 +23,4 @@ class TestVersion is UnitTest
       ["\\d\\.\\d\\.\\d-[a-f0-9]+ \\[[a-z]+\\]"],
       None, // stderr
       0)
-    _Exec(h, "stable version", tmp.path, consume notifier)
+    _Exec(h, [ "version" ], tmp.path, consume notifier)

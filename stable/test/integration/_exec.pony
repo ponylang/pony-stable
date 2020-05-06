@@ -6,7 +6,7 @@ use "process"
 actor _Exec
   new create(
     h: TestHelper,
-    cmdline: String,
+    args: Array[String] val,
     tmp: String,
     notifier: ProcessNotify iso)
   =>
@@ -19,33 +19,42 @@ actor _Exec
         return
       end
     try
-      let args = cmdline.split_by(" ")
-      let path = FilePath(h.env.root as AmbientAuth,
-        "stable/test/integration/helper.sh")?
       let auth = h.env.root as AmbientAuth
-      let vars: Array[String] iso = [
-        "CWD=" + tmp
-        "STABLE_BIN=" + stable_bin
-        ]
-      let pm: ProcessMonitor = ProcessMonitor(auth, auth, consume notifier,
-        path, consume args, consume vars)
+      let binPath = FilePath(h.env.root as AmbientAuth, stable_bin)?
+      let tmpPath = FilePath(h.env.root as AmbientAuth, tmp)?
+
+      let args' =
+        recover val
+          let args'' = args.clone()
+          ifdef windows then
+            args''.unshift(stable_bin)
+          else
+            args''.unshift("stable")
+          end
+          args''
+        end
+
+      let pm = ProcessMonitor(auth, auth, consume notifier, binPath, args',
+        h.env.vars, tmpPath)
       pm.done_writing()
       h.dispose_when_done(pm)
     else
-      h.fail("Could not create FilePath!")
+      h.fail("Could not run stable!")
       h.complete(false)
     end
 
   fun _env_var(vars: Array[String] val, key: String): String ? =>
     for v in vars.values() do
-      if v.contains(key) then
-        return v.substring(
-          ISize.from[USize](key.size()) + 1,
-          ISize.from[USize](v.size()))
+      try
+        if v.find(key)? == 0 then
+          return v.substring(
+            ISize.from[USize](key.size() + 1),
+            ISize.from[USize](v.size()))
+        end
       end
     end
-
     error
+
 
 class _ExpectClient is ProcessNotify
   let _h: TestHelper
@@ -83,7 +92,7 @@ class _ExpectClient is ProcessNotify
     _stderr = _stderr.add(String.from_array(consume data))
 
   fun ref failed(process: ProcessMonitor ref, err: ProcessError) =>
-    _h.fail("ProcessError")
+    _h.fail(err.string())
     _h.complete(false)
 
   fun ref dispose(process: ProcessMonitor ref, child_exit_code: I32) =>

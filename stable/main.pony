@@ -75,6 +75,9 @@ actor Main
           cmd.append(" ")
           cmd.append(arg)
         end
+        if rest.size() == 0 then
+          cmd.append("set")
+        end
         cmd.append("\"")
         Shell(consume cmd, env.exitcode)?
       else

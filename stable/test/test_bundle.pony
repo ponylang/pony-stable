@@ -50,7 +50,7 @@ class TestBundleSelfReferentialPaths is UnitTest
     let paths = b.paths()
     h.assert_eq[USize](1, paths.size())
     h.assert_true(paths(0)?
-     .contains("stable/test/testdata/self-referential"))
+     .contains(Path.clean("stable/test/testdata/self-referential")))
 
 class TestBundleMutuallyRecursivePaths is UnitTest
   new iso create() => None
@@ -61,11 +61,11 @@ class TestBundleMutuallyRecursivePaths is UnitTest
 
     h.assert_eq[USize](1, bar_paths.size())
     h.assert_true(bar_paths(0)?
-     .contains("stable/test/testdata/mutually-recursive/foo"))
+     .contains(Path.clean("stable/test/testdata/mutually-recursive/foo")))
 
     h.assert_eq[USize](1, foo_paths.size())
     h.assert_true(foo_paths(0)?
-     .contains("stable/test/testdata/mutually-recursive/bar"))
+     .contains(Path.clean("stable/test/testdata/mutually-recursive/bar")))
 
 primitive _Path
   fun apply(env: Env, relative_path: String) : FilePath ? =>

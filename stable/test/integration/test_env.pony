@@ -37,7 +37,7 @@ class TestEnvNoBundle is UnitTest
       None,
       ["No bundle.json in current working directory or ancestors."],
       0)
-    _Exec(h, "stable env", tmp.path, consume notifier)
+    _Exec(h, [ "env" ], tmp.path, consume notifier)
 
 class TestEnvEmptyBundleInSameDir is UnitTest
   new iso create() => None
@@ -71,7 +71,7 @@ class TestEnvEmptyBundleInSameDir is UnitTest
       ["PONYPATH=\n"], // empty
       None,
       0)
-    _Exec(h, "stable env", tmp.path, consume notifier)
+    _Exec(h, [ "env" ], tmp.path, consume notifier)
 
 class TestEnvBundleInSameDir is UnitTest
   new iso create() => None
@@ -122,7 +122,7 @@ class TestEnvBundleInSameDir is UnitTest
       ["PONYPATH=" + expected],
       None,
       0)
-    _Exec(h, "stable env", tmp.path, consume notifier)
+    _Exec(h, [ "env" ], tmp.path, consume notifier)
 
 class TestEnvBundleInSameDirWithCall is UnitTest
   new iso create() => None
@@ -158,7 +158,11 @@ class TestEnvBundleInSameDirWithCall is UnitTest
       ["../local/a"],
       None,
       0)
-    _Exec(h, "stable env printenv PONYPATH", tmp.path, consume notifier)
+    ifdef windows then
+      _Exec(h, [ "env"; "set"; "PONYPATH" ], tmp.path, consume notifier)
+    else
+      _Exec(h, [ "env"; "printenv"; "PONYPATH" ], tmp.path, consume notifier)
+    end
 
 class TestEnvBundleInParentDir is UnitTest
   new iso create() => None
@@ -196,7 +200,7 @@ class TestEnvBundleInParentDir is UnitTest
       ["PONYPATH=" + Path.join(tmp.path, "../local/a")],
       None,
       0)
-    _Exec(h, "stable env", nested.path, consume notifier)
+    _Exec(h, [ "env" ], nested.path, consume notifier)
 
 class TestEnvBadBundleInNestedAndValidBundleInParentDir is UnitTest
   new iso create() => None
@@ -239,4 +243,4 @@ class TestEnvBadBundleInNestedAndValidBundleInParentDir is UnitTest
       ["PONYPATH=$"],
       ["JSON error at: " + bad_bundle.path.path + ": missing \"deps\" array"],
       0)
-    _Exec(h, "stable env", nested.path, consume notifier)
+    _Exec(h, [ "env" ], nested.path, consume notifier)
